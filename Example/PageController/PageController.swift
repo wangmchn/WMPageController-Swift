@@ -29,13 +29,25 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     public var progressHeight: CGFloat = 2.0
     public var itemMargin: CGFloat = 0.0
     public var menuViewStyle = MenuViewStyle.Default
+    public var titleFontName: String?
+    public var pageAnimatable   = false
+    public var postNotification = false
+    public var bounces = false
+    public var titleSizeSelected: CGFloat  = 18.0
+    public var titleSizeNormal: CGFloat    = 15.0
+    public var menuHeight: CGFloat         = 30.0
+    public var menuItemWidth: CGFloat      = 65.0
+    public weak var contentView: UIScrollView?
+    public weak var menuView: MenuView?
+
     public var itemsWidths: [CGFloat]? {
         didSet { assert(itemsWidths?.count == viewControllerClasses.count, "`itemsWidths's count` must equal to `view controllers's count`") }
     }
-    public var titleFontName: String?
+    
     public var currentViewController: UIViewController? {
         get { return currentController }
     }
+    
     public var selectedIndex: Int {
         set {
             indexInside = newValue
@@ -43,9 +55,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         }
         get { return indexInside }
     }
-    public var pageAnimatable   = false
-    public var postNotification = false
-    public var bounces = false
+    
     public var viewFrame = CGRect() {
         didSet {
             if let _ = menuView {
@@ -53,20 +63,14 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
             }
         }
     }
+    
     public var itemsMargins: [CGFloat]? {
         didSet { assert(itemsMargins?.count == viewControllerClasses.count + 1, "`itemsMargins's count` must equal to `view controllers's count + 1`") }
     }
+    
     public var cachePolicy: CachePolicy = .NoLimit {
         didSet { memCache.countLimit = cachePolicy.rawValue }
     }
-    
-    public var titleSizeSelected: CGFloat  = 18.0
-    public var titleSizeNormal: CGFloat    = 15.0
-    public var menuHeight: CGFloat         = 30.0
-    public var menuItemWidth: CGFloat      = 65.0
-    
-    public weak var contentView: UIScrollView?
-    public weak var menuView: MenuView?
     
     public lazy var titleColorSelected = UIColor(red: 168.0/255.0, green: 20.0/255.0, blue: 4/255.0, alpha: 1.0)
     public lazy var titleColorNormal = UIColor.blackColor()
@@ -88,7 +92,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     lazy private var childViewFrames = [CGRect]()
     
     // MARK: - Life cycle
-    convenience init(vcClasses: [UIViewController.Type], theirTitles: [String]) {
+    public convenience init(vcClasses: [UIViewController.Type], theirTitles: [String]) {
         self.init()
         assert(vcClasses.count == theirTitles.count, "`vcClasses.count` must equal to `titles.count`")
         titles = theirTitles

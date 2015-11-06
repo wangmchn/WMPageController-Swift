@@ -8,30 +8,30 @@
 
 import UIKit
 
-@objc protocol MenuViewDelegate: NSObjectProtocol {
+@objc public protocol MenuViewDelegate: NSObjectProtocol {
     func menuView(menuView: MenuView, widthForItemAtIndex index: NSInteger) -> CGFloat
     optional func menuView(menuView: MenuView, didSelectedIndex index: NSInteger, fromIndex currentIndex: NSInteger)
     optional func menuView(menuView: MenuView, itemMarginAtIndex index: NSInteger) -> CGFloat
 }
 
-enum MenuViewStyle {
+public enum MenuViewStyle {
     case Default, Line, Flood, FooldHollow
 }
 
-class MenuView: UIView, MenuItemDelegate {
+public class MenuView: UIView, MenuItemDelegate {
 
     // MARK: - Public vars
-    var itemTitles = [String]()
-    var style = MenuViewStyle.Default
-    var fontName: String?
-    var progressHeight: CGFloat = 2.0
-    var normalSize: CGFloat = 15.0
-    var selectedSize: CGFloat = 18.0
-    var progressColor: UIColor?
-    weak var delegate: MenuViewDelegate?
-    lazy var normalColor = UIColor.blackColor()
-    lazy var selectedColor = UIColor(red: 168.0/255.0, green: 20.0/255.0, blue: 4/255.0, alpha: 1.0)
-    lazy var bgColor = UIColor(red: 172.0/255.0, green: 165.0/255.0, blue: 162.0/255.0, alpha: 1.0)
+    public var itemTitles = [String]()
+    public var style = MenuViewStyle.Default
+    public var fontName: String?
+    public var progressHeight: CGFloat = 2.0
+    public var normalSize: CGFloat = 15.0
+    public var selectedSize: CGFloat = 18.0
+    public var progressColor: UIColor?
+    public weak var delegate: MenuViewDelegate?
+    public lazy var normalColor = UIColor.blackColor()
+    public lazy var selectedColor = UIColor(red: 168.0/255.0, green: 20.0/255.0, blue: 4/255.0, alpha: 1.0)
+    public lazy var bgColor = UIColor(red: 172.0/255.0, green: 165.0/255.0, blue: 162.0/255.0, alpha: 1.0)
     
     // MARK: - Private vars
     private weak var contentView: UIScrollView!
@@ -77,7 +77,7 @@ class MenuView: UIView, MenuItemDelegate {
     }
     
     // MARK: - Private funcs
-    override func willMoveToSuperview(newSuperview: UIView?) {
+    override public func willMoveToSuperview(newSuperview: UIView?) {
         super.willMoveToSuperview(newSuperview)
         addScollView()
         addMenuItems()

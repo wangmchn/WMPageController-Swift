@@ -8,69 +8,69 @@
 
 import UIKit
 
-enum CachePolicy: Int {
+public enum CachePolicy: Int {
     case NoLimit    = 0
     case LowMemory  = 1
     case Balanced   = 3
     case High       = 5
 }
 
-let WMPageControllerDidMovedToSuperViewNotification = "WMPageControllerDidMovedToSuperViewNotification"
-let WMPageControllerDidFullyDisplayedNotification = "WMPageControllerDidFullyDisplayedNotification"
+public let WMPageControllerDidMovedToSuperViewNotification = "WMPageControllerDidMovedToSuperViewNotification"
+public let WMPageControllerDidFullyDisplayedNotification = "WMPageControllerDidFullyDisplayedNotification"
 
-class PageController: UIViewController, UIScrollViewDelegate, MenuViewDelegate {
+public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDelegate {
     
     // MARK: - Public vars
-    var viewControllerClasses: [UIViewController.Type]!
-    var titles: [String]!
-    var values: NSArray?
-    var keys: [String]?
-    var progressColor: UIColor?
-    var progressHeight: CGFloat = 2.0
-    var itemMargin: CGFloat = 0.0
-    var menuViewStyle = MenuViewStyle.Default
-    var itemsWidths: [CGFloat]? {
+    public var viewControllerClasses: [UIViewController.Type]!
+    public var titles: [String]!
+    public var values: NSArray?
+    public var keys: [String]?
+    public var progressColor: UIColor?
+    public var progressHeight: CGFloat = 2.0
+    public var itemMargin: CGFloat = 0.0
+    public var menuViewStyle = MenuViewStyle.Default
+    public var itemsWidths: [CGFloat]? {
         didSet { assert(itemsWidths?.count == viewControllerClasses.count, "`itemsWidths's count` must equal to `view controllers's count`") }
     }
-    var titleFontName: String?
-    var currentViewController: UIViewController? {
+    public var titleFontName: String?
+    public var currentViewController: UIViewController? {
         get { return currentController }
     }
-    var selectedIndex: Int {
+    public var selectedIndex: Int {
         set {
             indexInside = newValue
             menuView?.selectItemAtIndex(newValue)
         }
         get { return indexInside }
     }
-    var pageAnimatable   = false
-    var postNotification = false
-    var bounces = false
-    var viewFrame = CGRect() {
+    public var pageAnimatable   = false
+    public var postNotification = false
+    public var bounces = false
+    public var viewFrame = CGRect() {
         didSet {
             if let _ = menuView {
                 viewDidLayoutSubviews()
             }
         }
     }
-    var itemsMargins: [CGFloat]? {
+    public var itemsMargins: [CGFloat]? {
         didSet { assert(itemsMargins?.count == viewControllerClasses.count + 1, "`itemsMargins's count` must equal to `view controllers's count + 1`") }
     }
-    var cachePolicy: CachePolicy = .NoLimit {
+    public var cachePolicy: CachePolicy = .NoLimit {
         didSet { memCache.countLimit = cachePolicy.rawValue }
     }
     
-    var titleSizeSelected: CGFloat  = 18.0
-    var titleSizeNormal: CGFloat    = 15.0
-    var menuHeight: CGFloat         = 30.0
-    var menuItemWidth: CGFloat      = 65.0
+    public var titleSizeSelected: CGFloat  = 18.0
+    public var titleSizeNormal: CGFloat    = 15.0
+    public var menuHeight: CGFloat         = 30.0
+    public var menuItemWidth: CGFloat      = 65.0
     
-    weak var contentView: UIScrollView?
-    weak var menuView: MenuView?
+    public weak var contentView: UIScrollView?
+    public weak var menuView: MenuView?
     
-    lazy var titleColorSelected = UIColor(red: 168.0/255.0, green: 20.0/255.0, blue: 4/255.0, alpha: 1.0)
-    lazy var titleColorNormal = UIColor.blackColor()
-    lazy var menuBGColor = UIColor(red: 244.0/255.0, green: 244.0/255.0, blue: 244.0/255.0, alpha: 1.0)
+    public lazy var titleColorSelected = UIColor(red: 168.0/255.0, green: 20.0/255.0, blue: 4/255.0, alpha: 1.0)
+    public lazy var titleColorNormal = UIColor.blackColor()
+    public lazy var menuBGColor = UIColor(red: 244.0/255.0, green: 244.0/255.0, blue: 244.0/255.0, alpha: 1.0)
     
     // MARK: - Private vars
     private var currentController: UIViewController?
@@ -95,7 +95,7 @@ class PageController: UIViewController, UIScrollViewDelegate, MenuViewDelegate {
         viewControllerClasses = vcClasses
     }
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         calculateSize()
         edgesForExtendedLayout = UIRectEdge.None
@@ -105,7 +105,7 @@ class PageController: UIViewController, UIScrollViewDelegate, MenuViewDelegate {
         currentController = displayingControllers[indexInside] as? UIViewController
     }
 
-    override func viewDidLayoutSubviews() {
+    override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         calculateSize()
         let scrollViewFrame = CGRect(x: viewX, y: viewY + menuHeight, width: viewWidth, height: viewHeight)
@@ -117,12 +117,12 @@ class PageController: UIViewController, UIScrollViewDelegate, MenuViewDelegate {
         view.layoutIfNeeded()
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override public func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         postFullyDisplayedNotificationWithIndex(indexInside)
     }
     
-    override func didReceiveMemoryWarning() {
+    override public func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
 
         memoryWarningCount++
@@ -278,7 +278,7 @@ class PageController: UIViewController, UIScrollViewDelegate, MenuViewDelegate {
     }
     
     // MARK: - UIScrollView Delegate
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    public func scrollViewDidScroll(scrollView: UIScrollView) {
         layoutChildViewControllers()
         guard animate else { return }
         var contentOffsetX = contentView!.contentOffset.x
@@ -292,34 +292,34 @@ class PageController: UIViewController, UIScrollViewDelegate, MenuViewDelegate {
         menuView?.slideMenuAtProgress(rate)
     }
     
-    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+    public func scrollViewWillBeginDragging(scrollView: UIScrollView) {
         animate = true
     }
     
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+    public func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         indexInside = NSInteger(contentView!.contentOffset.x / viewWidth)
         currentController = displayingControllers[indexInside] as? UIViewController
         postFullyDisplayedNotificationWithIndex(indexInside)
     }
     
-    func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
+    public func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
         indexInside = NSInteger(contentView!.contentOffset.x / viewWidth)
         currentController = displayingControllers[indexInside] as? UIViewController
         postFullyDisplayedNotificationWithIndex(indexInside)
     }
     
-    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    public func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         guard decelerate == false else { return }
         let rate = targetX / viewWidth
         menuView?.slideMenuAtProgress(rate)
     }
     
-    func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+    public func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         targetX = targetContentOffset.memory.x
     }
     
     // MARK: - MenuViewDelegate
-    func menuView(menuView: MenuView, didSelectedIndex index: NSInteger, fromIndex currentIndex: NSInteger) {
+    public func menuView(menuView: MenuView, didSelectedIndex index: NSInteger, fromIndex currentIndex: NSInteger) {
         let gap = labs(index - currentIndex)
         animate = false
         let targetPoint = CGPoint(x: CGFloat(index) * viewWidth, y: 0)
@@ -333,14 +333,14 @@ class PageController: UIViewController, UIScrollViewDelegate, MenuViewDelegate {
         }
     }
     
-    func menuView(menuView: MenuView, widthForItemAtIndex index: NSInteger) -> CGFloat {
+    public func menuView(menuView: MenuView, widthForItemAtIndex index: NSInteger) -> CGFloat {
         if let widths = itemsWidths {
             return widths[index]
         }
         return menuItemWidth
     }
     
-    func menuView(menuView: MenuView, itemMarginAtIndex index: NSInteger) -> CGFloat {
+    public func menuView(menuView: MenuView, itemMarginAtIndex index: NSInteger) -> CGFloat {
         if let margins = itemsMargins {
             return margins[index]
         }

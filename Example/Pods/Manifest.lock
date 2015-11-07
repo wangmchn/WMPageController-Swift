@@ -1,0 +1,10 @@
+PODS:
+  - WMPageController-Swift (1.0.1)
+
+DEPENDENCIES:
+  - WMPageController-Swift
+
+SPEC CHECKSUMS:
+  WMPageController-Swift: 6b91d737366a6dd33e8e2a11df742d099fcea228
+
+COCOAPODS: 0.39.0

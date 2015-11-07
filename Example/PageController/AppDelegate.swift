@@ -7,40 +7,22 @@
 //
 
 import UIKit
+import WMPageController_Swift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
+    
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
-        let vcClasses: [UIViewController.Type] = [ViewController.self, TableViewController.self]
-        let titles = ["试试", "成功"]
-        let pageController = PageController(vcClasses: vcClasses, theirTitles: titles)
-        pageController.pageAnimatable = true
-        pageController.menuViewStyle = MenuViewStyle.Line
-        pageController.bounces = true
-        pageController.menuHeight = 50.0
-        pageController.values = ["Hello", "I'm Mark"]
-        pageController.keys = ["type", "type"]
-//        pageController.selectedIndex = 1
-//        pageController.progressColor = .blackColor()
-//        pageController.viewFrame = CGRect(x: 50, y: 100, width: 320, height: 500)
-//        pageController.itemsWidths = [100, 50]
-//        pageController.itemsMargins = [50, 10, 100]
-//        pageController.titleSizeNormal = 12
-//        pageController.titleSizeSelected = 14
-//        pageController.titleColorNormal = UIColor.brownColor()
-//        pageController.titleColorSelected = UIColor.blackColor()
-        
-        let navigationController = UINavigationController(rootViewController: pageController)
-        pageController.title = "Test"
+        let navigationController = MainNavigationController(rootViewController: customedPageController())
         window?.rootViewController = navigationController
+        window?.backgroundColor = UIColor(red: 244.0/255.0, green: 244.0/255.0, blue: 244.0/255.0, alpha: 1.0)
         return true
     }
-
+    
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
@@ -62,7 +44,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
+    
+    // MARK: - An example of `PageController`
+    private func customedPageController() -> PageController {
+        let vcClasses: [UIViewController.Type] = [ViewController.self, TableViewController.self]
+        let titles = ["Hello", "World"]
+        let pageController = PageController(vcClasses: vcClasses, theirTitles: titles)
+        pageController.pageAnimatable = true
+        pageController.menuViewStyle = MenuViewStyle.Line
+        pageController.bounces = true
+        pageController.menuHeight = 35.0
+        pageController.titleSizeSelected = 15
+        pageController.values = ["Hello", "I'm Mark"] // pass values
+        pageController.keys = ["type", "text"] // keys
+        pageController.title = "Test"
+        pageController.view.backgroundColor = .whiteColor()
+        //        pageController.selectedIndex = 1
+        //        pageController.progressColor = .blackColor()
+        //        pageController.viewFrame = CGRect(x: 50, y: 100, width: 320, height: 500)
+        //        pageController.itemsWidths = [100, 50]
+        //        pageController.itemsMargins = [50, 10, 100]
+        //        pageController.titleSizeNormal = 12
+        //        pageController.titleSizeSelected = 14
+        //        pageController.titleColorNormal = UIColor.brownColor()
+        //        pageController.titleColorSelected = UIColor.blackColor()
+        return pageController
+    }
 
 }
 

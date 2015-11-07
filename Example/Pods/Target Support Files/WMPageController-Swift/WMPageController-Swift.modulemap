@@ -1,0 +1,6 @@
+framework module WMPageController_Swift {
+  umbrella header "WMPageController-Swift-umbrella.h"
+
+  export *
+  module * { export * }
+}

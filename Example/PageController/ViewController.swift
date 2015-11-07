@@ -14,20 +14,17 @@ class ViewController: UIViewController, UITableViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        print("viewDidLoad \(self)")
-        print(type)
-        view.backgroundColor = .redColor()
+        view.backgroundColor = .whiteColor()
+        createLabel()
     }
-//    
-//    override func viewWillAppear(animated: Bool) {
-//        super.viewWillAppear(animated)
-//        print("viewWillAppear \(self)")
-//    }
-//    
-//    override func viewDidAppear(animated: Bool) {
-//        super.viewDidAppear(animated)
-//        print("viewDidAppear \(self)")
-//    }
+    
+    private func createLabel() {
+        let label = UILabel(frame: CGRect(x: 0, y: 100, width: view.bounds.size.width, height: 100))
+        label.text = type
+        label.font = UIFont.systemFontOfSize(22)
+        label.textAlignment = .Center
+        view.addSubview(label)
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

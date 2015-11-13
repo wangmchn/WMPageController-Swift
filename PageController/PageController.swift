@@ -114,7 +114,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         calculateSize()
         let scrollViewFrame = CGRect(x: viewX, y: viewY + menuHeight, width: viewWidth, height: viewHeight)
         contentView?.frame = scrollViewFrame
-        contentView?.contentSize = CGSize(width: CGFloat(titles.count) * viewWidth, height: viewHeight - menuHeight)
+        contentView?.contentSize = CGSize(width: CGFloat(titles.count) * viewWidth, height: 0)
         contentView?.contentOffset = CGPoint(x: CGFloat(indexInside) * viewWidth, y: 0)
         currentController?.view.frame = childViewFrames[indexInside]
         resetMenuView()

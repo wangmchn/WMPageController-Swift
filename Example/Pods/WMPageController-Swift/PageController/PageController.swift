@@ -138,8 +138,38 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
             performSelector("growCachePolicyAfterMemoryWarning", withObject: nil, afterDelay: 3.0, inModes: [NSRunLoopCommonModes])
         }
     }
-
+    
+    // MARK: - Reload
+    public func reloadData() {
+        clearDatas()
+        resetScrollView()
+        memCache.removeAllObjects()
+        viewDidLayoutSubviews()
+    }
+    
     // MARK: - Private funcs
+    private func clearDatas() {
+        for viewController in displayingControllers.allValues {
+            if let vc = viewController as? UIViewController {
+                vc.view.removeFromSuperview()
+                vc.willMoveToParentViewController(nil)
+                vc.removeFromParentViewController()
+            }
+        }
+        memoryWarningCount = 0
+        NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: "growCachePolicyAfterMemoryWarning", object: nil)
+        NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: "growCachePolicyToHigh", object: nil)
+        currentController = nil
+        displayingControllers.removeAllObjects()
+    }
+    
+    private func resetScrollView() {
+        contentView?.removeFromSuperview()
+        addScrollView()
+        addViewControllerAtIndex(indexInside)
+        currentController = displayingControllers[indexInside] as? UIViewController
+    }
+    
     private func calculateSize() {
         if viewFrame == CGRectZero {
             viewWidth  = view.frame.size.width

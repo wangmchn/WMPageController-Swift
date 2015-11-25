@@ -189,6 +189,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     
     private func addScrollView() {
         let scrollView = UIScrollView()
+        scrollView.scrollsToTop = false
         scrollView.pagingEnabled = true
         scrollView.delegate = self
         scrollView.showsVerticalScrollIndicator = false
@@ -324,6 +325,11 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         }
         let rate = contentOffsetX / viewWidth
         menuView?.slideMenuAtProgress(rate)
+        
+        if scrollView.contentOffset.y == 0 { return }
+        var contentOffset = scrollView.contentOffset
+        contentOffset.y = 0.0
+        scrollView.contentOffset = contentOffset
     }
     
     public func scrollViewWillBeginDragging(scrollView: UIScrollView) {
@@ -360,6 +366,9 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         let animatable = gap > 1 ? false : pageAnimatable
         contentView?.setContentOffset(targetPoint, animated: animatable)
         if animatable == false {
+            if let viewController = displayingControllers[index] as? UIViewController {
+                removeViewController(viewController, atIndex: index)
+            }
             layoutChildViewControllers()
             currentController = displayingControllers[index] as? UIViewController
             postFullyDisplayedNotificationWithIndex(index)

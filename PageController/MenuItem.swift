@@ -36,14 +36,16 @@ class MenuItem: UILabel {
         }
     }
     
-    var normalColor: UIColor {
-        set { normalComponents = rgbaComponentsWithColor(newValue) }
-        get { return UIColor(red: normalComponents.red, green: normalComponents.green, blue: normalComponents.blue, alpha: normalComponents.alpha) }
+    var normalColor: UIColor? {
+        didSet {
+            normalColor?.getRed(&normalComponents.red, green: &normalComponents.green, blue: &normalComponents.blue, alpha: &normalComponents.alpha)
+        }
     }
     
-    var selectedColor: UIColor {
-        set { selectedComponets = rgbaComponentsWithColor(newValue) }
-        get { return UIColor(red: selectedComponets.red, green: selectedComponets.green, blue: selectedComponets.blue, alpha: selectedComponets.alpha) }
+    var selectedColor: UIColor? {
+        didSet {
+            selectedColor?.getRed(&selectedComponets.red, green: &selectedComponets.green, blue: &selectedComponets.blue, alpha: &selectedComponets.alpha)
+        }
     }
     
     // MARK: - Private vars
@@ -78,18 +80,6 @@ class MenuItem: UILabel {
         textAlignment = NSTextAlignment.Center
         userInteractionEnabled = true
         backgroundColor = UIColor.clearColor()
-    }
-    
-    private func rgbaComponentsWithColor(color: UIColor) -> (CGFloat, CGFloat, CGFloat, CGFloat) {
-        let normalNumber = CGColorGetNumberOfComponents(color.CGColor)
-        let colorComponets = CGColorGetComponents(color.CGColor)
-        if normalNumber == 2 {
-            return (colorComponets[0], colorComponets[0], colorComponets[0], colorComponets[1])
-        } else if normalNumber == 4 {
-            return (colorComponets[0], colorComponets[1], colorComponets[2], colorComponets[3])
-        } else {
-            fatalError("Error with item's color, use `UIColor(red: green: blue: alpha:)` may solve the problem.")
-        }
     }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {

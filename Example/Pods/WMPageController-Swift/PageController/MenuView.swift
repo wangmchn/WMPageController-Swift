@@ -109,6 +109,7 @@ public class MenuView: UIView, MenuItemDelegate {
         scrollView.showsVerticalScrollIndicator = false
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.backgroundColor = bgColor
+        scrollView.scrollsToTop = false
         addSubview(scrollView)
         contentView = scrollView
     }

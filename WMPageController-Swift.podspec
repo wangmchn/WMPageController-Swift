@@ -1,11 +1,11 @@
 Pod::Spec.new do |s|
    s.name         = "WMPageController-Swift"
-   s.version      = "1.0.3"
+   s.version      = "1.0.4"
    s.summary      = "An easy solution to page controllers like NetEase News.(Swift Implementation)"
    s.homepage     = "https://github.com/wangmchn/WMPageController-Swift"
    s.license      = 'MIT (LICENSE)'
    s.author       = { "wangmchn" => "wangmchn@163.com" }
-   s.source       = { :git => "https://github.com/wangmchn/WMPageController-Swift.git", :tag => "1.0.3" }
+   s.source       = { :git => "https://github.com/wangmchn/WMPageController-Swift.git", :tag => "1.0.4" }
    s.platform     = :ios, '8.0'
 
    s.source_files = 'PageController', 'PageController/**/*.{swift}'

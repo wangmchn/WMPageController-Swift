@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4D22C02E1BEDEDC900B9A8DB /* MainNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D22C02D1BEDEDC900B9A8DB /* MainNavigationController.swift */; };
 		4D5739431BD628A5007DB34E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5739421BD628A5007DB34E /* AppDelegate.swift */; };
 		4D5739451BD628A5007DB34E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5739441BD628A5007DB34E /* ViewController.swift */; };
 		4D5739481BD628A5007DB34E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4D5739461BD628A5007DB34E /* Main.storyboard */; };
@@ -39,7 +38,6 @@
 /* Begin PBXFileReference section */
 		20DC451681C3687312DB0B40 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		45C9CA1700F5770E9D6249AF /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		4D22C02D1BEDEDC900B9A8DB /* MainNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainNavigationController.swift; sourceTree = "<group>"; };
 		4D57393F1BD628A5007DB34E /* PageController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PageController.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D5739421BD628A5007DB34E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4D5739441BD628A5007DB34E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -128,7 +126,6 @@
 		4D5739411BD628A5007DB34E /* PageController */ = {
 			isa = PBXGroup;
 			children = (
-				4D22C02D1BEDEDC900B9A8DB /* MainNavigationController.swift */,
 				4D5739421BD628A5007DB34E /* AppDelegate.swift */,
 				4D5739441BD628A5007DB34E /* ViewController.swift */,
 				4DF8BD7D1BE3E8A200552595 /* TableViewController.swift */,
@@ -346,7 +343,6 @@
 			files = (
 				4D5739451BD628A5007DB34E /* ViewController.swift in Sources */,
 				4DF8BD7E1BE3E8A200552595 /* TableViewController.swift in Sources */,
-				4D22C02E1BEDEDC900B9A8DB /* MainNavigationController.swift in Sources */,
 				4D5739431BD628A5007DB34E /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

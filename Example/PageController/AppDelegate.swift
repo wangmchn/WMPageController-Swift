@@ -17,8 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
-        let navigationController = MainNavigationController(rootViewController: customedPageController())
-        window?.rootViewController = navigationController
+        window?.rootViewController = UINavigationController(rootViewController: customedPageController())
         window?.backgroundColor = UIColor(red: 244.0/255.0, green: 244.0/255.0, blue: 244.0/255.0, alpha: 1.0)
         return true
     }
@@ -58,7 +57,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         pageController.values = ["Hello", "I'm Mark"] // pass values
         pageController.keys = ["type", "text"] // keys
         pageController.title = "Test"
-        pageController.view.backgroundColor = .whiteColor()
+        pageController.menuBGColor = .whiteColor()
         //        pageController.selectedIndex = 1
         //        pageController.progressColor = .blackColor()
         //        pageController.viewFrame = CGRect(x: 50, y: 100, width: 320, height: 500)

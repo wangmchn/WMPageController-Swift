@@ -303,12 +303,12 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         oldMenuView?.removeFromSuperview()
     }
     
-    private func growCachePolicyAfterMemoryWarning() {
+    @objc private func growCachePolicyAfterMemoryWarning() {
         cachePolicy = CachePolicy.Balanced
         performSelector("growCachePolicyToHigh", withObject: nil, afterDelay: 2.0, inModes: [NSRunLoopCommonModes])
     }
     
-    private func growCachePolicyToHigh() {
+    @objc private func growCachePolicyToHigh() {
         cachePolicy = CachePolicy.High
     }
     

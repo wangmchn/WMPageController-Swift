@@ -1,15 +1,15 @@
 //
-//  PageControllerTests.swift
-//  PageControllerTests
+//  ExampleTests.swift
+//  ExampleTests
 //
-//  Created by Mark on 15/10/20.
+//  Created by Mark on 15/12/1.
 //  Copyright © 2015年 Wecan Studio. All rights reserved.
 //
 
 import XCTest
-@testable import PageController
+@testable import Example
 
-class PageControllerTests: XCTestCase {
+class ExampleTests: XCTestCase {
     
     override func setUp() {
         super.setUp()

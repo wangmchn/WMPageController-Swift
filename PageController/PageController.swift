@@ -86,6 +86,8 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     private var viewY: CGFloat = 0.0
     private var indexInside = 0
     private var targetX: CGFloat = 0.0
+    private var superviewHeight: CGFloat = 0.0
+    private var hasInit: Bool = false
     
     lazy private var displayingControllers = NSMutableDictionary()
     lazy private var memCache = NSCache()
@@ -101,23 +103,33 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     
     override public func viewDidLoad() {
         super.viewDidLoad()
-        calculateSize()
         edgesForExtendedLayout = UIRectEdge.None
         view.backgroundColor = .whiteColor()
+        guard viewControllerClasses != nil else { return }
+        calculateSize()
         addScrollView()
         addViewControllerAtIndex(indexInside)
         currentController = displayingControllers[indexInside] as? UIViewController
+        addMenuView()
     }
 
     override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        guard (viewControllerClasses != nil) else { return }
+        
+        let oldSuperviewHeight = superviewHeight
+        superviewHeight = view.frame.size.height
+        guard (!hasInit || superviewHeight != oldSuperviewHeight) else { return }
+        
         calculateSize()
         let scrollViewFrame = CGRect(x: viewX, y: viewY + menuHeight, width: viewWidth, height: viewHeight)
         contentView?.frame = scrollViewFrame
         contentView?.contentSize = CGSize(width: CGFloat(titles.count) * viewWidth, height: 0)
         contentView?.contentOffset = CGPoint(x: CGFloat(indexInside) * viewWidth, y: 0)
         currentController?.view.frame = childViewFrames[indexInside]
-        resetMenuView()
+        menuView?.frame = CGRect(x: viewX, y: viewY, width: viewWidth, height: menuHeight)
+        menuView?.resetFrames()
+        hasInit = true
         view.layoutIfNeeded()
     }
     
@@ -145,10 +157,33 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         resetScrollView()
         memCache.removeAllObjects()
         viewDidLayoutSubviews()
+        resetMenuView()
+    }
+    
+    // MARK: - Update Title
+    public func updateTitle(title: String, atIndex index: NSInteger) {
+        menuView?.updateTitle(title, atIndex: index, andWidth: false)
+    }
+    
+    public func updateTitle(title: String, atIndex index: NSInteger, andWidth width: CGFloat) {
+        if var widths = itemsWidths {
+            guard index < widths.count else { return }
+            widths[index] = width
+            itemsWidths = widths
+        } else {
+            var widths = [CGFloat]()
+            for i in 0 ..< titles.count {
+                let newWidth = (i == index) ? width : menuItemWidth
+                widths.append(newWidth)
+            }
+            itemsWidths = widths
+        }
+        menuView?.updateTitle(title, atIndex: index, andWidth: true)
     }
     
     // MARK: - Private funcs
     private func clearDatas() {
+        hasInit = false
         for viewController in displayingControllers.allValues {
             if let vc = viewController as? UIViewController {
                 vc.view.removeFromSuperview()
@@ -161,6 +196,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: "growCachePolicyToHigh", object: nil)
         currentController = nil
         displayingControllers.removeAllObjects()
+        calculateSize()
     }
     
     private func resetScrollView() {
@@ -298,9 +334,8 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     }
     
     private func resetMenuView() {
-        let oldMenuView = menuView
+        menuView?.removeFromSuperview()
         addMenuView()
-        oldMenuView?.removeFromSuperview()
     }
     
     @objc private func growCachePolicyAfterMemoryWarning() {
@@ -365,7 +400,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         let targetPoint = CGPoint(x: CGFloat(index) * viewWidth, y: 0)
         let animatable = gap > 1 ? false : pageAnimatable
         contentView?.setContentOffset(targetPoint, animated: animatable)
-        if animatable == false {
+        if !animatable {
             if let viewController = displayingControllers[index] as? UIViewController {
                 removeViewController(viewController, atIndex: index)
             }

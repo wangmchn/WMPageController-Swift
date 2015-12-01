@@ -1,27 +1,27 @@
 //
 //  AppDelegate.swift
-//  PageController
+//  Example
 //
-//  Created by Mark on 15/10/20.
+//  Created by Mark on 15/12/1.
 //  Copyright © 2015年 Wecan Studio. All rights reserved.
 //
 
 import UIKit
-import WMPageController_Swift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    
+
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
-        window?.rootViewController = UINavigationController(rootViewController: customedPageController())
-        window?.backgroundColor = UIColor(red: 244.0/255.0, green: 244.0/255.0, blue: 244.0/255.0, alpha: 1.0)
+        let pageController = customedPageController()
+        window?.rootViewController = UINavigationController(rootViewController: pageController)
+        reloadPageController(pageController, afterDelay: 5.0)
         return true
     }
-    
+
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
@@ -70,5 +70,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return pageController
     }
 
+    private func reloadPageController(pageController: PageController, afterDelay delay: NSTimeInterval) {
+        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay * Double(NSEC_PER_SEC)))
+        dispatch_after(delayTime, dispatch_get_main_queue()) {
+            pageController.titles = ["Hello", "World", "Reload"]
+            pageController.viewControllerClasses = [ViewController.self, TableViewController.self, ViewController.self]
+            pageController.values = ["Hello", "I'm Mark", "Reload"]
+            pageController.keys = ["type", "text", "type"]
+            pageController.reloadData()
+        }
+    }
+    
 }
 

@@ -41,12 +41,12 @@ public class MenuView: UIView, MenuItemDelegate {
     private let tagGap = 6250
     
     // MARK: - Public funcs
-    convenience init(frame: CGRect, titles: [String]) {
+    public convenience init(frame: CGRect, titles: [String]) {
         self.init(frame: frame)
         itemTitles = titles
     }
     
-    func slideMenuAtProgress(progress: CGFloat) {
+    public func slideMenuAtProgress(progress: CGFloat) {
         progressView?.progress = progress
         let tag = NSInteger(progress) + tagGap
         var rate = progress - CGFloat(tag - tagGap)
@@ -64,7 +64,7 @@ public class MenuView: UIView, MenuItemDelegate {
         nextItem?.rate = rate
     }
     
-    func selectItemAtIndex(index: NSInteger) {
+    public func selectItemAtIndex(index: NSInteger) {
         let tag = index + tagGap
         let currentIndex = selectedItem.tag - tagGap
         let menuItem = viewWithTag(tag) as! MenuItem
@@ -74,6 +74,37 @@ public class MenuView: UIView, MenuItemDelegate {
         progressView?.moveToPosition(index, animation: false)
         delegate?.menuView?(self, didSelectedIndex: index, fromIndex: currentIndex)
         refreshContentOffset()
+    }
+    
+    // MARK: - Update Title
+    public func updateTitle(title: String, atIndex index: NSInteger, andWidth update: Bool) {
+        guard index >= 0 && index < itemTitles.count else { return }
+        let item = viewWithTag(tagGap + index) as? MenuItem
+        item?.text = title;
+        guard update else { return }
+        resetFramesFromIndex(index)
+    }
+    
+    // MARK: - Update Frames
+    public func resetFrames() {
+        contentView.frame = bounds
+        resetFramesFromIndex(0)
+        refreshContentOffset()
+    }
+    
+    public func resetFramesFromIndex(index: NSInteger) {
+        itemFrames.removeAll()
+        calculateFrames()
+        for i in index ..< itemTitles.count {
+            let item = viewWithTag(tagGap + i) as? MenuItem
+            item?.frame = itemFrames[i]
+        }
+        if let progress = progressView {
+            var frame = progress.frame
+            frame.size.width = contentView.contentSize.width
+            progress.frame = frame
+            progress.setNeedsDisplay()
+        }
     }
     
     // MARK: - Private funcs
@@ -103,6 +134,7 @@ public class MenuView: UIView, MenuItemDelegate {
         }
     }
     
+    // MARK: - Create Views
     private func addScollView() {
         let scrollViewFrame = CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height)
         let scrollView = UIScrollView(frame: scrollViewFrame)
@@ -168,6 +200,7 @@ public class MenuView: UIView, MenuItemDelegate {
         }
     }
     
+    // MARK: - Calculate Frames
     private func calculateFrames() {
         var contentWidth: CGFloat = itemMarginAtIndex(0)
         for index in 0 ..< itemTitles.count {

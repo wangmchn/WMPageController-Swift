@@ -82,7 +82,7 @@ public class MenuView: UIView, MenuItemDelegate {
         let item = viewWithTag(tagGap + index) as? MenuItem
         item?.text = title;
         guard update else { return }
-        resetFramesFromIndex(index)
+        resetFrames()
     }
     
     // MARK: - Update Frames
@@ -103,6 +103,7 @@ public class MenuView: UIView, MenuItemDelegate {
             var frame = progress.frame
             frame.size.width = contentView.contentSize.width
             progress.frame = frame
+            progress.itemFrames = itemFrames
             progress.setNeedsDisplay()
         }
     }

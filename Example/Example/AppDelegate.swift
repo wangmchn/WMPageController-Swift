@@ -18,7 +18,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         let pageController = customedPageController()
         window?.rootViewController = UINavigationController(rootViewController: pageController)
-        reloadPageController(pageController, afterDelay: 5.0)
+//        reloadPageController(pageController, afterDelay: 5.0)
+//        updatePageController(pageController, title: "hahahahaha", afterDelay: 5.0)
         return true
     }
 
@@ -78,6 +79,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             pageController.values = ["Hello", "I'm Mark", "Reload"]
             pageController.keys = ["type", "text", "type"]
             pageController.reloadData()
+        }
+    }
+    
+    private func updatePageController(pageController: PageController, title: String, afterDelay delay: NSTimeInterval) {
+        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay * Double(NSEC_PER_SEC)))
+        dispatch_after(delayTime, dispatch_get_main_queue()) {
+            pageController.updateTitle(title, atIndex: 1, andWidth: 150)
         }
     }
     

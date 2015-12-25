@@ -292,6 +292,16 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         }
     }
     
+    private func removeSuperfluousViewControllersIfNeeded() {
+        self.displayingControllers.enumerateKeysAndObjectsUsingBlock { [weak self] (index, vc, stop) -> Void in
+            guard let strongSelf = self else { return }
+            let frame = strongSelf.childViewFrames[index.integerValue]
+            if (strongSelf.inScreen(frame) == false) {
+                strongSelf.removeSuperfluousViewControllersIfNeeded()
+            }
+        }
+    }
+    
     private func addCachedViewController(viewController: UIViewController, atIndex index: NSInteger) {
         addChildViewController(viewController)
         viewController.view.frame = childViewFrames[index]
@@ -375,18 +385,21 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         indexInside = NSInteger(contentView!.contentOffset.x / viewWidth)
         currentController = displayingControllers[indexInside] as? UIViewController
         postFullyDisplayedNotificationWithIndex(indexInside)
+        removeSuperfluousViewControllersIfNeeded()
     }
     
     public func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
         indexInside = NSInteger(contentView!.contentOffset.x / viewWidth)
         currentController = displayingControllers[indexInside] as? UIViewController
         postFullyDisplayedNotificationWithIndex(indexInside)
+        removeSuperfluousViewControllersIfNeeded()
     }
     
     public func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         guard decelerate == false else { return }
         let rate = targetX / viewWidth
         menuView?.slideMenuAtProgress(rate)
+        removeSuperfluousViewControllersIfNeeded()
     }
     
     public func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {

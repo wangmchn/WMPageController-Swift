@@ -126,6 +126,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         contentView?.frame = scrollViewFrame
         contentView?.contentSize = CGSize(width: CGFloat(titles.count) * viewWidth, height: 0)
         contentView?.contentOffset = CGPoint(x: CGFloat(indexInside) * viewWidth, y: 0)
+        removeSuperfluousViewControllersIfNeeded()
         currentController?.view.frame = childViewFrames[indexInside]
         menuView?.frame = CGRect(x: viewX, y: viewY, width: viewWidth, height: menuHeight)
         menuView?.resetFrames()
@@ -369,6 +370,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
             contentOffsetX = scrollView.contentSize.width - viewWidth
         }
         let rate = contentOffsetX / viewWidth
+        print(contentOffsetX)
         menuView?.slideMenuAtProgress(rate)
         
         if scrollView.contentOffset.y == 0 { return }

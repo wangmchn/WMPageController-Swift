@@ -62,6 +62,7 @@ public class MenuView: UIView, MenuItemDelegate {
         }
         currentItem?.rate = 1.0 - rate
         nextItem?.rate = rate
+        selectedItem = rate < 0.5 ? currentItem : nextItem
     }
     
     public func selectItemAtIndex(index: NSInteger) {
@@ -80,7 +81,7 @@ public class MenuView: UIView, MenuItemDelegate {
     public func updateTitle(title: String, atIndex index: NSInteger, andWidth update: Bool) {
         guard index >= 0 && index < itemTitles.count else { return }
         let item = viewWithTag(tagGap + index) as? MenuItem
-        item?.text = title;
+        item?.text = title
         guard update else { return }
         resetFrames()
     }

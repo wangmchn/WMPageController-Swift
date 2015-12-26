@@ -4,5 +4,5 @@ An easy solution to page controllers like NetEase News.(Swift Implementation)<br
 Click here: https://github.com/wangmchn/WMPageController
 ## CocoaPods
 ```
-pod 'WMPageController-Swift', '~> 1.1.0'
+pod 'WMPageController-Swift', '~> 1.1.1'
 ```

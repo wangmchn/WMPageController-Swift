@@ -101,9 +101,14 @@ public class MenuView: UIView, MenuItemDelegate {
             item?.frame = itemFrames[i]
         }
         if let progress = progressView {
-            var frame = progress.frame
-            frame.size.width = contentView.contentSize.width
-            progress.frame = frame
+            var pFrame = progress.frame
+            pFrame.size.width = contentView.contentSize.width
+            if progress.isKindOfClass(FooldView.self) {
+                pFrame.origin.y = 0
+            } else {
+                pFrame.origin.y = frame.size.height - progressHeight
+            }
+            progress.frame = pFrame
             progress.itemFrames = itemFrames
             progress.setNeedsDisplay()
         }

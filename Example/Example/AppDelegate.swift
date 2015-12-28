@@ -54,12 +54,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         pageController.pageAnimatable = true
         pageController.menuViewStyle = MenuViewStyle.Line
         pageController.bounces = true
-        pageController.menuHeight = 35.0
+        pageController.menuHeight = 44
         pageController.titleSizeSelected = 15
         pageController.values = ["Hello", "I'm Mark"] // pass values
         pageController.keys = ["type", "text"] // keys
         pageController.title = "Test"
-        pageController.menuBGColor = .whiteColor()
+        pageController.menuBGColor = .clearColor()
+        pageController.showOnNavigationBar = true
         //        pageController.selectedIndex = 1
         //        pageController.progressColor = .blackColor()
         //        pageController.viewFrame = CGRect(x: 50, y: 100, width: 320, height: 500)

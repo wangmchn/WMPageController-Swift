@@ -378,17 +378,19 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         var rightWidth: CGFloat = 0.0
         if showOnNavigationBar && (navigationController?.navigationBar != nil) {
             for subview in (navigationController?.navigationBar.subviews)! {
-                if let navigationItemViewClass = NSClassFromString("UINavigationItemView"), navigationButtonClass = NSClassFromString("UINavigationButton") {
-                    if subview.isKindOfClass(navigationButtonClass) || subview.isKindOfClass(navigationItemViewClass) {
-                        let x = CGRectGetMinX(subview.frame)
-                        if x < viewWidth / 2 {
-                            let leftWidth = CGRectGetMaxX(subview.frame) + marginToBarItem
-                            menuX = menuX > leftWidth ? menuX : leftWidth;
-                        } else {
-                            rightWidth = (viewWidth - CGRectGetMinX(subview.frame)) + marginToBarItem
-                        }
-                    }
+                
+                guard let navigationItemViewClass = NSClassFromString("UINavigationItemView"), navigationButtonClass = NSClassFromString("UINavigationButton") else { continue }
+                
+                guard subview.isKindOfClass(navigationButtonClass) || subview.isKindOfClass(navigationItemViewClass) else { continue }
+                
+                let x = CGRectGetMinX(subview.frame)
+                if x < viewWidth / 2 {
+                    let leftWidth = CGRectGetMaxX(subview.frame) + marginToBarItem
+                    menuX = menuX > leftWidth ? menuX : leftWidth;
+                } else {
+                    rightWidth = (viewWidth - CGRectGetMinX(subview.frame)) + marginToBarItem
                 }
+                
             }
             let naviHeight = CGRectGetHeight(navigationController!.navigationBar.frame)
             realMenuHeight = menuHeight > naviHeight ? naviHeight : realMenuHeight
@@ -410,7 +412,6 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
             contentOffsetX = scrollView.contentSize.width - viewWidth
         }
         let rate = contentOffsetX / viewWidth
-        print(contentOffsetX)
         menuView?.slideMenuAtProgress(rate)
         
         if scrollView.contentOffset.y == 0 { return }

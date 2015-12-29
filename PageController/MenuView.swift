@@ -62,7 +62,6 @@ public class MenuView: UIView, MenuItemDelegate {
         }
         currentItem?.rate = 1.0 - rate
         nextItem?.rate = rate
-        selectedItem = rate < 0.5 ? currentItem : nextItem
     }
     
     public func selectItemAtIndex(index: NSInteger) {

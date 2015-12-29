@@ -88,7 +88,8 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     private var indexInside = 0
     private var targetX: CGFloat = 0.0
     private var superviewHeight: CGFloat = 0.0
-    private var hasInit: Bool = false
+    private var hasInit = false
+    private var shouldNotScroll = false
     private let marginToBarItem: CGFloat = 6.0
     
     lazy private var displayingControllers = NSMutableDictionary()
@@ -365,11 +366,13 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     
     // MARK: - Adjust Frame
     private func adjustScrollViewFrame() {
+        shouldNotScroll = true
         var scrollFrame = CGRect(x: viewX, y: viewY + menuHeight, width: viewWidth, height: viewHeight)
         scrollFrame.origin.y -= showOnNavigationBar && (navigationController?.navigationBar != nil) ? menuHeight : 0
         contentView?.frame = scrollFrame
         contentView?.contentSize = CGSize(width: CGFloat(titles.count) * viewWidth, height: 0)
         contentView?.contentOffset = CGPoint(x: CGFloat(indexInside) * viewWidth, y: 0)
+        shouldNotScroll = false
     }
     
     private func adjustMenuViewFrame() {
@@ -402,6 +405,8 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     
     // MARK: - UIScrollView Delegate
     public func scrollViewDidScroll(scrollView: UIScrollView) {
+        if shouldNotScroll { return }
+        
         layoutChildViewControllers()
         guard animate else { return }
         var contentOffsetX = contentView!.contentOffset.x

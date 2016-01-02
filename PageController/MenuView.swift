@@ -116,6 +116,7 @@ public class MenuView: UIView, MenuItemDelegate {
     // MARK: - Private funcs
     override public func willMoveToSuperview(newSuperview: UIView?) {
         super.willMoveToSuperview(newSuperview)
+        guard contentView == nil else { return }
         addScollView()
         addMenuItems()
         addProgressView()

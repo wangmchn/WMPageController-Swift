@@ -54,9 +54,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     public weak var contentView: UIScrollView?
     public weak var menuView: MenuView?
 
-    public var itemsWidths: [CGFloat]? {
-        didSet { assert(itemsWidths?.count == childControllersCount, "`itemsWidths's count` must equal to `view controllers's count`") }
-    }
+    public var itemsWidths: [CGFloat]?
     
     public var currentViewController: UIViewController? {
         get { return currentController }
@@ -78,9 +76,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         }
     }
     
-    public var itemsMargins: [CGFloat]? {
-        didSet { assert(itemsMargins?.count == childControllersCount + 1, "`itemsMargins's count` must equal to `view controllers's count + 1`") }
-    }
+    public var itemsMargins: [CGFloat]?
     
     public var cachePolicy: CachePolicy = .NoLimit {
         didSet { memCache.countLimit = cachePolicy.rawValue }
@@ -128,7 +124,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         super.viewDidLoad()
         edgesForExtendedLayout = UIRectEdge.None
         view.backgroundColor = .whiteColor()
-        guard viewControllerClasses != nil else { return }
+        guard childControllersCount > 0 else { return }
         calculateSize()
         addScrollView()
         addViewControllerAtIndex(indexInside)
@@ -138,7 +134,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
 
     override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        guard (viewControllerClasses != nil) else { return }
+        guard childControllersCount > 0 else { return }
         
         let oldSuperviewHeight = superviewHeight
         superviewHeight = view.frame.size.height

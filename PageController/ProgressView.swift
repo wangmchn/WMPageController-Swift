@@ -24,7 +24,7 @@ class ProgressView: UIView {
     private var sign = 1
     
     // MARK: - Public funcs
-    func moveToPosition(position: NSInteger, animation: Bool) {
+    func moveToPosition(position: Int, animation: Bool) {
         if animation == false {
             progress = CGFloat(position)
             return
@@ -63,7 +63,7 @@ class ProgressView: UIView {
     override func drawRect(rect: CGRect) {
         // Drawing code
         let ctx = UIGraphicsGetCurrentContext()
-        let index = NSInteger(progress)
+        let index = Int(progress)
         let rate = progress - CGFloat(index)
         let currentFrame = itemFrames[index]
         let currentWidth = currentFrame.size.width

@@ -25,7 +25,7 @@ class FooldView: ProgressView {
     
     override func drawRect(rect: CGRect) {
         // Drawing code
-        let currentIndex = NSInteger(progress)
+        let currentIndex = Int(progress)
         let rate = progress - CGFloat(currentIndex)
         let nextIndex = (currentIndex + 1) >= itemFrames.count ? currentIndex : currentIndex + 1
         let currentFrame = itemFrames[currentIndex]

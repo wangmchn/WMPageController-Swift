@@ -18,11 +18,24 @@ public enum CachePolicy: Int {
 public let WMPageControllerDidMovedToSuperViewNotification = "WMPageControllerDidMovedToSuperViewNotification"
 public let WMPageControllerDidFullyDisplayedNotification = "WMPageControllerDidFullyDisplayedNotification"
 
-public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDelegate {
+@objc public protocol PageControllerDataSource: NSObjectProtocol {
+    optional func numberOfControllersInPageController(pageController: PageController) -> Int
+    optional func pageController(pageController: PageController, viewControllerAtIndex index: Int) -> UIViewController
+    optional func pageController(pageController: PageController, titleAtIndex index: Int) -> String
+}
+
+@objc public protocol PageControllerDelegate: NSObjectProtocol {
+    
+}
+
+public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDelegate, MenuViewDataSource, PageControllerDelegate, PageControllerDataSource {
     
     // MARK: - Public vars
-    public var viewControllerClasses: [UIViewController.Type]!
-    public var titles: [String]!
+    public weak var dataSource: PageControllerDataSource?
+    public weak var delegate: PageControllerDelegate?
+    
+    public var viewControllerClasses: [UIViewController.Type]?
+    public var titles: [String]?
     public var values: NSArray?
     public var keys: [String]?
     public var progressColor: UIColor?
@@ -42,7 +55,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     public weak var menuView: MenuView?
 
     public var itemsWidths: [CGFloat]? {
-        didSet { assert(itemsWidths?.count == viewControllerClasses.count, "`itemsWidths's count` must equal to `view controllers's count`") }
+        didSet { assert(itemsWidths?.count == childControllersCount, "`itemsWidths's count` must equal to `view controllers's count`") }
     }
     
     public var currentViewController: UIViewController? {
@@ -66,7 +79,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     }
     
     public var itemsMargins: [CGFloat]? {
-        didSet { assert(itemsMargins?.count == viewControllerClasses.count + 1, "`itemsMargins's count` must equal to `view controllers's count + 1`") }
+        didSet { assert(itemsMargins?.count == childControllersCount + 1, "`itemsMargins's count` must equal to `view controllers's count + 1`") }
     }
     
     public var cachePolicy: CachePolicy = .NoLimit {
@@ -91,6 +104,13 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     private var hasInit = false
     private var shouldNotScroll = false
     private let marginToBarItem: CGFloat = 6.0
+    
+    private var childControllersCount: Int {
+        if let count = dataSource?.numberOfControllersInPageController?(self) {
+            return count
+        }
+        return viewControllerClasses?.count ?? 0
+    }
     
     lazy private var displayingControllers = NSMutableDictionary()
     lazy private var memCache = NSCache()
@@ -161,18 +181,18 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     }
     
     // MARK: - Update Title
-    public func updateTitle(title: String, atIndex index: NSInteger) {
+    public func updateTitle(title: String, atIndex index: Int) {
         menuView?.updateTitle(title, atIndex: index, andWidth: false)
     }
     
-    public func updateTitle(title: String, atIndex index: NSInteger, andWidth width: CGFloat) {
+    public func updateTitle(title: String, atIndex index: Int, andWidth width: CGFloat) {
         if var widths = itemsWidths {
             guard index < widths.count else { return }
             widths[index] = width
             itemsWidths = widths
         } else {
             var widths = [CGFloat]()
-            for i in 0 ..< titles.count {
+            for i in 0 ..< childControllersCount {
                 let newWidth = (i == index) ? width : menuItemWidth
                 widths.append(newWidth)
             }
@@ -181,7 +201,23 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         menuView?.updateTitle(title, atIndex: index, andWidth: true)
     }
     
+    // MARK: - Data Source
+    private func initializeViewControllerAtIndex(index: Int) -> UIViewController {
+        if let viewController = dataSource?.pageController?(self, viewControllerAtIndex: index) {
+            return viewController
+        }
+        return viewControllerClasses![index].init()
+    }
+    
+    private func titleAtIndex(index: Int) -> String {
+        if let titleAtIndex = dataSource?.pageController?(self, titleAtIndex: index) {
+            return titleAtIndex
+        }
+        return titles![index]
+    }
+    
     // MARK: - Private funcs
+    
     private func clearDatas() {
         hasInit = false
         for viewController in displayingControllers.allValues {
@@ -220,7 +256,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         viewX = viewFrame.origin.x
         viewY = viewFrame.origin.y
         childViewFrames.removeAll()
-        for index in 0 ..< viewControllerClasses.count {
+        for index in 0 ..< childControllersCount {
             let viewControllerFrame = CGRect(x: CGFloat(index) * viewWidth, y: 0, width: viewWidth, height: viewHeight)
             childViewFrames.append(viewControllerFrame)
         }
@@ -240,8 +276,9 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     
     private func addMenuView() {
         let menuViewFrame = CGRect(x: viewX, y: viewY, width: viewWidth, height: menuHeight)
-        let menu = MenuView(frame: menuViewFrame, titles: titles)
+        let menu = MenuView(frame: menuViewFrame)
         menu.delegate = self
+        menu.dataSource = self
         menu.bgColor = menuBGColor
         menu.normalSize = titleSizeNormal
         menu.selectedSize = titleSizeSelected
@@ -262,22 +299,22 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         }
     }
     
-    private func postMovedToSuperViewNotificationWithIndex(index: NSInteger) {
+    private func postMovedToSuperViewNotificationWithIndex(index: Int) {
         guard postNotification else { return }
-        let info = ["index": index, "title": titles[index]]
+        let info = ["index": index, "title": titleAtIndex(index)]
         NSNotificationCenter.defaultCenter().postNotificationName(WMPageControllerDidMovedToSuperViewNotification, object: info)
     }
     
-    private func postFullyDisplayedNotificationWithIndex(index: NSInteger) {
+    private func postFullyDisplayedNotificationWithIndex(index: Int) {
         guard postNotification else { return }
-        let info = ["index": index, "title": titles[index]]
+        let info = ["index": index, "title": titleAtIndex(index)]
         NSNotificationCenter.defaultCenter().postNotificationName(WMPageControllerDidFullyDisplayedNotification, object: info)
     }
     
     private func layoutChildViewControllers() {
-        let currentPage = NSInteger(contentView!.contentOffset.x / viewWidth)
+        let currentPage = Int(contentView!.contentOffset.x / viewWidth)
         let start = currentPage == 0 ? currentPage : (currentPage - 1)
-        let end = (currentPage == viewControllerClasses.count - 1) ? currentPage : (currentPage + 1)
+        let end = (currentPage == childControllersCount - 1) ? currentPage : (currentPage + 1)
         for index in start ... end {
             let viewControllerFrame = childViewFrames[index]
             var vc = displayingControllers.objectForKey(index)
@@ -309,7 +346,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         }
     }
     
-    private func addCachedViewController(viewController: UIViewController, atIndex index: NSInteger) {
+    private func addCachedViewController(viewController: UIViewController, atIndex index: Int) {
         addChildViewController(viewController)
         viewController.view.frame = childViewFrames[index]
         viewController.didMoveToParentViewController(self)
@@ -317,9 +354,8 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         displayingControllers.setObject(viewController, forKey: index)
     }
     
-    private func addViewControllerAtIndex(index: NSInteger) {
-        let vcClass = viewControllerClasses[index]
-        let viewController = vcClass.init()
+    private func addViewControllerAtIndex(index: Int) {
+        let viewController = initializeViewControllerAtIndex(index)
         if let optionalKeys = keys {
             viewController.setValue(values?[index], forKey: optionalKeys[index])
         }
@@ -330,7 +366,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         displayingControllers.setObject(viewController, forKey: index)
     }
     
-    private func removeViewController(viewController: UIViewController, atIndex index: NSInteger) {
+    private func removeViewController(viewController: UIViewController, atIndex index: Int) {
         viewController.view.removeFromSuperview()
         viewController.willMoveToParentViewController(nil)
         viewController.removeFromParentViewController()
@@ -370,7 +406,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         var scrollFrame = CGRect(x: viewX, y: viewY + menuHeight, width: viewWidth, height: viewHeight)
         scrollFrame.origin.y -= showOnNavigationBar && (navigationController?.navigationBar != nil) ? menuHeight : 0
         contentView?.frame = scrollFrame
-        contentView?.contentSize = CGSize(width: CGFloat(titles.count) * viewWidth, height: 0)
+        contentView?.contentSize = CGSize(width: CGFloat(childControllersCount) * viewWidth, height: 0)
         contentView?.contentOffset = CGPoint(x: CGFloat(indexInside) * viewWidth, y: 0)
         shouldNotScroll = false
     }
@@ -430,14 +466,14 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     }
     
     public func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        indexInside = NSInteger(contentView!.contentOffset.x / viewWidth)
+        indexInside = Int(contentView!.contentOffset.x / viewWidth)
         currentController = displayingControllers[indexInside] as? UIViewController
         postFullyDisplayedNotificationWithIndex(indexInside)
         removeSuperfluousViewControllersIfNeeded()
     }
     
     public func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
-        indexInside = NSInteger(contentView!.contentOffset.x / viewWidth)
+        indexInside = Int(contentView!.contentOffset.x / viewWidth)
         currentController = displayingControllers[indexInside] as? UIViewController
         postFullyDisplayedNotificationWithIndex(indexInside)
         removeSuperfluousViewControllersIfNeeded()
@@ -455,7 +491,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     }
     
     // MARK: - MenuViewDelegate
-    public func menuView(menuView: MenuView, didSelectedIndex index: NSInteger, fromIndex currentIndex: NSInteger) {
+    public func menuView(menuView: MenuView, didSelectedIndex index: Int, fromIndex currentIndex: Int) {
         let gap = labs(index - currentIndex)
         animate = false
         let targetPoint = CGPoint(x: CGFloat(index) * viewWidth, y: 0)
@@ -472,18 +508,27 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         }
     }
     
-    public func menuView(menuView: MenuView, widthForItemAtIndex index: NSInteger) -> CGFloat {
+    public func menuView(menuView: MenuView, widthForItemAtIndex index: Int) -> CGFloat {
         if let widths = itemsWidths {
             return widths[index]
         }
         return menuItemWidth
     }
     
-    public func menuView(menuView: MenuView, itemMarginAtIndex index: NSInteger) -> CGFloat {
+    public func menuView(menuView: MenuView, itemMarginAtIndex index: Int) -> CGFloat {
         if let margins = itemsMargins {
             return margins[index]
         }
         return itemMargin
+    }
+    
+    // MARK: - MenuViewDataSource
+    public func numbersOfTitlesInMenuView(menuView: MenuView) -> Int {
+        return childControllersCount
+    }
+    
+    public func menuView(menuView: MenuView, titleAtIndex index: Int) -> String {
+        return titleAtIndex(index)
     }
     
 }

@@ -9,9 +9,14 @@
 import UIKit
 
 @objc public protocol MenuViewDelegate: NSObjectProtocol {
-    func menuView(menuView: MenuView, widthForItemAtIndex index: NSInteger) -> CGFloat
-    optional func menuView(menuView: MenuView, didSelectedIndex index: NSInteger, fromIndex currentIndex: NSInteger)
-    optional func menuView(menuView: MenuView, itemMarginAtIndex index: NSInteger) -> CGFloat
+    func menuView(menuView: MenuView, widthForItemAtIndex index: Int) -> CGFloat
+    optional func menuView(menuView: MenuView, didSelectedIndex index: Int, fromIndex currentIndex: Int)
+    optional func menuView(menuView: MenuView, itemMarginAtIndex index: Int) -> CGFloat
+}
+
+@objc public protocol MenuViewDataSource: NSObjectProtocol {
+    func menuView(menuView: MenuView, titleAtIndex index: Int) -> String
+    func numbersOfTitlesInMenuView(menuView: MenuView) -> Int
 }
 
 public enum MenuViewStyle {
@@ -21,7 +26,6 @@ public enum MenuViewStyle {
 public class MenuView: UIView, MenuItemDelegate {
 
     // MARK: - Public vars
-    public var itemTitles = [String]()
     public var style = MenuViewStyle.Default
     public var fontName: String?
     public var progressHeight: CGFloat = 2.0
@@ -29,6 +33,7 @@ public class MenuView: UIView, MenuItemDelegate {
     public var selectedSize: CGFloat = 18.0
     public var progressColor: UIColor?
     public weak var delegate: MenuViewDelegate?
+    public weak var dataSource: MenuViewDataSource!
     public lazy var normalColor = UIColor.blackColor()
     public lazy var selectedColor = UIColor(red: 168.0/255.0, green: 20.0/255.0, blue: 4/255.0, alpha: 1.0)
     public lazy var bgColor = UIColor(red: 172.0/255.0, green: 165.0/255.0, blue: 162.0/255.0, alpha: 1.0)
@@ -39,16 +44,14 @@ public class MenuView: UIView, MenuItemDelegate {
     private weak var selectedItem: MenuItem!
     private var itemFrames = [CGRect]()
     private let tagGap = 6250
-    
-    // MARK: - Public funcs
-    public convenience init(frame: CGRect, titles: [String]) {
-        self.init(frame: frame)
-        itemTitles = titles
+    private var itemsCount: Int {
+        return dataSource.numbersOfTitlesInMenuView(self)
     }
     
+    // MARK: - Public funcs
     public func slideMenuAtProgress(progress: CGFloat) {
         progressView?.progress = progress
-        let tag = NSInteger(progress) + tagGap
+        let tag = Int(progress) + tagGap
         var rate = progress - CGFloat(tag - tagGap)
         let currentItem = viewWithTag(tag) as? MenuItem
         let nextItem = viewWithTag(tag + 1) as? MenuItem
@@ -64,7 +67,7 @@ public class MenuView: UIView, MenuItemDelegate {
         nextItem?.rate = rate
     }
     
-    public func selectItemAtIndex(index: NSInteger) {
+    public func selectItemAtIndex(index: Int) {
         let tag = index + tagGap
         let currentIndex = selectedItem.tag - tagGap
         let menuItem = viewWithTag(tag) as! MenuItem
@@ -77,8 +80,8 @@ public class MenuView: UIView, MenuItemDelegate {
     }
     
     // MARK: - Update Title
-    public func updateTitle(title: String, atIndex index: NSInteger, andWidth update: Bool) {
-        guard index >= 0 && index < itemTitles.count else { return }
+    public func updateTitle(title: String, atIndex index: Int, andWidth update: Bool) {
+        guard index >= 0 && index < itemsCount else { return }
         let item = viewWithTag(tagGap + index) as? MenuItem
         item?.text = title
         guard update else { return }
@@ -92,10 +95,10 @@ public class MenuView: UIView, MenuItemDelegate {
         refreshContentOffset()
     }
     
-    public func resetFramesFromIndex(index: NSInteger) {
+    public func resetFramesFromIndex(index: Int) {
         itemFrames.removeAll()
         calculateFrames()
-        for i in index ..< itemTitles.count {
+        for i in index ..< itemsCount {
             let item = viewWithTag(tagGap + i) as? MenuItem
             item?.frame = itemFrames[i]
         }
@@ -155,12 +158,12 @@ public class MenuView: UIView, MenuItemDelegate {
     
     private func addMenuItems() {
         calculateFrames()
-        for index in 0 ..< itemTitles.count {
+        for index in 0 ..< itemsCount {
             let menuItemFrame = itemFrames[index]
             let menuItem = MenuItem(frame: menuItemFrame)
             menuItem.tag = index + tagGap
             menuItem.delegate = self
-            menuItem.text = itemTitles[index]
+            menuItem.text = dataSource.menuView(self, titleAtIndex: index)
             menuItem.textColor = normalColor
             if let optionalFontName = fontName {
                 menuItem.font = UIFont(name: optionalFontName, size: selectedSize)
@@ -210,7 +213,7 @@ public class MenuView: UIView, MenuItemDelegate {
     // MARK: - Calculate Frames
     private func calculateFrames() {
         var contentWidth: CGFloat = itemMarginAtIndex(0)
-        for index in 0 ..< itemTitles.count {
+        for index in 0 ..< itemsCount {
             let itemWidth = delegate!.menuView(self, widthForItemAtIndex: index)
             let itemFrame = CGRect(x: contentWidth, y: 0, width: itemWidth, height: frame.size.height)
             itemFrames.append(itemFrame)
@@ -218,8 +221,8 @@ public class MenuView: UIView, MenuItemDelegate {
         }
         if contentWidth < frame.size.width {
             let distance = frame.size.width - contentWidth
-            let itemMargin = distance / CGFloat(itemTitles.count + 1)
-            for index in 0 ..< itemTitles.count {
+            let itemMargin = distance / CGFloat(itemsCount + 1)
+            for index in 0 ..< itemsCount {
                 var itemFrame = itemFrames[index]
                 itemFrame.origin.x += itemMargin * CGFloat(index + 1)
                 itemFrames[index] = itemFrame
@@ -229,7 +232,7 @@ public class MenuView: UIView, MenuItemDelegate {
         contentView.contentSize = CGSize(width: contentWidth, height: frame.size.height)
     }
     
-    private func itemMarginAtIndex(index: NSInteger) -> CGFloat {
+    private func itemMarginAtIndex(index: Int) -> CGFloat {
         if let itemMargin = delegate?.menuView?(self, itemMarginAtIndex: index) {
             return itemMargin
         }

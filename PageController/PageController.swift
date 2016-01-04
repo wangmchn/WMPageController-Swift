@@ -247,7 +247,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
             viewHeight = viewFrame.size.height
         }
         if showOnNavigationBar && (navigationController?.navigationBar != nil) {
-            viewHeight += menuHeight;
+            viewHeight += menuHeight
         }
         viewX = viewFrame.origin.x
         viewY = viewFrame.origin.y
@@ -421,7 +421,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
                 let x = CGRectGetMinX(subview.frame)
                 if x < viewWidth / 2 {
                     let leftWidth = CGRectGetMaxX(subview.frame) + marginToBarItem
-                    menuX = menuX > leftWidth ? menuX : leftWidth;
+                    menuX = menuX > leftWidth ? menuX : leftWidth
                 } else {
                     rightWidth = (viewWidth - CGRectGetMinX(subview.frame)) + marginToBarItem
                 }

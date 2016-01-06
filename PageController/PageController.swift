@@ -414,16 +414,19 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         if showOnNavigationBar && (navigationController?.navigationBar != nil) {
             for subview in (navigationController?.navigationBar.subviews)! {
                 
-                guard let navigationItemViewClass = NSClassFromString("UINavigationItemView"), navigationButtonClass = NSClassFromString("UINavigationButton") else { continue }
+                guard let barBackgroundClass = NSClassFromString("_UINavigationBarBackground") else { continue }
                 
-                guard subview.isKindOfClass(navigationButtonClass) || subview.isKindOfClass(navigationItemViewClass) else { continue }
+                guard !subview.isKindOfClass(barBackgroundClass) && !subview.isKindOfClass(MenuView.self) && (subview.alpha != 0) && (subview.hidden == false) else { continue }
                 
-                let x = CGRectGetMinX(subview.frame)
-                if x < viewWidth / 2 {
-                    let leftWidth = CGRectGetMaxX(subview.frame) + marginToBarItem
+                let maxX = CGRectGetMaxX(subview.frame)
+                if maxX < viewWidth / 2 {
+                    let leftWidth = maxX + marginToBarItem
                     menuX = menuX > leftWidth ? menuX : leftWidth
-                } else {
-                    rightWidth = (viewWidth - CGRectGetMinX(subview.frame)) + marginToBarItem
+                }
+                let minX = CGRectGetMinX(subview.frame)
+                if minX > viewWidth / 2 {
+                    let width = (viewWidth - minX) + marginToBarItem;
+                    rightWidth = rightWidth > width ? rightWidth : width
                 }
                 
             }

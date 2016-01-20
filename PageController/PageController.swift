@@ -337,7 +337,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
             guard let strongSelf = self else { return }
             let frame = strongSelf.childViewFrames[index.integerValue]
             if (strongSelf.inScreen(frame) == false) {
-                strongSelf.removeSuperfluousViewControllersIfNeeded()
+                strongSelf.removeViewController(vc as! UIViewController, atIndex: index.integerValue)
             }
         }
     }

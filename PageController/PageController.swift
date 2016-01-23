@@ -25,7 +25,9 @@ public let WMPageControllerDidFullyDisplayedNotification = "WMPageControllerDidF
 }
 
 @objc public protocol PageControllerDelegate: NSObjectProtocol {
-    
+    optional func pageController(pageController: PageController, willCachedViewController viewController: UIViewController, withInfo info: NSDictionary)
+    optional func pageController(pageController: PageController, willEnterViewController viewController: UIViewController, withInfo info: NSDictionary)
+    optional func pageController(pageController: PageController, didEnterViewController viewController: UIViewController, withInfo info: NSDictionary)
 }
 
 public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDelegate, MenuViewDataSource, PageControllerDelegate, PageControllerDataSource {
@@ -123,6 +125,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     override public func viewDidLoad() {
         super.viewDidLoad()
         edgesForExtendedLayout = UIRectEdge.None
+        UIApplication.sharedApplication().delegate?.window??.backgroundColor = .whiteColor()
         view.backgroundColor = .whiteColor()
         guard childControllersCount > 0 else { return }
         calculateSize()
@@ -152,6 +155,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     override public func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         postFullyDisplayedNotificationWithIndex(indexInside)
+        didEnterController(currentViewController!, atIndex: indexInside)
     }
     
     override public func didReceiveMemoryWarning() {
@@ -212,8 +216,28 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         return titles![index]
     }
     
-    // MARK: - Private funcs
+    // MARK: - Delegate
+    private func infoWithIndex(index: Int) -> NSDictionary {
+        let title = titleAtIndex(index)
+        return ["title": title, "index": index]
+    }
     
+    private func willCachedController(vc: UIViewController, atIndex index: Int) {
+        guard childControllersCount > 0 else { return }
+        delegate?.pageController?(self, willCachedViewController: vc, withInfo: infoWithIndex(index))
+    }
+    
+    private func willEnterController(vc: UIViewController, atIndex index: Int) {
+        guard childControllersCount > 0 else { return }
+        delegate?.pageController?(self, willEnterViewController: vc, withInfo: infoWithIndex(index))
+    }
+    
+    private func didEnterController(vc: UIViewController, atIndex index: Int) {
+        guard childControllersCount > 0 else { return }
+        delegate?.pageController?(self, didEnterViewController: vc, withInfo: infoWithIndex(index))
+    }
+    
+    // MARK: - Private funcs
     private func clearDatas() {
         hasInit = false
         for viewController in displayingControllers.allValues {
@@ -347,6 +371,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         viewController.view.frame = childViewFrames[index]
         viewController.didMoveToParentViewController(self)
         contentView?.addSubview(viewController.view)
+        willEnterController(viewController, atIndex: index)
         displayingControllers.setObject(viewController, forKey: index)
     }
     
@@ -359,6 +384,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         viewController.view.frame = childViewFrames[index]
         viewController.didMoveToParentViewController(self)
         contentView?.addSubview(viewController.view)
+        willEnterController(viewController, atIndex: index)
         displayingControllers.setObject(viewController, forKey: index)
     }
     
@@ -368,6 +394,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         viewController.removeFromParentViewController()
         displayingControllers.removeObjectForKey(index)
         if memCache.objectForKey(index) == nil {
+            willCachedController(viewController, atIndex: index)
             memCache.setObject(viewController, forKey: index)
         }
     }
@@ -466,16 +493,18 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     
     public func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         indexInside = Int(contentView!.contentOffset.x / viewWidth)
+        removeSuperfluousViewControllersIfNeeded()
         currentController = displayingControllers[indexInside] as? UIViewController
         postFullyDisplayedNotificationWithIndex(indexInside)
-        removeSuperfluousViewControllersIfNeeded()
+        didEnterController(currentController!, atIndex: indexInside)
     }
     
     public func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
         indexInside = Int(contentView!.contentOffset.x / viewWidth)
+        removeSuperfluousViewControllersIfNeeded()
         currentController = displayingControllers[indexInside] as? UIViewController
         postFullyDisplayedNotificationWithIndex(indexInside)
-        removeSuperfluousViewControllersIfNeeded()
+        didEnterController(currentController!, atIndex: indexInside)
     }
     
     public func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
@@ -504,6 +533,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
             currentController = displayingControllers[index] as? UIViewController
             postFullyDisplayedNotificationWithIndex(index)
             indexInside = index
+            didEnterController(currentController!, atIndex: indexInside)
         }
     }
     

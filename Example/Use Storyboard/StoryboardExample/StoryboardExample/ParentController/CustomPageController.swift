@@ -17,6 +17,7 @@ class CustomPageController: PageController {
         itemsWidths = [60, 100, 60]
         dataSource = self
         delegate = self
+        preloadPolicy = PreloadPolicy.Neighbour
     }
     
     override func viewDidLoad() {
@@ -48,4 +49,7 @@ class CustomPageController: PageController {
         }
     }
     
+    func pageController(pageController: PageController, lazyLoadViewController viewController: UIViewController, withInfo info: NSDictionary) {
+        print(info)
+    }
 }

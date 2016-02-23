@@ -15,6 +15,12 @@ public enum CachePolicy: Int {
     case High       = 5
 }
 
+public enum PreloadPolicy: Int {
+    case Never      = 0
+    case Neighbour  = 1
+    case Near       = 2
+}
+
 public let WMPageControllerDidMovedToSuperViewNotification = "WMPageControllerDidMovedToSuperViewNotification"
 public let WMPageControllerDidFullyDisplayedNotification = "WMPageControllerDidFullyDisplayedNotification"
 
@@ -25,6 +31,7 @@ public let WMPageControllerDidFullyDisplayedNotification = "WMPageControllerDidF
 }
 
 @objc public protocol PageControllerDelegate: NSObjectProtocol {
+    optional func pageController(pageController: PageController, lazyLoadViewController viewController: UIViewController, withInfo info: NSDictionary)
     optional func pageController(pageController: PageController, willCachedViewController viewController: UIViewController, withInfo info: NSDictionary)
     optional func pageController(pageController: PageController, willEnterViewController viewController: UIViewController, withInfo info: NSDictionary)
     optional func pageController(pageController: PageController, didEnterViewController viewController: UIViewController, withInfo info: NSDictionary)
@@ -58,9 +65,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
 
     public var itemsWidths: [CGFloat]?
     
-    public var currentViewController: UIViewController? {
-        get { return currentController }
-    }
+    public private(set) var currentViewController: UIViewController?
     
     public var selectedIndex: Int {
         set {
@@ -79,6 +84,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     }
     
     public var itemsMargins: [CGFloat]?
+    public var preloadPolicy: PreloadPolicy = .Never
     
     public var cachePolicy: CachePolicy = .NoLimit {
         didSet { memCache.countLimit = cachePolicy.rawValue }
@@ -89,7 +95,6 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     public lazy var menuBGColor = UIColor(red: 244.0/255.0, green: 244.0/255.0, blue: 244.0/255.0, alpha: 1.0)
     
     // MARK: - Private vars
-    private var currentController: UIViewController?
     private var memoryWarningCount = 0
     private var animate = false
     private var viewHeight: CGFloat = 0.0
@@ -101,6 +106,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     private var superviewHeight: CGFloat = 0.0
     private var hasInit = false
     private var shouldNotScroll = false
+    private var initializedIndex = 0
     private let marginToBarItem: CGFloat = 6.0
     
     private var childControllersCount: Int {
@@ -131,7 +137,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         calculateSize()
         addScrollView()
         addViewControllerAtIndex(indexInside)
-        currentController = displayingControllers[indexInside] as? UIViewController
+        currentViewController = displayingControllers[indexInside] as? UIViewController
         addMenuView()
     }
 
@@ -147,7 +153,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         adjustScrollViewFrame()
         adjustMenuViewFrame()
         removeSuperfluousViewControllersIfNeeded()
-        currentController?.view.frame = childViewFrames[indexInside]
+        currentViewController?.view.frame = childViewFrames[indexInside]
         hasInit = true
         view.layoutIfNeeded()
     }
@@ -233,8 +239,35 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     }
     
     private func didEnterController(vc: UIViewController, atIndex index: Int) {
+       
         guard childControllersCount > 0 else { return }
-        delegate?.pageController?(self, didEnterViewController: vc, withInfo: infoWithIndex(index))
+        
+        let info = infoWithIndex(index)
+
+        delegate?.pageController?(self, didEnterViewController: vc, withInfo: info)
+        
+        if initializedIndex == index {
+            delegate?.pageController?(self, lazyLoadViewController: vc, withInfo: info)
+        }
+        
+        if preloadPolicy == .Never { return }
+        var start = 0
+        var end = childControllersCount - 1
+        if index > preloadPolicy.rawValue {
+            start = index - preloadPolicy.rawValue
+        }
+        
+        if childControllersCount - 1 > preloadPolicy.rawValue + index {
+            end = index + preloadPolicy.rawValue
+        }
+        
+        for i in start ... end {
+            if memCache.objectForKey(i) == nil && displayingControllers[i] == nil {
+                addViewControllerAtIndex(i)
+                postMovedToSuperViewNotificationWithIndex(i)
+            }
+        }
+        
     }
     
     // MARK: - Private funcs
@@ -250,7 +283,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         memoryWarningCount = 0
         NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: "growCachePolicyAfterMemoryWarning", object: nil)
         NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: "growCachePolicyToHigh", object: nil)
-        currentController = nil
+        currentViewController = nil
         displayingControllers.removeAllObjects()
         calculateSize()
     }
@@ -259,7 +292,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         contentView?.removeFromSuperview()
         addScrollView()
         addViewControllerAtIndex(indexInside)
-        currentController = displayingControllers[indexInside] as? UIViewController
+        currentViewController = displayingControllers[indexInside] as? UIViewController
     }
     
     private func calculateSize() {
@@ -376,6 +409,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     }
     
     private func addViewControllerAtIndex(index: Int) {
+        initializedIndex = index
         let viewController = initializeViewControllerAtIndex(index)
         if let optionalKeys = keys {
             viewController.setValue(values?[index], forKey: optionalKeys[index])
@@ -494,17 +528,17 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     public func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         indexInside = Int(contentView!.contentOffset.x / viewWidth)
         removeSuperfluousViewControllersIfNeeded()
-        currentController = displayingControllers[indexInside] as? UIViewController
+        currentViewController = displayingControllers[indexInside] as? UIViewController
         postFullyDisplayedNotificationWithIndex(indexInside)
-        didEnterController(currentController!, atIndex: indexInside)
+        didEnterController(currentViewController!, atIndex: indexInside)
     }
     
     public func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
         indexInside = Int(contentView!.contentOffset.x / viewWidth)
         removeSuperfluousViewControllersIfNeeded()
-        currentController = displayingControllers[indexInside] as? UIViewController
+        currentViewController = displayingControllers[indexInside] as? UIViewController
         postFullyDisplayedNotificationWithIndex(indexInside)
-        didEnterController(currentController!, atIndex: indexInside)
+        didEnterController(currentViewController!, atIndex: indexInside)
     }
     
     public func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
@@ -530,10 +564,10 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
                 removeViewController(viewController, atIndex: index)
             }
             layoutChildViewControllers()
-            currentController = displayingControllers[index] as? UIViewController
+            currentViewController = displayingControllers[index] as? UIViewController
             postFullyDisplayedNotificationWithIndex(index)
             indexInside = index
-            didEnterController(currentController!, atIndex: indexInside)
+            didEnterController(currentViewController!, atIndex: indexInside)
         }
     }
     

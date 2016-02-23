@@ -106,7 +106,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     private var superviewHeight: CGFloat = 0.0
     private var hasInit = false
     private var shouldNotScroll = false
-    private var initializedIndex = 0
+    private var initializedIndex = -1
     private let marginToBarItem: CGFloat = 6.0
     
     private var childControllersCount: Int {
@@ -248,6 +248,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         
         if initializedIndex == index {
             delegate?.pageController?(self, lazyLoadViewController: vc, withInfo: info)
+            initializedIndex = -1
         }
         
         if preloadPolicy == .Never { return }

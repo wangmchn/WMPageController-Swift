@@ -69,10 +69,10 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     
     public var selectedIndex: Int {
         set {
-            indexInside = newValue
+            _selectedIndex = newValue
             menuView?.selectItemAtIndex(newValue)
         }
-        get { return indexInside }
+        get { return _selectedIndex }
     }
     
     public var viewFrame = CGRect() {
@@ -101,7 +101,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     private var viewWidth: CGFloat = 0.0
     private var viewX: CGFloat = 0.0
     private var viewY: CGFloat = 0.0
-    private var indexInside = 0
+    private var _selectedIndex = 0
     private var targetX: CGFloat = 0.0
     private var superviewHeight: CGFloat = 0.0
     private var hasInit = false
@@ -136,8 +136,8 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         guard childControllersCount > 0 else { return }
         calculateSize()
         addScrollView()
-        addViewControllerAtIndex(indexInside)
-        currentViewController = displayingControllers[indexInside] as? UIViewController
+        addViewControllerAtIndex(_selectedIndex)
+        currentViewController = displayingControllers[_selectedIndex] as? UIViewController
         addMenuView()
     }
 
@@ -153,15 +153,15 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         adjustScrollViewFrame()
         adjustMenuViewFrame()
         removeSuperfluousViewControllersIfNeeded()
-        currentViewController?.view.frame = childViewFrames[indexInside]
+        currentViewController?.view.frame = childViewFrames[_selectedIndex]
         hasInit = true
         view.layoutIfNeeded()
     }
     
     override public func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        postFullyDisplayedNotificationWithIndex(indexInside)
-        didEnterController(currentViewController!, atIndex: indexInside)
+        postFullyDisplayedNotificationWithIndex(_selectedIndex)
+        didEnterController(currentViewController!, atIndex: _selectedIndex)
     }
     
     override public func didReceiveMemoryWarning() {
@@ -274,6 +274,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     // MARK: - Private funcs
     private func clearDatas() {
         hasInit = false
+        _selectedIndex = _selectedIndex < childControllersCount ? _selectedIndex : childControllersCount - 1
         for viewController in displayingControllers.allValues {
             if let vc = viewController as? UIViewController {
                 vc.view.removeFromSuperview()
@@ -292,8 +293,8 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     private func resetScrollView() {
         contentView?.removeFromSuperview()
         addScrollView()
-        addViewControllerAtIndex(indexInside)
-        currentViewController = displayingControllers[indexInside] as? UIViewController
+        addViewControllerAtIndex(_selectedIndex)
+        currentViewController = displayingControllers[_selectedIndex] as? UIViewController
     }
     
     private func calculateSize() {
@@ -348,8 +349,8 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
             view.addSubview(menu)
         }
         menuView = menu
-        if indexInside != 0 {
-            menuView?.selectItemAtIndex(indexInside)
+        if _selectedIndex != 0 {
+            menuView?.selectItemAtIndex(_selectedIndex)
         }
     }
     
@@ -465,7 +466,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         scrollFrame.origin.y -= showOnNavigationBar && (navigationController?.navigationBar != nil) ? menuHeight : 0
         contentView?.frame = scrollFrame
         contentView?.contentSize = CGSize(width: CGFloat(childControllersCount) * viewWidth, height: 0)
-        contentView?.contentOffset = CGPoint(x: CGFloat(indexInside) * viewWidth, y: 0)
+        contentView?.contentOffset = CGPoint(x: CGFloat(_selectedIndex) * viewWidth, y: 0)
         shouldNotScroll = false
     }
     
@@ -527,19 +528,19 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     }
     
     public func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        indexInside = Int(contentView!.contentOffset.x / viewWidth)
+        _selectedIndex = Int(contentView!.contentOffset.x / viewWidth)
         removeSuperfluousViewControllersIfNeeded()
-        currentViewController = displayingControllers[indexInside] as? UIViewController
-        postFullyDisplayedNotificationWithIndex(indexInside)
-        didEnterController(currentViewController!, atIndex: indexInside)
+        currentViewController = displayingControllers[_selectedIndex] as? UIViewController
+        postFullyDisplayedNotificationWithIndex(_selectedIndex)
+        didEnterController(currentViewController!, atIndex: _selectedIndex)
     }
     
     public func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
-        indexInside = Int(contentView!.contentOffset.x / viewWidth)
+        _selectedIndex = Int(contentView!.contentOffset.x / viewWidth)
         removeSuperfluousViewControllersIfNeeded()
-        currentViewController = displayingControllers[indexInside] as? UIViewController
-        postFullyDisplayedNotificationWithIndex(indexInside)
-        didEnterController(currentViewController!, atIndex: indexInside)
+        currentViewController = displayingControllers[_selectedIndex] as? UIViewController
+        postFullyDisplayedNotificationWithIndex(_selectedIndex)
+        didEnterController(currentViewController!, atIndex: _selectedIndex)
     }
     
     public func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
@@ -555,6 +556,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     
     // MARK: - MenuViewDelegate
     public func menuView(menuView: MenuView, didSelectedIndex index: Int, fromIndex currentIndex: Int) {
+        guard hasInit else { return }
         let gap = labs(index - currentIndex)
         animate = false
         let targetPoint = CGPoint(x: CGFloat(index) * viewWidth, y: 0)
@@ -567,8 +569,8 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
             layoutChildViewControllers()
             currentViewController = displayingControllers[index] as? UIViewController
             postFullyDisplayedNotificationWithIndex(index)
-            indexInside = index
-            didEnterController(currentViewController!, atIndex: indexInside)
+            _selectedIndex = index
+            didEnterController(currentViewController!, atIndex: _selectedIndex)
         }
     }
     

@@ -40,10 +40,10 @@ class ProgressView: UIView {
     }
     
     func progressChanged() {
-        if gap >= 0.0 {
+        if gap > 0.0 {
             gap -= step
             if gap < 0.0 {
-                progress = blurredCeil(progress)
+                progress = blurredCeil(progress + CGFloat(sign) * step )
                 return
             }
             progress += CGFloat(sign) * step

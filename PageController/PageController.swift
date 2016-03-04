@@ -525,9 +525,11 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     
     public func scrollViewWillBeginDragging(scrollView: UIScrollView) {
         animate = true
+        menuView?.userInteractionEnabled = false
     }
     
     public func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        menuView?.userInteractionEnabled = true
         _selectedIndex = Int(contentView!.contentOffset.x / viewWidth)
         removeSuperfluousViewControllersIfNeeded()
         currentViewController = displayingControllers[_selectedIndex] as? UIViewController
@@ -545,9 +547,9 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     
     public func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         guard decelerate == false else { return }
+        menuView?.userInteractionEnabled = true
         let rate = targetX / viewWidth
         menuView?.slideMenuAtProgress(rate)
-        removeSuperfluousViewControllersIfNeeded()
     }
     
     public func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
@@ -563,6 +565,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         let animatable = gap > 1 ? false : pageAnimatable
         contentView?.setContentOffset(targetPoint, animated: animatable)
         if !animatable {
+            removeSuperfluousViewControllersIfNeeded()
             if let viewController = displayingControllers[index] as? UIViewController {
                 removeViewController(viewController, atIndex: index)
             }

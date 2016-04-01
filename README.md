@@ -6,5 +6,5 @@ Click here: https://github.com/wangmchn/WMPageController
 [Objective-C README](https://github.com/wangmchn/WMPageController/blob/master/README.md)
 ## CocoaPods
 ```
-pod 'WMPageController-Swift', '~> 1.2.0'
+pod 'WMPageController-Swift', '~> 1.2.3'
 ```

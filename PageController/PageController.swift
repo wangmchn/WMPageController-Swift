@@ -56,6 +56,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     public var postNotification = false
     public var bounces = false
     public var showOnNavigationBar = false
+    public var startDragging = false
     public var titleSizeSelected: CGFloat  = 18.0
     public var titleSizeNormal: CGFloat    = 15.0
     public var menuHeight: CGFloat         = 30.0
@@ -96,7 +97,6 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     
     // MARK: - Private vars
     private var memoryWarningCount = 0
-    private var animate = false
     private var viewHeight: CGFloat = 0.0
     private var viewWidth: CGFloat = 0.0
     private var viewX: CGFloat = 0.0
@@ -506,7 +506,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         if shouldNotScroll { return }
         
         layoutChildViewControllers()
-        guard animate else { return }
+        guard startDragging else { return }
         var contentOffsetX = contentView!.contentOffset.x
         if contentOffsetX < 0.0 {
             contentOffsetX = 0.0
@@ -524,7 +524,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     }
     
     public func scrollViewWillBeginDragging(scrollView: UIScrollView) {
-        animate = true
+        startDragging = true
         menuView?.userInteractionEnabled = false
     }
     
@@ -559,12 +559,10 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     // MARK: - MenuViewDelegate
     public func menuView(menuView: MenuView, didSelectedIndex index: Int, fromIndex currentIndex: Int) {
         guard hasInit else { return }
-        let gap = labs(index - currentIndex)
-        animate = false
+        startDragging = false
         let targetPoint = CGPoint(x: CGFloat(index) * viewWidth, y: 0)
-        let animatable = gap > 1 ? false : pageAnimatable
-        contentView?.setContentOffset(targetPoint, animated: animatable)
-        if !animatable {
+        contentView?.setContentOffset(targetPoint, animated: pageAnimatable)
+        if !pageAnimatable {
             removeSuperfluousViewControllersIfNeeded()
             if let viewController = displayingControllers[index] as? UIViewController {
                 removeViewController(viewController, atIndex: index)

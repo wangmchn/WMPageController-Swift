@@ -34,7 +34,7 @@ class ProgressView: UIView {
         sign = progress > pos ? -1 : 1
         step = gap / 15.0
         link?.removeFromRunLoop(NSRunLoop.mainRunLoop(), forMode: NSRunLoopCommonModes)
-        let tempLink = CADisplayLink(target: self, selector: "progressChanged")
+        let tempLink = CADisplayLink(target: self, selector: #selector(ProgressView.progressChanged))
         tempLink.addToRunLoop(NSRunLoop.mainRunLoop(), forMode: NSRunLoopCommonModes)
         link = tempLink
     }

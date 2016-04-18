@@ -167,13 +167,13 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     override public func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
 
-        memoryWarningCount++
+        memoryWarningCount += 1
         cachePolicy = CachePolicy.LowMemory
-        NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: "growCachePolicyAfterMemoryWarning", object: nil)
-        NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: "growCachePolicyToHigh", object: nil)
+        NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: #selector(PageController.growCachePolicyAfterMemoryWarning), object: nil)
+        NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: #selector(PageController.growCachePolicyToHigh), object: nil)
         memCache.removeAllObjects()
         if memoryWarningCount < 3 {
-            performSelector("growCachePolicyAfterMemoryWarning", withObject: nil, afterDelay: 3.0, inModes: [NSRunLoopCommonModes])
+            performSelector(#selector(PageController.growCachePolicyAfterMemoryWarning), withObject: nil, afterDelay: 3.0, inModes: [NSRunLoopCommonModes])
         }
     }
     
@@ -283,8 +283,8 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
             }
         }
         memoryWarningCount = 0
-        NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: "growCachePolicyAfterMemoryWarning", object: nil)
-        NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: "growCachePolicyToHigh", object: nil)
+        NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: #selector(PageController.growCachePolicyAfterMemoryWarning), object: nil)
+        NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: #selector(PageController.growCachePolicyToHigh), object: nil)
         currentViewController = nil
         displayingControllers.removeAllObjects()
         calculateSize()
@@ -452,7 +452,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     
     @objc private func growCachePolicyAfterMemoryWarning() {
         cachePolicy = CachePolicy.Balanced
-        performSelector("growCachePolicyToHigh", withObject: nil, afterDelay: 2.0, inModes: [NSRunLoopCommonModes])
+        performSelector(#selector(PageController.growCachePolicyToHigh), withObject: nil, afterDelay: 2.0, inModes: [NSRunLoopCommonModes])
     }
     
     @objc private func growCachePolicyToHigh() {

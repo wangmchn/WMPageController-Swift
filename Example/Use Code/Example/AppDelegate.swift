@@ -64,7 +64,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //        pageController.progressColor = .blackColor()
         //        pageController.viewFrame = CGRect(x: 50, y: 100, width: 320, height: 500)
         //        pageController.itemsWidths = [100, 50]
-        //        pageController.itemsMargins = [50, 10, 100]
+        //        pageController.itemsMargins = [100, 10, 100]
         //        pageController.titleSizeNormal = 12
         //        pageController.titleSizeSelected = 14
         //        pageController.titleColorNormal = UIColor.brownColor()

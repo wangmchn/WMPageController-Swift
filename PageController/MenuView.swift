@@ -26,6 +26,17 @@ public enum MenuViewStyle {
 public class MenuView: UIView, MenuItemDelegate {
 
     // MARK: - Public vars
+    override public var frame: CGRect {
+        didSet {
+            guard contentView != nil else { return }
+            // Make the contentView center, because system will change menuView's frame if it's a titleView.
+            if (contentView.frame.origin.x + contentView.frame.width / 2) != (bounds.origin.x + bounds.width / 2) {
+                var contentFrame = contentView.frame
+                contentFrame.origin.x -= (contentFrame.width - bounds.width) / 2
+                contentView.frame = contentFrame
+            }
+        }
+    }
     public var style = MenuViewStyle.Default
     public var fontName: String?
     public var progressHeight: CGFloat = 2.0

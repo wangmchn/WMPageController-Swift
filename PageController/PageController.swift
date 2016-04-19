@@ -79,6 +79,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     public var viewFrame = CGRect() {
         didSet {
             if let _ = menuView {
+                hasInit = false
                 viewDidLayoutSubviews()
             }
         }
@@ -477,9 +478,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         if showOnNavigationBar && (navigationController?.navigationBar != nil) {
             for subview in (navigationController?.navigationBar.subviews)! {
                 
-                guard let barBackgroundClass = NSClassFromString("_UINavigationBarBackground") else { continue }
-                
-                guard !subview.isKindOfClass(barBackgroundClass) && !subview.isKindOfClass(MenuView.self) && (subview.alpha != 0) && (subview.hidden == false) else { continue }
+                guard !subview.isKindOfClass(NSClassFromString("_UINavigationBarBackground")!) && !subview.isKindOfClass(MenuView.self) && (subview.alpha != 0) && (subview.hidden == false) else { continue }
                 
                 let maxX = CGRectGetMaxX(subview.frame)
                 if maxX < viewWidth / 2 {

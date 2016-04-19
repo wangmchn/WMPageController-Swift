@@ -32,9 +32,31 @@ public class MenuView: UIView, MenuItemDelegate {
             // Make the contentView center, because system will change menuView's frame if it's a titleView.
             if (contentView.frame.origin.x + contentView.frame.width / 2) != (bounds.origin.x + bounds.width / 2) {
                 var contentFrame = contentView.frame
-                contentFrame.origin.x -= (contentFrame.width - bounds.width) / 2
+                contentFrame.origin.x = bounds.origin.x - (contentFrame.width - bounds.width) / 2
                 contentView.frame = contentFrame
             }
+        }
+    }
+    public var leftView: UIView? {
+        willSet {
+            leftView?.removeFromSuperview()
+        }
+        didSet {
+            guard let view = leftView else { return }
+            
+            addSubview(view)
+            resetFrames()
+        }
+    }
+    public var rightView: UIView? {
+        willSet {
+            rightView?.removeFromSuperview()
+        }
+        didSet {
+            guard let view = rightView else { return }
+            
+            addSubview(view)
+            resetFrames()
         }
     }
     public var style = MenuViewStyle.Default
@@ -47,7 +69,6 @@ public class MenuView: UIView, MenuItemDelegate {
     public weak var dataSource: MenuViewDataSource!
     public lazy var normalColor = UIColor.blackColor()
     public lazy var selectedColor = UIColor(red: 168.0/255.0, green: 20.0/255.0, blue: 4/255.0, alpha: 1.0)
-    public lazy var bgColor = UIColor(red: 172.0/255.0, green: 165.0/255.0, blue: 162.0/255.0, alpha: 1.0)
     
     // MARK: - Private vars
     private weak var contentView: UIScrollView!
@@ -57,6 +78,17 @@ public class MenuView: UIView, MenuItemDelegate {
     private let tagGap = 6250
     private var itemsCount: Int {
         return dataSource.numbersOfTitlesInMenuView(self)
+    }
+    
+    public func reload() {
+        itemFrames.removeAll()
+        progressView?.removeFromSuperview()
+        for subview in contentView.subviews {
+            subview.removeFromSuperview()
+        }
+
+        addMenuItems()
+        addProgressView()
     }
     
     // MARK: - Public funcs
@@ -101,7 +133,24 @@ public class MenuView: UIView, MenuItemDelegate {
     
     // MARK: - Update Frames
     public func resetFrames() {
-        contentView.frame = bounds
+
+        var contentFrame = bounds
+        if let rView = rightView {
+            var rightFrame = rView.frame
+            rightFrame.origin.x = contentFrame.width - rightFrame.width
+            rightView?.frame = rightFrame
+            contentFrame.size.width -= rightFrame.width
+        }
+        
+        if let lView = leftView {
+            var leftFrame = lView.frame
+            leftFrame.origin.x = 0
+            leftView?.frame = leftFrame
+            contentFrame.origin.x += leftFrame.width
+            contentFrame.size.width -= leftFrame.width
+        }
+        
+        contentView.frame = contentFrame
         resetFramesFromIndex(0)
         refreshContentOffset()
     }
@@ -161,7 +210,7 @@ public class MenuView: UIView, MenuItemDelegate {
         let scrollView = UIScrollView(frame: scrollViewFrame)
         scrollView.showsVerticalScrollIndicator = false
         scrollView.showsHorizontalScrollIndicator = false
-        scrollView.backgroundColor = bgColor
+        scrollView.backgroundColor = backgroundColor
         scrollView.scrollsToTop = false
         addSubview(scrollView)
         contentView = scrollView
@@ -230,15 +279,15 @@ public class MenuView: UIView, MenuItemDelegate {
             itemFrames.append(itemFrame)
             contentWidth += itemWidth + itemMarginAtIndex(index + 1)
         }
-        if contentWidth < frame.size.width {
-            let distance = frame.size.width - contentWidth
+        if contentWidth < contentView.frame.size.width {
+            let distance = contentView.frame.size.width - contentWidth
             let itemMargin = distance / CGFloat(itemsCount + 1)
             for index in 0 ..< itemsCount {
                 var itemFrame = itemFrames[index]
                 itemFrame.origin.x += itemMargin * CGFloat(index + 1)
                 itemFrames[index] = itemFrame
             }
-            contentWidth = frame.size.width
+            contentWidth = contentView.frame.size.width
         }
         contentView.contentSize = CGSize(width: contentWidth, height: frame.size.height)
     }

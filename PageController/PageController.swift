@@ -235,6 +235,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     }
     
     private func willEnterController(vc: UIViewController, atIndex index: Int) {
+        _selectedIndex = index
         guard childControllersCount > 0 else { return }
         delegate?.pageController?(self, willEnterViewController: vc, withInfo: infoWithIndex(index))
     }
@@ -269,7 +270,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
                 postMovedToSuperViewNotificationWithIndex(i)
             }
         }
-        
+        _selectedIndex = index
     }
     
     // MARK: - Private funcs
@@ -335,7 +336,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         let menu = MenuView(frame: menuViewFrame)
         menu.delegate = self
         menu.dataSource = self
-        menu.bgColor = menuBGColor
+        menu.backgroundColor = menuBGColor
         menu.normalSize = titleSizeNormal
         menu.selectedSize = titleSizeSelected
         menu.normalColor = titleColorNormal
@@ -447,8 +448,9 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     }
     
     private func resetMenuView() {
-        menuView?.removeFromSuperview()
-        addMenuView()
+        menuView?.reload()
+        guard selectedIndex != 0 else { return }
+        menuView?.selectItemAtIndex(selectedIndex)
     }
     
     @objc private func growCachePolicyAfterMemoryWarning() {

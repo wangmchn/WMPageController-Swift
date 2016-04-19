@@ -14,7 +14,6 @@ class CustomPageController: PageController {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        itemsWidths = [60, 100, 60]
         dataSource = self
         delegate = self
         preloadPolicy = PreloadPolicy.Neighbour
@@ -24,8 +23,28 @@ class CustomPageController: PageController {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
+        menuView?.leftView = customButtonWithTitle("Left")
+        menuView?.rightView = customButtonWithTitle("Right")
+        
+        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(5.0 * Double(NSEC_PER_SEC)))
+        dispatch_after(delayTime, dispatch_get_main_queue()) {
+            self.vcTitles = ["Test", "Test", "Test", "Test", "Test", "Test"]
+            self.reloadData()
+        }
     }
 
+    private func customButtonWithTitle(title: String) -> UIButton {
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 60, height: menuHeight))
+        button.addTarget(self, action: #selector(CustomPageController.buttonPressed(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+        button.setTitle(title, forState: UIControlState.Normal)
+        button.setTitleColor(.blueColor(), forState: UIControlState.Normal)
+        return button
+    }
+    
+    @objc private func buttonPressed(sender: UIButton) {
+        print(sender)
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -52,4 +71,12 @@ class CustomPageController: PageController {
     func pageController(pageController: PageController, lazyLoadViewController viewController: UIViewController, withInfo info: NSDictionary) {
         print(info)
     }
+    
+    override func menuView(menuView: MenuView, widthForItemAtIndex index: Int) -> CGFloat {
+        if index == 1 {
+            return 100
+        }
+        return 60
+    }
+    
 }

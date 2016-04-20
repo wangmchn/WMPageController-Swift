@@ -4,16 +4,19 @@ xcode_project: WMPageController-Swift.xcodeproj
 xcode_scheme: WMPageControllerSwiftFramework
 xcode_sdk: iphonesimulator9.3
 env:
-  global: 
-    - FRAMEWORK_NAME=WMPageControllerSwiftFramework
+  global:
+  - FRAMEWORK_NAME=WMPageControllerSwiftFramework
 before_install:
-  - brew update
-  - brew outdated carthage || brew upgrade carthage
-before_script:
-  # bootstrap the dependencies for the project
-  # you can remove if you don't have dependencies
-  # - carthage bootstrap  
+- brew update
+- brew outdated carthage || brew upgrade carthage
+before_script: 
 before_deploy:
-  - carthage build --no-skip-current
-  - carthage archive WMPageControllerSwift
-
+- carthage build --no-skip-current
+- carthage archive WMPageControllerSwift
+deploy:
+  provider: releases
+  api_key:
+    secure: hxnNtDAGGZFHRMxJF02POFZfDZq7mjYd+B1osAtCXPmf7wE+Twk3+Ax4VuFR3bGrtYCbegaSWFsrxwG7JOtqTzDQ6eIJvvK85N6+//MX3iyloO/sbtljgDEdDDdjwKiIK3pQhnL9F7Rd+3fz5JAVPYIkNEO5E7BnwvDIWQOxK/QtW5fhBmuGM1+YacvsQX8f+MrHjKslIsZp5DRaXXLtyDlV8eKwHef127+nRmnvkPBHVA/ZQhVMLAdcuNvzl64XXryDgNQxCDCqNw60IiIFnMNtaN1G1H9JwF0mQBWm4Pn8Yua+KV8rVOyW3F39YXFCrfcBIfgqJpeB7bzJr7WD2p2G4y1x2yAiXn1Dc5TpCrhnLffoJ3MtyD2KbgD/kVsKOtnfWAdAHyKIbSTQIEpHfRLcr7beucANxoDK4VMtARPsz1WGyzNqUU+Chguj32B6IXKB3NMifXy7syBBT59ZJzUCbyp1Om/CAJDCChP8EsByFD8AhDSYfZKvfO3NK/x+qZdgxV3EOiCrcF9q7rACA32yyxXTa75J+LzcsgN/ESd9GPOC8E8t0I86JdwwRlROGUNjcSRFOcGZ50Rrdd2c5L42rD1OOkTzUCAnacj2U2ewnyDREQ0SQ7EYsrVl8Mtzglb1VNISrsgscx2gJwCZXtbWIitMdcGCv6K1mMB9HNg=
+  file: WMPageControllerSwift.framework.zip
+  on:
+    repo: wangmchn/WMPageController-Swift

@@ -16,3 +16,12 @@ before_script:
 before_deploy:
   - carthage build --no-skip-current
   - carthage archive WMPageControllerSwift
+deploy:
+  provider: releases
+  api_key: deploy:
+  provider: releases
+  api_key: 0034796ede57eea3ab106b32da9e967ee02efeeb 
+  file: WMPageControllerSwift.framework.zip 
+  skip_cleanup: true
+  on:
+    tags: true

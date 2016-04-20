@@ -1,14 +1,14 @@
 //
-//  ExampleUITests.swift
-//  ExampleUITests
+//  WMPageController_SwiftUITests.swift
+//  WMPageController-SwiftUITests
 //
-//  Created by Mark on 15/12/1.
-//  Copyright © 2015年 Wecan Studio. All rights reserved.
+//  Created by Mark on 16/4/20.
+//  Copyright © 2016年 Wecan Studio. All rights reserved.
 //
 
 import XCTest
 
-class ExampleUITests: XCTestCase {
+class WMPageController_SwiftUITests: XCTestCase {
         
     override func setUp() {
         super.setUp()

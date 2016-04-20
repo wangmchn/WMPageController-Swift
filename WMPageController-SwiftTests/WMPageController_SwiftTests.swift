@@ -1,15 +1,15 @@
 //
-//  ExampleTests.swift
-//  ExampleTests
+//  WMPageController_SwiftTests.swift
+//  WMPageController-SwiftTests
 //
-//  Created by Mark on 15/12/1.
-//  Copyright © 2015年 Wecan Studio. All rights reserved.
+//  Created by Mark on 16/4/20.
+//  Copyright © 2016年 Wecan Studio. All rights reserved.
 //
 
 import XCTest
-@testable import Example
+@testable import WMPageController_Swift
 
-class ExampleTests: XCTestCase {
+class WMPageController_SwiftTests: XCTestCase {
     
     override func setUp() {
         super.setUp()

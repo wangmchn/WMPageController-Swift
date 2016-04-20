@@ -1,6 +1,6 @@
 language: objective-c
 osx_image: xcode7.3
-xcode_project: WMPageController-Swift
+xcode_project: WMPageController-Swift.xcodeproj
 xcode_scheme: WMPageControllerSwiftFramework
 xcode_sdk: iphonesimulator9.3
 env:
@@ -15,4 +15,4 @@ before_script:
   - carthage bootstrap  
 before_deploy:
   - carthage build --no-skip-current
-  - carthage archive $WMPageControllerSwiftFramework
+  - carthage archive WMPageControllerSwift

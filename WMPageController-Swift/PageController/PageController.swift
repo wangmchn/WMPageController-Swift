@@ -96,6 +96,13 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     public lazy var titleColorNormal = UIColor.blackColor()
     public lazy var menuBGColor = UIColor(red: 244.0/255.0, green: 244.0/255.0, blue: 244.0/255.0, alpha: 1.0)
     
+    override public var edgesForExtendedLayout: UIRectEdge {
+        didSet {
+            hasInit = false
+            viewDidLayoutSubviews()
+        }
+    }
+    
     // MARK: - Private vars
     private var memoryWarningCount = 0
     private var viewHeight: CGFloat = 0.0
@@ -131,8 +138,6 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     
     override public func viewDidLoad() {
         super.viewDidLoad()
-        edgesForExtendedLayout = UIRectEdge.None
-        UIApplication.sharedApplication().delegate?.window??.backgroundColor = .whiteColor()
         view.backgroundColor = .whiteColor()
         guard childControllersCount > 0 else { return }
         calculateSize()
@@ -300,18 +305,23 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     }
     
     private func calculateSize() {
+        var navBarHeight = (navigationController != nil) ? CGRectGetMaxY(navigationController!.navigationBar.frame) : 0
+        if edgesForExtendedLayout == UIRectEdge.None {
+            navBarHeight = 0
+        }
+        
         if viewFrame == CGRectZero {
             viewWidth  = view.frame.size.width
-            viewHeight = view.frame.size.height - menuHeight
+            viewHeight = view.frame.size.height - menuHeight - navBarHeight
         } else {
             viewWidth = viewFrame.size.width
-            viewHeight = viewFrame.size.height
+            viewHeight = viewFrame.size.height - menuHeight
         }
         if showOnNavigationBar && (navigationController?.navigationBar != nil) {
             viewHeight += menuHeight
         }
         viewX = viewFrame.origin.x
-        viewY = viewFrame.origin.y
+        viewY = viewFrame.origin.y + navBarHeight
         childViewFrames.removeAll()
         for index in 0 ..< childControllersCount {
             let viewControllerFrame = CGRect(x: CGFloat(index) * viewWidth, y: 0, width: viewWidth, height: viewHeight)

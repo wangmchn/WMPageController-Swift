@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         let pageController = customedPageController()
         window?.rootViewController = UINavigationController(rootViewController: pageController)
-        reloadPageController(pageController, afterDelay: 5.0)
+//        reloadPageController(pageController, afterDelay: 5.0)
 //        updatePageController(pageController, title: "hahahahaha", afterDelay: 5.0)
         return true
     }

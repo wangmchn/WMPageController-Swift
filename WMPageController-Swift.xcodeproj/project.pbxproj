@@ -697,6 +697,7 @@
 				4D45BF6D1CC7BC12003F0151 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

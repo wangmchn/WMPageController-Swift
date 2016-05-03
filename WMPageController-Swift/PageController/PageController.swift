@@ -466,6 +466,10 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     }
     
     private func resetMenuView() {
+        if menuView == nil {
+            addMenuView()
+            return
+        }
         menuView?.reload()
         guard selectedIndex != 0 else { return }
         menuView?.selectItemAtIndex(selectedIndex)

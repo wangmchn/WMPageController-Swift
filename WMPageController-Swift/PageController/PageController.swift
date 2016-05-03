@@ -311,9 +311,10 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         let height = (tabBar != nil && tabBar?.hidden != true) ? CGRectGetHeight(tabBar!.frame) : 0
         var tabBarHeight = (hidesBottomBarWhenPushed == true) ? 0 : height
         
-        if edgesForExtendedLayout == UIRectEdge.None {
-            navBarHeight = 0
-            tabBarHeight = 0
+        let absoluteRect = view.superview?.convertRect(view.frame, toView: view.window)
+        if let rect = absoluteRect {
+            navBarHeight -= rect.origin.y;
+            tabBarHeight -= view.window!.frame.height - CGRectGetMaxY(rect);
         }
         
         if viewFrame == CGRectZero {

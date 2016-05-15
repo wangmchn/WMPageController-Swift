@@ -76,6 +76,13 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         get { return _selectedIndex }
     }
     
+    public var menuViewContentMargin: CGFloat = 0.0 {
+        didSet {
+            guard let menu = menuView else { return }
+            menu.contentMargin = oldValue
+        }
+    }
+    
     public var viewFrame = CGRect() {
         didSet {
             if let _ = menuView {
@@ -96,6 +103,13 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     public lazy var titleColorNormal = UIColor.blackColor()
     public lazy var menuBGColor = UIColor(red: 244.0/255.0, green: 244.0/255.0, blue: 244.0/255.0, alpha: 1.0)
     
+    override public var edgesForExtendedLayout: UIRectEdge {
+        didSet {
+            hasInit = false
+            viewDidLayoutSubviews()
+        }
+    }
+    
     // MARK: - Private vars
     private var memoryWarningCount = 0
     private var viewHeight: CGFloat = 0.0
@@ -108,7 +122,6 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     private var hasInit = false
     private var shouldNotScroll = false
     private var initializedIndex = -1
-    private let marginToBarItem: CGFloat = 6.0
     
     private var childControllersCount: Int {
         if let count = dataSource?.numberOfControllersInPageController?(self) {
@@ -131,10 +144,9 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     
     override public func viewDidLoad() {
         super.viewDidLoad()
-        edgesForExtendedLayout = UIRectEdge.None
-        UIApplication.sharedApplication().delegate?.window??.backgroundColor = .whiteColor()
         view.backgroundColor = .whiteColor()
         guard childControllersCount > 0 else { return }
+
         calculateSize()
         addScrollView()
         addViewControllerAtIndex(_selectedIndex)
@@ -148,7 +160,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         
         let oldSuperviewHeight = superviewHeight
         superviewHeight = view.frame.size.height
-        guard (!hasInit || superviewHeight != oldSuperviewHeight) else { return }
+        guard (!hasInit || superviewHeight != oldSuperviewHeight) && (view.superview != nil) else { return }
         
         calculateSize()
         adjustScrollViewFrame()
@@ -300,18 +312,30 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     }
     
     private func calculateSize() {
+        var navBarHeight = (navigationController != nil) ? CGRectGetMaxY(navigationController!.navigationBar.frame) : 0
+        let tabBar = tabBarController?.tabBar ?? (navigationController?.toolbar ?? nil)
+        let height = (tabBar != nil && tabBar?.hidden != true) ? CGRectGetHeight(tabBar!.frame) : 0
+        var tabBarHeight = (hidesBottomBarWhenPushed == true) ? 0 : height
+        
+        let mainWindow = UIApplication.sharedApplication().delegate?.window!
+        let absoluteRect = view.superview?.convertRect(view.frame, toView: mainWindow)
+        if let rect = absoluteRect {
+            navBarHeight -= rect.origin.y;
+            tabBarHeight -= mainWindow!.frame.height - CGRectGetMaxY(rect);
+        }
+        
         if viewFrame == CGRectZero {
             viewWidth  = view.frame.size.width
-            viewHeight = view.frame.size.height - menuHeight
+            viewHeight = view.frame.size.height - menuHeight - navBarHeight - tabBarHeight
         } else {
             viewWidth = viewFrame.size.width
-            viewHeight = viewFrame.size.height
+            viewHeight = viewFrame.size.height - menuHeight
         }
         if showOnNavigationBar && (navigationController?.navigationBar != nil) {
             viewHeight += menuHeight
         }
         viewX = viewFrame.origin.x
-        viewY = viewFrame.origin.y
+        viewY = viewFrame.origin.y + navBarHeight
         childViewFrames.removeAll()
         for index in 0 ..< childControllersCount {
             let viewControllerFrame = CGRect(x: CGFloat(index) * viewWidth, y: 0, width: viewWidth, height: viewHeight)
@@ -332,7 +356,14 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     }
     
     private func addMenuView() {
-        let menuViewFrame = CGRect(x: viewX, y: viewY, width: viewWidth, height: menuHeight)
+        var menuY = viewY
+        if showOnNavigationBar && (navigationController?.navigationBar != nil) {
+            let naviHeight = CGRectGetHeight(navigationController!.navigationBar.frame)
+            let realMenuHeight = menuHeight > naviHeight ? naviHeight : menuHeight
+            menuY = (naviHeight - realMenuHeight) / 2
+        }
+        
+        let menuViewFrame = CGRect(x: viewX, y: menuY, width: viewWidth, height: menuHeight)
         let menu = MenuView(frame: menuViewFrame)
         menu.delegate = self
         menu.dataSource = self
@@ -345,6 +376,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         menu.progressHeight = progressHeight
         menu.progressColor = progressColor
         menu.fontName = titleFontName
+        menu.contentMargin = menuViewContentMargin
         if showOnNavigationBar && (navigationController?.navigationBar != nil) {
             navigationItem.titleView = menu
         } else {
@@ -419,7 +451,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
             viewController.setValue(values?[index], forKey: optionalKeys[index])
         }
         addChildViewController(viewController)
-        viewController.view.frame = childViewFrames[index]
+        viewController.view.frame = childViewFrames.count > 0 ? childViewFrames[index] : view.frame
         viewController.didMoveToParentViewController(self)
         contentView?.addSubview(viewController.view)
         willEnterController(viewController, atIndex: index)
@@ -448,6 +480,10 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     }
     
     private func resetMenuView() {
+        if menuView == nil {
+            addMenuView()
+            return
+        }
         menuView?.reload()
         guard selectedIndex != 0 else { return }
         menuView?.selectItemAtIndex(selectedIndex)
@@ -476,6 +512,8 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     private func adjustMenuViewFrame() {
         var realMenuHeight = menuHeight
         var menuX = viewX
+        var menuY = viewY
+        
         var rightWidth: CGFloat = 0.0
         if showOnNavigationBar && (navigationController?.navigationBar != nil) {
             for subview in (navigationController?.navigationBar.subviews)! {
@@ -484,27 +522,28 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
                 
                 let maxX = CGRectGetMaxX(subview.frame)
                 if maxX < viewWidth / 2 {
-                    let leftWidth = maxX + marginToBarItem
+                    let leftWidth = maxX
                     menuX = menuX > leftWidth ? menuX : leftWidth
                 }
                 let minX = CGRectGetMinX(subview.frame)
                 if minX > viewWidth / 2 {
-                    let width = (viewWidth - minX) + marginToBarItem;
+                    let width = viewWidth - minX
                     rightWidth = rightWidth > width ? rightWidth : width
                 }
                 
             }
             let naviHeight = CGRectGetHeight(navigationController!.navigationBar.frame)
             realMenuHeight = menuHeight > naviHeight ? naviHeight : realMenuHeight
+            menuY = (naviHeight - realMenuHeight) / 2
         }
         let menuWidth = viewWidth - menuX - rightWidth
-        menuView?.frame = CGRect(x: menuX, y: viewY, width: menuWidth, height: realMenuHeight)
+        menuView?.frame = CGRect(x: menuX, y: menuY, width: menuWidth, height: realMenuHeight)
         menuView?.resetFrames()
     }
     
     // MARK: - UIScrollView Delegate
     public func scrollViewDidScroll(scrollView: UIScrollView) {
-        if shouldNotScroll { return }
+        if shouldNotScroll || !hasInit { return }
         
         layoutChildViewControllers()
         guard startDragging else { return }

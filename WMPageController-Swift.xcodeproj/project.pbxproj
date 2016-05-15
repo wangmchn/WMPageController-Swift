@@ -14,20 +14,15 @@
 		4D45BF231CC7A10B003F0151 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4D45BF211CC7A10B003F0151 /* LaunchScreen.storyboard */; };
 		4D45BF2E1CC7A10B003F0151 /* WMPageController_SwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D45BF2D1CC7A10B003F0151 /* WMPageController_SwiftTests.swift */; };
 		4D45BF391CC7A10B003F0151 /* WMPageController_SwiftUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D45BF381CC7A10B003F0151 /* WMPageController_SwiftUITests.swift */; };
-		4D45BF4C1CC7A187003F0151 /* FooldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D45BF471CC7A187003F0151 /* FooldView.swift */; };
-		4D45BF4D1CC7A187003F0151 /* MenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D45BF481CC7A187003F0151 /* MenuItem.swift */; };
-		4D45BF4E1CC7A187003F0151 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D45BF491CC7A187003F0151 /* MenuView.swift */; };
-		4D45BF4F1CC7A187003F0151 /* PageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D45BF4A1CC7A187003F0151 /* PageController.swift */; };
-		4D45BF501CC7A187003F0151 /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D45BF4B1CC7A187003F0151 /* ProgressView.swift */; };
 		4D45BF521CC7A1EB003F0151 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D45BF511CC7A1EB003F0151 /* TableViewController.swift */; };
 		4D45BF661CC7BC12003F0151 /* WMPageControllerSwiftFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D45BF651CC7BC12003F0151 /* WMPageControllerSwiftFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4D45BF6A1CC7BC12003F0151 /* WMPageControllerSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D45BF631CC7BC12003F0151 /* WMPageControllerSwift.framework */; };
 		4D45BF6B1CC7BC12003F0151 /* WMPageControllerSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4D45BF631CC7BC12003F0151 /* WMPageControllerSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		4D45BF701CC7BC50003F0151 /* FooldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D45BF471CC7A187003F0151 /* FooldView.swift */; };
-		4D45BF711CC7BC50003F0151 /* MenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D45BF481CC7A187003F0151 /* MenuItem.swift */; };
-		4D45BF721CC7BC50003F0151 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D45BF491CC7A187003F0151 /* MenuView.swift */; };
-		4D45BF731CC7BC50003F0151 /* PageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D45BF4A1CC7A187003F0151 /* PageController.swift */; };
-		4D45BF741CC7BC50003F0151 /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D45BF4B1CC7A187003F0151 /* ProgressView.swift */; };
+		4DCCF8481CE855F200C31A07 /* FooldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCCF8431CE855F200C31A07 /* FooldView.swift */; };
+		4DCCF8491CE855F200C31A07 /* MenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCCF8441CE855F200C31A07 /* MenuItem.swift */; };
+		4DCCF84A1CE855F200C31A07 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCCF8451CE855F200C31A07 /* MenuView.swift */; };
+		4DCCF84B1CE855F200C31A07 /* PageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCCF8461CE855F200C31A07 /* PageController.swift */; };
+		4DCCF84C1CE855F200C31A07 /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCCF8471CE855F200C31A07 /* ProgressView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,15 +77,15 @@
 		4D45BF341CC7A10B003F0151 /* WMPageController-SwiftUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "WMPageController-SwiftUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D45BF381CC7A10B003F0151 /* WMPageController_SwiftUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WMPageController_SwiftUITests.swift; sourceTree = "<group>"; };
 		4D45BF3A1CC7A10B003F0151 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4D45BF471CC7A187003F0151 /* FooldView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FooldView.swift; sourceTree = "<group>"; };
-		4D45BF481CC7A187003F0151 /* MenuItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuItem.swift; sourceTree = "<group>"; };
-		4D45BF491CC7A187003F0151 /* MenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
-		4D45BF4A1CC7A187003F0151 /* PageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageController.swift; sourceTree = "<group>"; };
-		4D45BF4B1CC7A187003F0151 /* ProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressView.swift; sourceTree = "<group>"; };
 		4D45BF511CC7A1EB003F0151 /* TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		4D45BF631CC7BC12003F0151 /* WMPageControllerSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WMPageControllerSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D45BF651CC7BC12003F0151 /* WMPageControllerSwiftFramework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WMPageControllerSwiftFramework.h; sourceTree = "<group>"; };
 		4D45BF671CC7BC12003F0151 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4DCCF8431CE855F200C31A07 /* FooldView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FooldView.swift; sourceTree = "<group>"; };
+		4DCCF8441CE855F200C31A07 /* MenuItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuItem.swift; sourceTree = "<group>"; };
+		4DCCF8451CE855F200C31A07 /* MenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
+		4DCCF8461CE855F200C31A07 /* PageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageController.swift; sourceTree = "<group>"; };
+		4DCCF8471CE855F200C31A07 /* ProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -151,7 +146,7 @@
 		4D45BF171CC7A10B003F0151 /* WMPageController-Swift */ = {
 			isa = PBXGroup;
 			children = (
-				4D45BF461CC7A187003F0151 /* PageController */,
+				4DCCF8421CE855F200C31A07 /* PageController */,
 				4D45BF181CC7A10B003F0151 /* AppDelegate.swift */,
 				4D45BF1A1CC7A10B003F0151 /* ViewController.swift */,
 				4D45BF511CC7A1EB003F0151 /* TableViewController.swift */,
@@ -181,18 +176,6 @@
 			path = "WMPageController-SwiftUITests";
 			sourceTree = "<group>";
 		};
-		4D45BF461CC7A187003F0151 /* PageController */ = {
-			isa = PBXGroup;
-			children = (
-				4D45BF471CC7A187003F0151 /* FooldView.swift */,
-				4D45BF481CC7A187003F0151 /* MenuItem.swift */,
-				4D45BF491CC7A187003F0151 /* MenuView.swift */,
-				4D45BF4A1CC7A187003F0151 /* PageController.swift */,
-				4D45BF4B1CC7A187003F0151 /* ProgressView.swift */,
-			);
-			path = PageController;
-			sourceTree = "<group>";
-		};
 		4D45BF641CC7BC12003F0151 /* WMPageControllerSwiftFramework */ = {
 			isa = PBXGroup;
 			children = (
@@ -201,6 +184,18 @@
 			);
 			path = WMPageControllerSwiftFramework;
 			sourceTree = "<group>";
+		};
+		4DCCF8421CE855F200C31A07 /* PageController */ = {
+			isa = PBXGroup;
+			children = (
+				4DCCF8431CE855F200C31A07 /* FooldView.swift */,
+				4DCCF8441CE855F200C31A07 /* MenuItem.swift */,
+				4DCCF8451CE855F200C31A07 /* MenuView.swift */,
+				4DCCF8461CE855F200C31A07 /* PageController.swift */,
+				4DCCF8471CE855F200C31A07 /* ProgressView.swift */,
+			);
+			path = PageController;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -375,14 +370,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4D45BF4E1CC7A187003F0151 /* MenuView.swift in Sources */,
 				4D45BF1B1CC7A10B003F0151 /* ViewController.swift in Sources */,
-				4D45BF4F1CC7A187003F0151 /* PageController.swift in Sources */,
+				4DCCF84A1CE855F200C31A07 /* MenuView.swift in Sources */,
+				4DCCF8481CE855F200C31A07 /* FooldView.swift in Sources */,
+				4DCCF84B1CE855F200C31A07 /* PageController.swift in Sources */,
 				4D45BF521CC7A1EB003F0151 /* TableViewController.swift in Sources */,
-				4D45BF4D1CC7A187003F0151 /* MenuItem.swift in Sources */,
-				4D45BF501CC7A187003F0151 /* ProgressView.swift in Sources */,
-				4D45BF4C1CC7A187003F0151 /* FooldView.swift in Sources */,
+				4DCCF84C1CE855F200C31A07 /* ProgressView.swift in Sources */,
 				4D45BF191CC7A10B003F0151 /* AppDelegate.swift in Sources */,
+				4DCCF8491CE855F200C31A07 /* MenuItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -406,11 +401,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4D45BF701CC7BC50003F0151 /* FooldView.swift in Sources */,
-				4D45BF711CC7BC50003F0151 /* MenuItem.swift in Sources */,
-				4D45BF721CC7BC50003F0151 /* MenuView.swift in Sources */,
-				4D45BF731CC7BC50003F0151 /* PageController.swift in Sources */,
-				4D45BF741CC7BC50003F0151 /* ProgressView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -541,7 +531,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = "WMPageController-Swift/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.wecan.WMPageController-Swift";
@@ -553,7 +542,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = "WMPageController-Swift/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.wecan.WMPageController-Swift";

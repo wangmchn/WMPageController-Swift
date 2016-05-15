@@ -17,6 +17,7 @@ class CustomPageController: PageController {
         dataSource = self
         delegate = self
         preloadPolicy = PreloadPolicy.Neighbour
+        menuViewContentMargin = 10
     }
     
     override func viewDidLoad() {

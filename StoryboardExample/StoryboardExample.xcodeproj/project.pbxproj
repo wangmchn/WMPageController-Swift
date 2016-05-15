@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4D45BF591CC7A25A003F0151 /* FooldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D45BF541CC7A25A003F0151 /* FooldView.swift */; };
-		4D45BF5A1CC7A25A003F0151 /* MenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D45BF551CC7A25A003F0151 /* MenuItem.swift */; };
-		4D45BF5B1CC7A25A003F0151 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D45BF561CC7A25A003F0151 /* MenuView.swift */; };
-		4D45BF5C1CC7A25A003F0151 /* PageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D45BF571CC7A25A003F0151 /* PageController.swift */; };
-		4D45BF5D1CC7A25A003F0151 /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D45BF581CC7A25A003F0151 /* ProgressView.swift */; };
+		4DCCF83D1CE8558A00C31A07 /* FooldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCCF8381CE8558A00C31A07 /* FooldView.swift */; };
+		4DCCF83E1CE8558A00C31A07 /* MenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCCF8391CE8558A00C31A07 /* MenuItem.swift */; };
+		4DCCF83F1CE8558A00C31A07 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCCF83A1CE8558A00C31A07 /* MenuView.swift */; };
+		4DCCF8401CE8558A00C31A07 /* PageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCCF83B1CE8558A00C31A07 /* PageController.swift */; };
+		4DCCF8411CE8558A00C31A07 /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCCF83C1CE8558A00C31A07 /* ProgressView.swift */; };
 		4DF0A9781C39847100731373 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DF0A9771C39847100731373 /* AppDelegate.swift */; };
 		4DF0A97A1C39847100731373 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DF0A9791C39847100731373 /* ViewController.swift */; };
 		4DF0A97D1C39847100731373 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4DF0A97B1C39847100731373 /* Main.storyboard */; };
@@ -41,11 +41,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		4D45BF541CC7A25A003F0151 /* FooldView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FooldView.swift; sourceTree = "<group>"; };
-		4D45BF551CC7A25A003F0151 /* MenuItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuItem.swift; sourceTree = "<group>"; };
-		4D45BF561CC7A25A003F0151 /* MenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
-		4D45BF571CC7A25A003F0151 /* PageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageController.swift; sourceTree = "<group>"; };
-		4D45BF581CC7A25A003F0151 /* ProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressView.swift; sourceTree = "<group>"; };
+		4DCCF8381CE8558A00C31A07 /* FooldView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FooldView.swift; sourceTree = "<group>"; };
+		4DCCF8391CE8558A00C31A07 /* MenuItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuItem.swift; sourceTree = "<group>"; };
+		4DCCF83A1CE8558A00C31A07 /* MenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
+		4DCCF83B1CE8558A00C31A07 /* PageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageController.swift; sourceTree = "<group>"; };
+		4DCCF83C1CE8558A00C31A07 /* ProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressView.swift; sourceTree = "<group>"; };
 		4DF0A9741C39847100731373 /* StoryboardExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StoryboardExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DF0A9771C39847100731373 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4DF0A9791C39847100731373 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -88,16 +88,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		4D45BF531CC7A25A003F0151 /* PageController */ = {
+		4DCCF8371CE8558A00C31A07 /* PageController */ = {
 			isa = PBXGroup;
 			children = (
-				4D45BF541CC7A25A003F0151 /* FooldView.swift */,
-				4D45BF551CC7A25A003F0151 /* MenuItem.swift */,
-				4D45BF561CC7A25A003F0151 /* MenuView.swift */,
-				4D45BF571CC7A25A003F0151 /* PageController.swift */,
-				4D45BF581CC7A25A003F0151 /* ProgressView.swift */,
+				4DCCF8381CE8558A00C31A07 /* FooldView.swift */,
+				4DCCF8391CE8558A00C31A07 /* MenuItem.swift */,
+				4DCCF83A1CE8558A00C31A07 /* MenuView.swift */,
+				4DCCF83B1CE8558A00C31A07 /* PageController.swift */,
+				4DCCF83C1CE8558A00C31A07 /* ProgressView.swift */,
 			);
-			path = PageController;
+			name = PageController;
+			path = ../../PageController;
 			sourceTree = "<group>";
 		};
 		4DF0A96B1C39847100731373 = {
@@ -123,7 +124,7 @@
 		4DF0A9761C39847100731373 /* StoryboardExample */ = {
 			isa = PBXGroup;
 			children = (
-				4D45BF531CC7A25A003F0151 /* PageController */,
+				4DCCF8371CE8558A00C31A07 /* PageController */,
 				4DF0A9B31C3986B800731373 /* ChildControllers */,
 				4DF0A9B01C3984BA00731373 /* ParentController */,
 				4DF0A9771C39847100731373 /* AppDelegate.swift */,
@@ -301,15 +302,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4D45BF5C1CC7A25A003F0151 /* PageController.swift in Sources */,
-				4D45BF5B1CC7A25A003F0151 /* MenuView.swift in Sources */,
+				4DCCF83F1CE8558A00C31A07 /* MenuView.swift in Sources */,
 				4DF0A9B21C3984EB00731373 /* CustomPageController.swift in Sources */,
+				4DCCF83D1CE8558A00C31A07 /* FooldView.swift in Sources */,
+				4DCCF8401CE8558A00C31A07 /* PageController.swift in Sources */,
 				4DF0A97A1C39847100731373 /* ViewController.swift in Sources */,
 				4DF0A9B51C3986D600731373 /* TableViewController.swift in Sources */,
-				4D45BF5A1CC7A25A003F0151 /* MenuItem.swift in Sources */,
-				4D45BF591CC7A25A003F0151 /* FooldView.swift in Sources */,
+				4DCCF83E1CE8558A00C31A07 /* MenuItem.swift in Sources */,
+				4DCCF8411CE8558A00C31A07 /* ProgressView.swift in Sources */,
 				4DF0A9781C39847100731373 /* AppDelegate.swift in Sources */,
-				4D45BF5D1CC7A25A003F0151 /* ProgressView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

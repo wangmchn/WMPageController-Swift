@@ -59,12 +59,20 @@ public class MenuView: UIView, MenuItemDelegate {
             resetFrames()
         }
     }
+    public var contentMargin: CGFloat = 0.0 {
+        didSet {
+            guard contentView != nil else { return }
+            resetFrames()
+        }
+    }
+    
     public var style = MenuViewStyle.Default
     public var fontName: String?
     public var progressHeight: CGFloat = 2.0
     public var normalSize: CGFloat = 15.0
     public var selectedSize: CGFloat = 18.0
     public var progressColor: UIColor?
+    
     public weak var delegate: MenuViewDelegate?
     public weak var dataSource: MenuViewDataSource!
     public lazy var normalColor = UIColor.blackColor()
@@ -150,6 +158,8 @@ public class MenuView: UIView, MenuItemDelegate {
             contentFrame.size.width -= leftFrame.width
         }
         
+        contentFrame.origin.x += contentMargin
+        contentFrame.size.width -= contentMargin * 2
         contentView.frame = contentFrame
         resetFramesFromIndex(0)
         refreshContentOffset()
@@ -206,11 +216,11 @@ public class MenuView: UIView, MenuItemDelegate {
     
     // MARK: - Create Views
     private func addScollView() {
-        let scrollViewFrame = CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height)
+        let scrollViewFrame = CGRect(x: contentMargin, y: 0, width: frame.size.width - contentMargin * 2, height: frame.size.height)
         let scrollView = UIScrollView(frame: scrollViewFrame)
         scrollView.showsVerticalScrollIndicator = false
         scrollView.showsHorizontalScrollIndicator = false
-        scrollView.backgroundColor = backgroundColor
+        scrollView.backgroundColor = .clearColor()
         scrollView.scrollsToTop = false
         addSubview(scrollView)
         contentView = scrollView

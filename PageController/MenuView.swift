@@ -121,6 +121,8 @@ public class MenuView: UIView, MenuItemDelegate {
     public func selectItemAtIndex(index: Int) {
         let tag = index + tagGap
         let currentIndex = selectedItem.tag - tagGap
+        guard currentIndex != index && selectedItem != nil else { return }
+        
         let menuItem = viewWithTag(tag) as! MenuItem
         selectedItem.selected = false
         selectedItem = menuItem

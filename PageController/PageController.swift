@@ -383,9 +383,6 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
             view.addSubview(menu)
         }
         menuView = menu
-        if _selectedIndex != 0 {
-            menuView?.selectItemAtIndex(_selectedIndex)
-        }
     }
     
     private func postMovedToSuperViewNotificationWithIndex(index: Int) {
@@ -539,6 +536,10 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         let menuWidth = viewWidth - menuX - rightWidth
         menuView?.frame = CGRect(x: menuX, y: menuY, width: menuWidth, height: realMenuHeight)
         menuView?.resetFrames()
+        
+        if _selectedIndex != 0 {
+            menuView?.selectItemAtIndex(_selectedIndex)
+        }
     }
     
     // MARK: - UIScrollView Delegate

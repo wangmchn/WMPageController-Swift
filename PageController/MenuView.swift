@@ -29,33 +29,42 @@ public class MenuView: UIView, MenuItemDelegate {
     override public var frame: CGRect {
         didSet {
             guard contentView != nil else { return }
+
+            let rightMargin = (rightView == nil) ? contentMargin : contentMargin + rightView!.frame.width
+            let leftMargin  = (leftView == nil) ? contentMargin : contentMargin + leftView!.frame.width
+            let contentWidth = CGRectGetWidth(contentView.frame) + leftMargin + rightMargin
+            
+            let startX = (leftView != nil) ? leftView!.frame.origin.x : (contentView.frame.origin.x - contentMargin)
+            
             // Make the contentView center, because system will change menuView's frame if it's a titleView.
-            if (contentView.frame.origin.x + contentView.frame.width / 2) != (bounds.origin.x + bounds.width / 2) {
-                var contentFrame = contentView.frame
-                contentFrame.origin.x = bounds.origin.x - (contentFrame.width - bounds.width) / 2
-                contentView.frame = contentFrame
+            if (startX + contentWidth / 2 != bounds.width / 2) {
+                let xOffset = (contentWidth - bounds.width) / 2
+                contentView.frame.origin.x -= xOffset
+                rightView?.frame.origin.x -= xOffset
+                leftView?.frame.origin.x -= xOffset
             }
+            
         }
     }
-    public var leftView: UIView? {
+    public weak var leftView: UIView? {
         willSet {
             leftView?.removeFromSuperview()
         }
         didSet {
-            guard let view = leftView else { return }
-            
-            addSubview(view)
+            if let lView = leftView {
+                addSubview(lView)
+            }
             resetFrames()
         }
     }
-    public var rightView: UIView? {
+    public weak var rightView: UIView? {
         willSet {
             rightView?.removeFromSuperview()
         }
         didSet {
-            guard let view = rightView else { return }
-            
-            addSubview(view)
+            if let rView = rightView {
+                addSubview(rView)
+            }
             resetFrames()
         }
     }

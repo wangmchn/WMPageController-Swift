@@ -173,6 +173,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     
     override public func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        guard childControllersCount > 0 else { return }
         postFullyDisplayedNotificationWithIndex(_selectedIndex)
         didEnterController(currentViewController!, atIndex: _selectedIndex)
     }

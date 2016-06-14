@@ -46,6 +46,7 @@ public class MenuView: UIView, MenuItemDelegate {
             
         }
     }
+    
     public weak var leftView: UIView? {
         willSet {
             leftView?.removeFromSuperview()
@@ -57,6 +58,7 @@ public class MenuView: UIView, MenuItemDelegate {
             resetFrames()
         }
     }
+    
     public weak var rightView: UIView? {
         willSet {
             rightView?.removeFromSuperview()
@@ -68,6 +70,7 @@ public class MenuView: UIView, MenuItemDelegate {
             resetFrames()
         }
     }
+    
     public var contentMargin: CGFloat = 0.0 {
         didSet {
             guard contentView != nil else { return }

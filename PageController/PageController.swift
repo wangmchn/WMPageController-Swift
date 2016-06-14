@@ -352,6 +352,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         scrollView.showsVerticalScrollIndicator = false
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.bounces = bounces
+        scrollView.clipsToBounds = false
         view.addSubview(scrollView)
         contentView = scrollView
     }
@@ -485,6 +486,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         menuView?.reload()
         guard selectedIndex != 0 else { return }
         menuView?.selectItemAtIndex(selectedIndex)
+        view.bringSubviewToFront(menuView!)
     }
     
     @objc private func growCachePolicyAfterMemoryWarning() {

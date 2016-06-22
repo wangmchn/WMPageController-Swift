@@ -160,7 +160,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         
         let oldSuperviewHeight = superviewHeight
         superviewHeight = view.frame.size.height
-        guard (!hasInit || superviewHeight != oldSuperviewHeight) && (view.superview != nil) else { return }
+        guard (!hasInit || superviewHeight != oldSuperviewHeight) && (view.window != nil) else { return }
         
         calculateSize()
         adjustScrollViewFrame()
@@ -325,9 +325,12 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
             tabBarHeight -= mainWindow!.frame.height - CGRectGetMaxY(rect);
         }
         
+        viewX = viewFrame.origin.x
+        viewY = viewFrame.origin.y
         if viewFrame == CGRectZero {
             viewWidth  = view.frame.size.width
             viewHeight = view.frame.size.height - menuHeight - navBarHeight - tabBarHeight
+            viewY += navBarHeight
         } else {
             viewWidth = viewFrame.size.width
             viewHeight = viewFrame.size.height - menuHeight
@@ -335,8 +338,6 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         if showOnNavigationBar && (navigationController?.navigationBar != nil) {
             viewHeight += menuHeight
         }
-        viewX = viewFrame.origin.x
-        viewY = viewFrame.origin.y + navBarHeight
         childViewFrames.removeAll()
         for index in 0 ..< childControllersCount {
             let viewControllerFrame = CGRect(x: CGFloat(index) * viewWidth, y: 0, width: viewWidth, height: viewHeight)
@@ -352,7 +353,6 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         scrollView.showsVerticalScrollIndicator = false
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.bounces = bounces
-        scrollView.clipsToBounds = false
         view.addSubview(scrollView)
         contentView = scrollView
     }

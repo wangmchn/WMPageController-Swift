@@ -189,7 +189,7 @@ public class MenuView: UIView, MenuItemDelegate {
         if let progress = progressView {
             var pFrame = progress.frame
             pFrame.size.width = contentView.contentSize.width
-            if progress.isKindOfClass(FooldView.self) {
+            if progress.isKindOfClass(FloodView.self) {
                 pFrame.origin.y = 0
             } else {
                 pFrame.origin.y = frame.size.height - progressHeight
@@ -271,9 +271,9 @@ public class MenuView: UIView, MenuItemDelegate {
             case .Default: break
             case .Line: optionalType = ProgressView.self
             case .FooldHollow:
-                optionalType = FooldView.self
+                optionalType = FloodView.self
                 hollow = true
-            case .Flood: optionalType = FooldView.self
+            case .Flood: optionalType = FloodView.self
         }
         if let viewType = optionalType {
             let pView = viewType.init()
@@ -286,7 +286,7 @@ public class MenuView: UIView, MenuItemDelegate {
             }
             pView.color = (progressColor?.CGColor)!
             pView.backgroundColor = .clearColor()
-            if let fooldView = pView as? FooldView {
+            if let fooldView = pView as? FloodView {
                 fooldView.hollow = hollow
             }
             contentView.insertSubview(pView, atIndex: 0)

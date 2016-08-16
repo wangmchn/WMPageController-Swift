@@ -37,6 +37,20 @@ public let WMPageControllerDidFullyDisplayedNotification = "WMPageControllerDidF
     optional func pageController(pageController: PageController, didEnterViewController viewController: UIViewController, withInfo info: NSDictionary)
 }
 
+public class ContentView: UIScrollView, UIGestureRecognizerDelegate {
+    
+    public func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOfGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        
+        guard let wrapperView = NSClassFromString("UITableViewWrapperView"), otherGestureView = otherGestureRecognizer.view else { return false }
+        
+        if otherGestureView.isKindOfClass(wrapperView) && (otherGestureRecognizer is UIPanGestureRecognizer) {
+            return true
+        }
+        return false
+    }
+    
+}
+
 public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDelegate, MenuViewDataSource, PageControllerDelegate, PageControllerDataSource {
     
     // MARK: - Public vars
@@ -61,7 +75,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     public var titleSizeNormal: CGFloat    = 15.0
     public var menuHeight: CGFloat         = 30.0
     public var menuItemWidth: CGFloat      = 65.0
-    public weak var contentView: UIScrollView?
+    public weak var contentView: ContentView?
     public weak var menuView: MenuView?
 
     public var itemsWidths: [CGFloat]?
@@ -122,12 +136,17 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     private var hasInit = false
     private var shouldNotScroll = false
     private var initializedIndex = -1
+    private var controllerCount  = -1
     
     private var childControllersCount: Int {
-        if let count = dataSource?.numberOfControllersInPageController?(self) {
-            return count
+        if controllerCount == -1 {
+            if let count = dataSource?.numberOfControllersInPageController?(self) {
+                controllerCount = count
+            } else {
+                controllerCount = (viewControllerClasses?.count ?? 0)
+            }
         }
-        return viewControllerClasses?.count ?? 0
+        return controllerCount
     }
     
     lazy private var displayingControllers = NSMutableDictionary()
@@ -248,7 +267,6 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     }
     
     private func willEnterController(vc: UIViewController, atIndex index: Int) {
-        _selectedIndex = index
         guard childControllersCount > 0 else { return }
         delegate?.pageController?(self, willEnterViewController: vc, withInfo: infoWithIndex(index))
     }
@@ -288,6 +306,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     
     // MARK: - Private funcs
     private func clearDatas() {
+        controllerCount = -1
         hasInit = false
         _selectedIndex = _selectedIndex < childControllersCount ? _selectedIndex : childControllersCount - 1
         for viewController in displayingControllers.allValues {
@@ -346,7 +365,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     }
     
     private func addScrollView() {
-        let scrollView = UIScrollView()
+        let scrollView = ContentView()
         scrollView.scrollsToTop = false
         scrollView.pagingEnabled = true
         scrollView.delegate = self

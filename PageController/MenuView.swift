@@ -115,11 +115,10 @@ public class MenuView: UIView, MenuItemDelegate {
     public func slideMenuAtProgress(progress: CGFloat) {
         progressView?.progress = progress
         let tag = Int(progress) + tagGap
-        var rate = progress - CGFloat(tag - tagGap)
+        let rate = progress - CGFloat(tag - tagGap)
         let currentItem = viewWithTag(tag) as? MenuItem
         let nextItem = viewWithTag(tag + 1) as? MenuItem
         if rate == 0.0 {
-            rate = 1.0
             selectedItem.selected = false
             selectedItem = currentItem
             selectedItem.selected = true

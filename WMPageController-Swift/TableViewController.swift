@@ -76,5 +76,16 @@ class TableViewController: UITableViewController {
         //        pageController.titleColorSelected = UIColor.blackColor()
         return pageController
     }
+   
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        if indexPath.row % 2 == 0 {
+            return true
+        }
+        return false
+    }
+    
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        
+    }
     
 }

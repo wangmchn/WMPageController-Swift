@@ -14,15 +14,15 @@ class ViewController: UIViewController, UITableViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .whiteColor()
+        view.backgroundColor = .white
         createLabel()
     }
     
-    private func createLabel() {
+    fileprivate func createLabel() {
         let label = UILabel(frame: CGRect(x: 0, y: 100, width: view.bounds.size.width, height: 100))
         label.text = type
-        label.font = UIFont.systemFontOfSize(22)
-        label.textAlignment = .Center
+        label.font = UIFont.systemFont(ofSize: 22)
+        label.textAlignment = .center
         view.addSubview(label)
     }
     

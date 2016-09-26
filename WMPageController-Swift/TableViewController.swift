@@ -11,11 +11,11 @@ import UIKit
 class TableViewController: UITableViewController {
 
     var text = ""
-    private let cellReuseIdentifier = "cellReuseIdentifier"
+    fileprivate let cellReuseIdentifier = "cellReuseIdentifier"
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
         tableView.rowHeight = 60
     }
 
@@ -26,24 +26,24 @@ class TableViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 20
     }
  
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(cellReuseIdentifier, forIndexPath: indexPath)
-        cell.selectionStyle = UITableViewCellSelectionStyle.None
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath)
+        cell.selectionStyle = UITableViewCellSelectionStyle.none
         cell.imageView?.image = UIImage(named: "github")
         cell.textLabel?.text = text
 
         return cell
     }
 
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 //        let vc = ViewController()
         let vc = customedPageController()
         vc.title = "Push"
@@ -52,19 +52,19 @@ class TableViewController: UITableViewController {
     }
     
     // MARK: - An example of `PageController`
-    private func customedPageController() -> PageController {
+    fileprivate func customedPageController() -> PageController {
         let vcClasses: [UIViewController.Type] = [ViewController.self, TableViewController.self]
         let titles = ["Hello", "World"]
         let pageController = PageController(vcClasses: vcClasses, theirTitles: titles)
         pageController.pageAnimatable = true
-        pageController.menuViewStyle = MenuViewStyle.Line
+        pageController.menuViewStyle = MenuViewStyle.line
         pageController.bounces = true
         pageController.menuHeight = 44
         pageController.titleSizeSelected = 15
         pageController.values = ["Hello", "I'm Mark"] // pass values
         pageController.keys = ["type", "text"] // keys
         pageController.title = "Test"
-        pageController.menuBGColor = .clearColor()
+        pageController.menuBGColor = .clear
         //        pageController.selectedIndex = 1
         //        pageController.progressColor = .blackColor()
         //        pageController.viewFrame = CGRect(x: 50, y: 100, width: 320, height: 500)
@@ -77,14 +77,14 @@ class TableViewController: UITableViewController {
         return pageController
     }
    
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        if indexPath.row % 2 == 0 {
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if (indexPath as NSIndexPath).row % 2 == 0 {
             return true
         }
         return false
     }
     
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         
     }
     

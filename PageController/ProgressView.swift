@@ -15,16 +15,16 @@ class ProgressView: UIView {
     var progress: CGFloat = 0.0 {
         didSet { setNeedsDisplay() }
     }
-    lazy var color: CGColorRef = UIColor.brownColor().CGColor
+    lazy var color: CGColor = UIColor.brown.cgColor
     
     // MARK: - Private vars
-    weak private var link: CADisplayLink?
-    private var gap: CGFloat = 0.0
-    private var step: CGFloat = 0.0
-    private var sign = 1
+    weak fileprivate var link: CADisplayLink?
+    fileprivate var gap: CGFloat = 0.0
+    fileprivate var step: CGFloat = 0.0
+    fileprivate var sign = 1
     
     // MARK: - Public funcs
-    func moveToPosition(position: Int, animation: Bool) {
+    func moveToPosition(_ position: Int, animation: Bool) {
         if animation == false {
             progress = CGFloat(position)
             return
@@ -33,9 +33,9 @@ class ProgressView: UIView {
         gap = fabs(progress - pos)
         sign = progress > pos ? -1 : 1
         step = gap / 15.0
-        link?.removeFromRunLoop(NSRunLoop.mainRunLoop(), forMode: NSRunLoopCommonModes)
+        link?.remove(from: RunLoop.main, forMode: RunLoopMode.commonModes)
         let tempLink = CADisplayLink(target: self, selector: #selector(ProgressView.progressChanged))
-        tempLink.addToRunLoop(NSRunLoop.mainRunLoop(), forMode: NSRunLoopCommonModes)
+        tempLink.add(to: RunLoop.main, forMode: RunLoopMode.commonModes)
         link = tempLink
     }
     
@@ -54,13 +54,13 @@ class ProgressView: UIView {
         }
     }
     
-    private func blurredCeil(num: CGFloat) -> CGFloat {
+    fileprivate func blurredCeil(_ num: CGFloat) -> CGFloat {
         let p = num + 0.5 
         return floor(p)
     }
     
     // MARK: - Private funcs
-    override func drawRect(rect: CGRect) {
+    override func draw(_ rect: CGRect) {
         // Drawing code
         let ctx = UIGraphicsGetCurrentContext()
         let index = Int(progress)
@@ -75,11 +75,11 @@ class ProgressView: UIView {
         let nextX = itemFrames[nextIndex].origin.x
         let startX = currentX + (nextX - currentX) * rate
         let endX = startX + currentWidth + (nextWidth - currentWidth) * rate
-        CGContextMoveToPoint(ctx, startX, constY)
-        CGContextAddLineToPoint(ctx, endX, constY)
-        CGContextSetLineWidth(ctx, height)
-        CGContextSetStrokeColorWithColor(ctx, color)
-        CGContextStrokePath(ctx)
+        ctx?.move(to: CGPoint(x: startX, y: constY))
+        ctx?.addLine(to: CGPoint(x: endX, y: constY))
+        ctx?.setLineWidth(height)
+        ctx?.setStrokeColor(color)
+        ctx?.strokePath()
     }
     
 }

@@ -9,30 +9,30 @@
 import UIKit
 
 @objc public protocol MenuViewDelegate: NSObjectProtocol {
-    func menuView(menuView: MenuView, widthForItemAtIndex index: Int) -> CGFloat
-    optional func menuView(menuView: MenuView, didSelectedIndex index: Int, fromIndex currentIndex: Int)
-    optional func menuView(menuView: MenuView, itemMarginAtIndex index: Int) -> CGFloat
+    func menuView(_ menuView: MenuView, widthForItemAtIndex index: Int) -> CGFloat
+    @objc optional func menuView(_ menuView: MenuView, didSelectedIndex index: Int, fromIndex currentIndex: Int)
+    @objc optional func menuView(_ menuView: MenuView, itemMarginAtIndex index: Int) -> CGFloat
 }
 
 @objc public protocol MenuViewDataSource: NSObjectProtocol {
-    func menuView(menuView: MenuView, titleAtIndex index: Int) -> String
-    func numbersOfTitlesInMenuView(menuView: MenuView) -> Int
+    func menuView(_ menuView: MenuView, titleAtIndex index: Int) -> String
+    func numbersOfTitlesInMenuView(_ menuView: MenuView) -> Int
 }
 
 public enum MenuViewStyle {
-    case Default, Line, Flood, FooldHollow
+    case `default`, line, flood, fooldHollow
 }
 
-public class MenuView: UIView, MenuItemDelegate {
+open class MenuView: UIView, MenuItemDelegate {
 
     // MARK: - Public vars
-    override public var frame: CGRect {
+    override open var frame: CGRect {
         didSet {
             guard contentView != nil else { return }
 
             let rightMargin = (rightView == nil) ? contentMargin : contentMargin + rightView!.frame.width
             let leftMargin  = (leftView == nil) ? contentMargin : contentMargin + leftView!.frame.width
-            let contentWidth = CGRectGetWidth(contentView.frame) + leftMargin + rightMargin
+            let contentWidth = contentView.frame.width + leftMargin + rightMargin
             
             let startX = (leftView != nil) ? leftView!.frame.origin.x : (contentView.frame.origin.x - contentMargin)
             
@@ -47,7 +47,7 @@ public class MenuView: UIView, MenuItemDelegate {
         }
     }
     
-    public weak var leftView: UIView? {
+    open weak var leftView: UIView? {
         willSet {
             leftView?.removeFromSuperview()
         }
@@ -59,7 +59,7 @@ public class MenuView: UIView, MenuItemDelegate {
         }
     }
     
-    public weak var rightView: UIView? {
+    open weak var rightView: UIView? {
         willSet {
             rightView?.removeFromSuperview()
         }
@@ -71,36 +71,36 @@ public class MenuView: UIView, MenuItemDelegate {
         }
     }
     
-    public var contentMargin: CGFloat = 0.0 {
+    open var contentMargin: CGFloat = 0.0 {
         didSet {
             guard contentView != nil else { return }
             resetFrames()
         }
     }
     
-    public var style = MenuViewStyle.Default
-    public var fontName: String?
-    public var progressHeight: CGFloat = 2.0
-    public var normalSize: CGFloat = 15.0
-    public var selectedSize: CGFloat = 18.0
-    public var progressColor: UIColor?
+    open var style = MenuViewStyle.default
+    open var fontName: String?
+    open var progressHeight: CGFloat = 2.0
+    open var normalSize: CGFloat = 15.0
+    open var selectedSize: CGFloat = 18.0
+    open var progressColor: UIColor?
     
-    public weak var delegate: MenuViewDelegate?
-    public weak var dataSource: MenuViewDataSource!
-    public lazy var normalColor = UIColor.blackColor()
-    public lazy var selectedColor = UIColor(red: 168.0/255.0, green: 20.0/255.0, blue: 4/255.0, alpha: 1.0)
+    open weak var delegate: MenuViewDelegate?
+    open weak var dataSource: MenuViewDataSource!
+    open lazy var normalColor = UIColor.black
+    open lazy var selectedColor = UIColor(red: 168.0/255.0, green: 20.0/255.0, blue: 4/255.0, alpha: 1.0)
     
     // MARK: - Private vars
-    private weak var contentView: UIScrollView!
-    private weak var progressView: ProgressView?
-    private weak var selectedItem: MenuItem!
-    private var itemFrames = [CGRect]()
-    private let tagGap = 6250
-    private var itemsCount: Int {
+    fileprivate weak var contentView: UIScrollView!
+    fileprivate weak var progressView: ProgressView?
+    fileprivate weak var selectedItem: MenuItem!
+    fileprivate var itemFrames = [CGRect]()
+    fileprivate let tagGap = 6250
+    fileprivate var itemsCount: Int {
         return dataSource.numbersOfTitlesInMenuView(self)
     }
     
-    public func reload() {
+    open func reload() {
         itemFrames.removeAll()
         progressView?.removeFromSuperview()
         for subview in contentView.subviews {
@@ -112,7 +112,7 @@ public class MenuView: UIView, MenuItemDelegate {
     }
     
     // MARK: - Public funcs
-    public func slideMenuAtProgress(progress: CGFloat) {
+    open func slideMenuAtProgress(_ progress: CGFloat) {
         progressView?.progress = progress
         let tag = Int(progress) + tagGap
         let rate = progress - CGFloat(tag - tagGap)
@@ -129,7 +129,7 @@ public class MenuView: UIView, MenuItemDelegate {
         nextItem?.rate = rate
     }
     
-    public func selectItemAtIndex(index: Int) {
+    open func selectItemAtIndex(_ index: Int) {
         let tag = index + tagGap
         let currentIndex = selectedItem.tag - tagGap
         guard currentIndex != index && selectedItem != nil else { return }
@@ -144,7 +144,7 @@ public class MenuView: UIView, MenuItemDelegate {
     }
     
     // MARK: - Update Title
-    public func updateTitle(title: String, atIndex index: Int, andWidth update: Bool) {
+    open func updateTitle(_ title: String, atIndex index: Int, andWidth update: Bool) {
         guard index >= 0 && index < itemsCount else { return }
         let item = viewWithTag(tagGap + index) as? MenuItem
         item?.text = title
@@ -153,7 +153,7 @@ public class MenuView: UIView, MenuItemDelegate {
     }
     
     // MARK: - Update Frames
-    public func resetFrames() {
+    open func resetFrames() {
 
         var contentFrame = bounds
         if let rView = rightView {
@@ -178,7 +178,7 @@ public class MenuView: UIView, MenuItemDelegate {
         refreshContentOffset()
     }
     
-    public func resetFramesFromIndex(index: Int) {
+    open func resetFramesFromIndex(_ index: Int) {
         itemFrames.removeAll()
         calculateFrames()
         for i in index ..< itemsCount {
@@ -188,7 +188,7 @@ public class MenuView: UIView, MenuItemDelegate {
         if let progress = progressView {
             var pFrame = progress.frame
             pFrame.size.width = contentView.contentSize.width
-            if progress.isKindOfClass(FloodView.self) {
+            if progress.isKind(of: FloodView.self) {
                 pFrame.origin.y = 0
             } else {
                 pFrame.origin.y = frame.size.height - progressHeight
@@ -200,15 +200,15 @@ public class MenuView: UIView, MenuItemDelegate {
     }
     
     // MARK: - Private funcs
-    override public func willMoveToSuperview(newSuperview: UIView?) {
-        super.willMoveToSuperview(newSuperview)
+    override open func willMove(toSuperview newSuperview: UIView?) {
+        super.willMove(toSuperview: newSuperview)
         guard contentView == nil else { return }
         addScollView()
         addMenuItems()
         addProgressView()
     }
     
-    private func refreshContentOffset() {
+    fileprivate func refreshContentOffset() {
         let itemFrame = selectedItem.frame
         let itemX = itemFrame.origin.x
         let width = contentView.frame.size.width
@@ -221,25 +221,25 @@ public class MenuView: UIView, MenuItemDelegate {
             if (targetX + width) > contentWidth {
                 targetX = contentWidth - width
             }
-            contentView.setContentOffset(CGPointMake(targetX, 0), animated: true)
+            contentView.setContentOffset(CGPoint(x: targetX, y: 0), animated: true)
         } else {
-            contentView.setContentOffset(CGPointZero, animated: true)
+            contentView.setContentOffset(CGPoint.zero, animated: true)
         }
     }
     
     // MARK: - Create Views
-    private func addScollView() {
+    fileprivate func addScollView() {
         let scrollViewFrame = CGRect(x: contentMargin, y: 0, width: frame.size.width - contentMargin * 2, height: frame.size.height)
         let scrollView = UIScrollView(frame: scrollViewFrame)
         scrollView.showsVerticalScrollIndicator = false
         scrollView.showsHorizontalScrollIndicator = false
-        scrollView.backgroundColor = .clearColor()
+        scrollView.backgroundColor = .clear
         scrollView.scrollsToTop = false
         addSubview(scrollView)
         contentView = scrollView
     }
     
-    private func addMenuItems() {
+    fileprivate func addMenuItems() {
         calculateFrames()
         for index in 0 ..< itemsCount {
             let menuItemFrame = itemFrames[index]
@@ -251,7 +251,7 @@ public class MenuView: UIView, MenuItemDelegate {
             if let optionalFontName = fontName {
                 menuItem.font = UIFont(name: optionalFontName, size: selectedSize)
             } else {
-                menuItem.font = UIFont.systemFontOfSize(selectedSize)
+                menuItem.font = UIFont.systemFont(ofSize: selectedSize)
             }
             menuItem.normalSize    = normalSize
             menuItem.selectedSize  = selectedSize
@@ -263,38 +263,38 @@ public class MenuView: UIView, MenuItemDelegate {
         }
     }
     
-    private func addProgressView() {
+    fileprivate func addProgressView() {
         var optionalType: ProgressView.Type?
         var hollow = false
         switch style {
-            case .Default: break
-            case .Line: optionalType = ProgressView.self
-            case .FooldHollow:
+            case .default: break
+            case .line: optionalType = ProgressView.self
+            case .fooldHollow:
                 optionalType = FloodView.self
                 hollow = true
-            case .Flood: optionalType = FloodView.self
+            case .flood: optionalType = FloodView.self
         }
         if let viewType = optionalType {
             let pView = viewType.init()
-            let height = (style == .Line) ? progressHeight : frame.size.height
-            let progressY = (style == .Line) ? (frame.size.height - progressHeight) : 0
+            let height = (style == .line) ? progressHeight : frame.size.height
+            let progressY = (style == .line) ? (frame.size.height - progressHeight) : 0
             pView.frame = CGRect(x: 0, y: progressY, width: contentView.contentSize.width, height: height)
             pView.itemFrames = itemFrames
             if (progressColor == nil) {
                 progressColor = selectedColor
             }
-            pView.color = (progressColor?.CGColor)!
-            pView.backgroundColor = .clearColor()
+            pView.color = (progressColor?.cgColor)!
+            pView.backgroundColor = .clear
             if let fooldView = pView as? FloodView {
                 fooldView.hollow = hollow
             }
-            contentView.insertSubview(pView, atIndex: 0)
+            contentView.insertSubview(pView, at: 0)
             progressView = pView
         }
     }
     
     // MARK: - Calculate Frames
-    private func calculateFrames() {
+    fileprivate func calculateFrames() {
         var contentWidth: CGFloat = itemMarginAtIndex(0)
         for index in 0 ..< itemsCount {
             let itemWidth = delegate!.menuView(self, widthForItemAtIndex: index)
@@ -315,7 +315,7 @@ public class MenuView: UIView, MenuItemDelegate {
         contentView.contentSize = CGSize(width: contentWidth, height: frame.size.height)
     }
     
-    private func itemMarginAtIndex(index: Int) -> CGFloat {
+    fileprivate func itemMarginAtIndex(_ index: Int) -> CGFloat {
         if let itemMargin = delegate?.menuView?(self, itemMarginAtIndex: index) {
             return itemMargin
         }
@@ -323,7 +323,7 @@ public class MenuView: UIView, MenuItemDelegate {
     }
     
     // MARK: - MenuItemDelegate
-    func didSelectedMenuItem(menuItem: MenuItem) {
+    func didSelectedMenuItem(_ menuItem: MenuItem) {
         if selectedItem == menuItem { return }
         let position = menuItem.tag - tagGap
         let currentIndex = selectedItem.tag - tagGap

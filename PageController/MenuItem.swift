@@ -9,7 +9,7 @@
 import UIKit
 
 protocol MenuItemDelegate: NSObjectProtocol {
-    func didSelectedMenuItem(menuItem: MenuItem)
+    func didSelectedMenuItem(_ menuItem: MenuItem)
 }
 
 class MenuItem: UILabel {
@@ -32,7 +32,7 @@ class MenuItem: UILabel {
             let minScale = normalSize / selectedSize
             let trueScale = minScale + (1 - minScale) * rate
             textColor = UIColor(red: red, green: green, blue: blue, alpha: alpha)
-            transform = CGAffineTransformMakeScale(trueScale, trueScale)
+            transform = CGAffineTransform(scaleX: trueScale, y: trueScale)
         }
     }
     
@@ -49,20 +49,20 @@ class MenuItem: UILabel {
     }
     
     // MARK: - Private vars
-    private var normalComponents: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) = (0.0, 0.0, 0.0, 0.0)
-    private var selectedComponets: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) = (0.0, 0.0, 0.0, 0.0)
+    fileprivate var normalComponents: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) = (0.0, 0.0, 0.0, 0.0)
+    fileprivate var selectedComponets: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) = (0.0, 0.0, 0.0, 0.0)
     
     // MARK: - Public funcs
-    func selectWithAnimation(select: Bool) -> Void {
+    func selectWithAnimation(_ select: Bool) -> Void {
         if selected == select { return }
-        UIView.animateWithDuration(0.3) { () -> Void in
+        UIView.animate(withDuration: 0.3, animations: { () -> Void in
             if self.selected == true {
                 self.rate = 0.0
             } else {
                 self.rate = 1.0
             }
             self.selected = select
-        }
+        }) 
     }
     
     override init(frame: CGRect) {
@@ -76,14 +76,14 @@ class MenuItem: UILabel {
     }
 
     // MARK: - Private funcs
-    private func setup() {
-        textAlignment = NSTextAlignment.Center
-        userInteractionEnabled = true
-        backgroundColor = .clearColor()
+    fileprivate func setup() {
+        textAlignment = NSTextAlignment.center
+        isUserInteractionEnabled = true
+        backgroundColor = .clear
         numberOfLines = 0
     }
     
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         delegate?.didSelectedMenuItem(self)
     }
 }

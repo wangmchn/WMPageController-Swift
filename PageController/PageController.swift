@@ -9,41 +9,41 @@
 import UIKit
 
 public enum CachePolicy: Int {
-    case NoLimit    = 0
-    case LowMemory  = 1
-    case Balanced   = 3
-    case High       = 5
+    case noLimit    = 0
+    case lowMemory  = 1
+    case balanced   = 3
+    case high       = 5
 }
 
 public enum PreloadPolicy: Int {
-    case Never      = 0
-    case Neighbour  = 1
-    case Near       = 2
+    case never      = 0
+    case neighbour  = 1
+    case near       = 2
 }
 
 public let WMPageControllerDidMovedToSuperViewNotification = "WMPageControllerDidMovedToSuperViewNotification"
 public let WMPageControllerDidFullyDisplayedNotification = "WMPageControllerDidFullyDisplayedNotification"
 
 @objc public protocol PageControllerDataSource: NSObjectProtocol {
-    optional func numberOfControllersInPageController(pageController: PageController) -> Int
-    optional func pageController(pageController: PageController, viewControllerAtIndex index: Int) -> UIViewController
-    optional func pageController(pageController: PageController, titleAtIndex index: Int) -> String
+    @objc optional func numberOfControllersInPageController(_ pageController: PageController) -> Int
+    @objc optional func pageController(_ pageController: PageController, viewControllerAtIndex index: Int) -> UIViewController
+    @objc optional func pageController(_ pageController: PageController, titleAtIndex index: Int) -> String
 }
 
 @objc public protocol PageControllerDelegate: NSObjectProtocol {
-    optional func pageController(pageController: PageController, lazyLoadViewController viewController: UIViewController, withInfo info: NSDictionary)
-    optional func pageController(pageController: PageController, willCachedViewController viewController: UIViewController, withInfo info: NSDictionary)
-    optional func pageController(pageController: PageController, willEnterViewController viewController: UIViewController, withInfo info: NSDictionary)
-    optional func pageController(pageController: PageController, didEnterViewController viewController: UIViewController, withInfo info: NSDictionary)
+    @objc optional func pageController(_ pageController: PageController, lazyLoadViewController viewController: UIViewController, withInfo info: NSDictionary)
+    @objc optional func pageController(_ pageController: PageController, willCachedViewController viewController: UIViewController, withInfo info: NSDictionary)
+    @objc optional func pageController(_ pageController: PageController, willEnterViewController viewController: UIViewController, withInfo info: NSDictionary)
+    @objc optional func pageController(_ pageController: PageController, didEnterViewController viewController: UIViewController, withInfo info: NSDictionary)
 }
 
-public class ContentView: UIScrollView, UIGestureRecognizerDelegate {
+open class ContentView: UIScrollView, UIGestureRecognizerDelegate {
     
-    public func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOfGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    open func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         
-        guard let wrapperView = NSClassFromString("UITableViewWrapperView"), otherGestureView = otherGestureRecognizer.view else { return false }
+        guard let wrapperView = NSClassFromString("UITableViewWrapperView"), let otherGestureView = otherGestureRecognizer.view else { return false }
         
-        if otherGestureView.isKindOfClass(wrapperView) && (otherGestureRecognizer is UIPanGestureRecognizer) {
+        if otherGestureView.isKind(of: wrapperView) && (otherGestureRecognizer is UIPanGestureRecognizer) {
             return true
         }
         return false
@@ -51,38 +51,38 @@ public class ContentView: UIScrollView, UIGestureRecognizerDelegate {
     
 }
 
-public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDelegate, MenuViewDataSource, PageControllerDelegate, PageControllerDataSource {
+open class PageController: UIViewController, UIScrollViewDelegate, MenuViewDelegate, MenuViewDataSource, PageControllerDelegate, PageControllerDataSource {
     
     // MARK: - Public vars
-    public weak var dataSource: PageControllerDataSource?
-    public weak var delegate: PageControllerDelegate?
+    open weak var dataSource: PageControllerDataSource?
+    open weak var delegate: PageControllerDelegate?
     
-    public var viewControllerClasses: [UIViewController.Type]?
-    public var titles: [String]?
-    public var values: NSArray?
-    public var keys: [String]?
-    public var progressColor: UIColor?
-    public var progressHeight: CGFloat = 2.0
-    public var itemMargin: CGFloat = 0.0
-    public var menuViewStyle = MenuViewStyle.Default
-    public var titleFontName: String?
-    public var pageAnimatable   = false
-    public var postNotification = false
-    public var bounces = false
-    public var showOnNavigationBar = false
-    public var startDragging = false
-    public var titleSizeSelected: CGFloat  = 18.0
-    public var titleSizeNormal: CGFloat    = 15.0
-    public var menuHeight: CGFloat         = 30.0
-    public var menuItemWidth: CGFloat      = 65.0
-    public weak var contentView: ContentView?
-    public weak var menuView: MenuView?
+    open var viewControllerClasses: [UIViewController.Type]?
+    open var titles: [String]?
+    open var values: NSArray?
+    open var keys: [String]?
+    open var progressColor: UIColor?
+    open var progressHeight: CGFloat = 2.0
+    open var itemMargin: CGFloat = 0.0
+    open var menuViewStyle = MenuViewStyle.default
+    open var titleFontName: String?
+    open var pageAnimatable   = false
+    open var postNotification = false
+    open var bounces = false
+    open var showOnNavigationBar = false
+    open var startDragging = false
+    open var titleSizeSelected: CGFloat  = 18.0
+    open var titleSizeNormal: CGFloat    = 15.0
+    open var menuHeight: CGFloat         = 30.0
+    open var menuItemWidth: CGFloat      = 65.0
+    open weak var contentView: ContentView?
+    open weak var menuView: MenuView?
 
-    public var itemsWidths: [CGFloat]?
+    open var itemsWidths: [CGFloat]?
     
-    public private(set) var currentViewController: UIViewController?
+    open fileprivate(set) var currentViewController: UIViewController?
     
-    public var selectedIndex: Int {
+    open var selectedIndex: Int {
         set {
             _selectedIndex = newValue
             menuView?.selectItemAtIndex(newValue)
@@ -90,14 +90,14 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         get { return _selectedIndex }
     }
     
-    public var menuViewContentMargin: CGFloat = 0.0 {
+    open var menuViewContentMargin: CGFloat = 0.0 {
         didSet {
             guard let menu = menuView else { return }
             menu.contentMargin = oldValue
         }
     }
     
-    public var viewFrame = CGRect() {
+    open var viewFrame = CGRect() {
         didSet {
             if let _ = menuView {
                 hasInit = false
@@ -106,18 +106,18 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         }
     }
     
-    public var itemsMargins: [CGFloat]?
-    public var preloadPolicy: PreloadPolicy = .Never
+    open var itemsMargins: [CGFloat]?
+    open var preloadPolicy: PreloadPolicy = .never
     
-    public var cachePolicy: CachePolicy = .NoLimit {
+    open var cachePolicy: CachePolicy = .noLimit {
         didSet { memCache.countLimit = cachePolicy.rawValue }
     }
     
-    public lazy var titleColorSelected = UIColor(red: 168.0/255.0, green: 20.0/255.0, blue: 4/255.0, alpha: 1.0)
-    public lazy var titleColorNormal = UIColor.blackColor()
-    public lazy var menuBGColor = UIColor(red: 244.0/255.0, green: 244.0/255.0, blue: 244.0/255.0, alpha: 1.0)
+    open lazy var titleColorSelected = UIColor(red: 168.0/255.0, green: 20.0/255.0, blue: 4/255.0, alpha: 1.0)
+    open lazy var titleColorNormal = UIColor.black
+    open lazy var menuBGColor = UIColor(red: 244.0/255.0, green: 244.0/255.0, blue: 244.0/255.0, alpha: 1.0)
     
-    override public var edgesForExtendedLayout: UIRectEdge {
+    override open var edgesForExtendedLayout: UIRectEdge {
         didSet {
             hasInit = false
             viewDidLayoutSubviews()
@@ -125,20 +125,20 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     }
     
     // MARK: - Private vars
-    private var memoryWarningCount = 0
-    private var viewHeight: CGFloat = 0.0
-    private var viewWidth: CGFloat = 0.0
-    private var viewX: CGFloat = 0.0
-    private var viewY: CGFloat = 0.0
-    private var _selectedIndex = 0
-    private var targetX: CGFloat = 0.0
-    private var superviewHeight: CGFloat = 0.0
-    private var hasInit = false
-    private var shouldNotScroll = false
-    private var initializedIndex = -1
-    private var controllerCount  = -1
+    fileprivate var memoryWarningCount = 0
+    fileprivate var viewHeight: CGFloat = 0.0
+    fileprivate var viewWidth: CGFloat = 0.0
+    fileprivate var viewX: CGFloat = 0.0
+    fileprivate var viewY: CGFloat = 0.0
+    fileprivate var _selectedIndex = 0
+    fileprivate var targetX: CGFloat = 0.0
+    fileprivate var superviewHeight: CGFloat = 0.0
+    fileprivate var hasInit = false
+    fileprivate var shouldNotScroll = false
+    fileprivate var initializedIndex = -1
+    fileprivate var controllerCount  = -1
     
-    private var childControllersCount: Int {
+    fileprivate var childControllersCount: Int {
         if controllerCount == -1 {
             if let count = dataSource?.numberOfControllersInPageController?(self) {
                 controllerCount = count
@@ -149,9 +149,9 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         return controllerCount
     }
     
-    lazy private var displayingControllers = NSMutableDictionary()
-    lazy private var memCache = NSCache()
-    lazy private var childViewFrames = [CGRect]()
+    lazy fileprivate var displayingControllers = NSMutableDictionary()
+    lazy fileprivate var memCache = NSCache<NSNumber, UIViewController>()
+    lazy fileprivate var childViewFrames = [CGRect]()
     
     // MARK: - Life cycle
     public convenience init(vcClasses: [UIViewController.Type], theirTitles: [String]) {
@@ -161,9 +161,9 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         viewControllerClasses = vcClasses
     }
     
-    override public func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .whiteColor()
+        view.backgroundColor = .white
         guard childControllersCount > 0 else { return }
 
         calculateSize()
@@ -173,7 +173,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         addMenuView()
     }
 
-    override public func viewDidLayoutSubviews() {
+    override open func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         guard childControllersCount > 0 else { return }
         
@@ -190,28 +190,28 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         view.layoutIfNeeded()
     }
     
-    override public func viewDidAppear(animated: Bool) {
+    override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         guard childControllersCount > 0 else { return }
         postFullyDisplayedNotificationWithIndex(_selectedIndex)
         didEnterController(currentViewController!, atIndex: _selectedIndex)
     }
     
-    override public func didReceiveMemoryWarning() {
+    override open func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
 
         memoryWarningCount += 1
-        cachePolicy = CachePolicy.LowMemory
-        NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: #selector(PageController.growCachePolicyAfterMemoryWarning), object: nil)
-        NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: #selector(PageController.growCachePolicyToHigh), object: nil)
+        cachePolicy = CachePolicy.lowMemory
+        NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(PageController.growCachePolicyAfterMemoryWarning), object: nil)
+        NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(PageController.growCachePolicyToHigh), object: nil)
         memCache.removeAllObjects()
         if memoryWarningCount < 3 {
-            performSelector(#selector(PageController.growCachePolicyAfterMemoryWarning), withObject: nil, afterDelay: 3.0, inModes: [NSRunLoopCommonModes])
+            perform(#selector(PageController.growCachePolicyAfterMemoryWarning), with: nil, afterDelay: 3.0, inModes: [RunLoopMode.commonModes])
         }
     }
     
     // MARK: - Reload
-    public func reloadData() {
+    open func reloadData() {
         clearDatas()
         resetScrollView()
         memCache.removeAllObjects()
@@ -220,11 +220,11 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     }
     
     // MARK: - Update Title
-    public func updateTitle(title: String, atIndex index: Int) {
+    open func updateTitle(_ title: String, atIndex index: Int) {
         menuView?.updateTitle(title, atIndex: index, andWidth: false)
     }
     
-    public func updateTitle(title: String, atIndex index: Int, andWidth width: CGFloat) {
+    open func updateTitle(_ title: String, atIndex index: Int, andWidth width: CGFloat) {
         if var widths = itemsWidths {
             guard index < widths.count else { return }
             widths[index] = width
@@ -241,14 +241,14 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     }
     
     // MARK: - Data Source
-    private func initializeViewControllerAtIndex(index: Int) -> UIViewController {
+    fileprivate func initializeViewControllerAtIndex(_ index: Int) -> UIViewController {
         if let viewController = dataSource?.pageController?(self, viewControllerAtIndex: index) {
             return viewController
         }
         return viewControllerClasses![index].init()
     }
     
-    private func titleAtIndex(index: Int) -> String {
+    fileprivate func titleAtIndex(_ index: Int) -> String {
         if let titleAtIndex = dataSource?.pageController?(self, titleAtIndex: index) {
             return titleAtIndex
         }
@@ -256,22 +256,22 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     }
     
     // MARK: - Delegate
-    private func infoWithIndex(index: Int) -> NSDictionary {
+    fileprivate func infoWithIndex(_ index: Int) -> NSDictionary {
         let title = titleAtIndex(index)
         return ["title": title, "index": index]
     }
     
-    private func willCachedController(vc: UIViewController, atIndex index: Int) {
+    fileprivate func willCachedController(_ vc: UIViewController, atIndex index: Int) {
         guard childControllersCount > 0 else { return }
         delegate?.pageController?(self, willCachedViewController: vc, withInfo: infoWithIndex(index))
     }
     
-    private func willEnterController(vc: UIViewController, atIndex index: Int) {
+    fileprivate func willEnterController(_ vc: UIViewController, atIndex index: Int) {
         guard childControllersCount > 0 else { return }
         delegate?.pageController?(self, willEnterViewController: vc, withInfo: infoWithIndex(index))
     }
     
-    private func didEnterController(vc: UIViewController, atIndex index: Int) {
+    fileprivate func didEnterController(_ vc: UIViewController, atIndex index: Int) {
        
         guard childControllersCount > 0 else { return }
         
@@ -284,7 +284,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
             initializedIndex = -1
         }
         
-        if preloadPolicy == .Never { return }
+        if preloadPolicy == .never { return }
         var start = 0
         var end = childControllersCount - 1
         if index > preloadPolicy.rawValue {
@@ -296,7 +296,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         }
         
         for i in start ... end {
-            if memCache.objectForKey(i) == nil && displayingControllers[i] == nil {
+            if memCache.object(forKey: NSNumber(integerLiteral: i)) == nil && displayingControllers[i] == nil {
                 addViewControllerAtIndex(i)
                 postMovedToSuperViewNotificationWithIndex(i)
             }
@@ -305,48 +305,48 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     }
     
     // MARK: - Private funcs
-    private func clearDatas() {
+    fileprivate func clearDatas() {
         controllerCount = -1
         hasInit = false
         _selectedIndex = _selectedIndex < childControllersCount ? _selectedIndex : childControllersCount - 1
         for viewController in displayingControllers.allValues {
             if let vc = viewController as? UIViewController {
                 vc.view.removeFromSuperview()
-                vc.willMoveToParentViewController(nil)
+                vc.willMove(toParentViewController: nil)
                 vc.removeFromParentViewController()
             }
         }
         memoryWarningCount = 0
-        NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: #selector(PageController.growCachePolicyAfterMemoryWarning), object: nil)
-        NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: #selector(PageController.growCachePolicyToHigh), object: nil)
+        NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(PageController.growCachePolicyAfterMemoryWarning), object: nil)
+        NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(PageController.growCachePolicyToHigh), object: nil)
         currentViewController = nil
         displayingControllers.removeAllObjects()
         calculateSize()
     }
     
-    private func resetScrollView() {
+    fileprivate func resetScrollView() {
         contentView?.removeFromSuperview()
         addScrollView()
         addViewControllerAtIndex(_selectedIndex)
         currentViewController = displayingControllers[_selectedIndex] as? UIViewController
     }
     
-    private func calculateSize() {
-        var navBarHeight = (navigationController != nil) ? CGRectGetMaxY(navigationController!.navigationBar.frame) : 0
+    fileprivate func calculateSize() {
+        var navBarHeight = (navigationController != nil) ? navigationController!.navigationBar.frame.maxY : 0
         let tabBar = tabBarController?.tabBar ?? (navigationController?.toolbar ?? nil)
-        let height = (tabBar != nil && tabBar?.hidden != true) ? CGRectGetHeight(tabBar!.frame) : 0
+        let height = (tabBar != nil && tabBar?.isHidden != true) ? tabBar!.frame.height : 0
         var tabBarHeight = (hidesBottomBarWhenPushed == true) ? 0 : height
         
-        let mainWindow = UIApplication.sharedApplication().delegate?.window!
-        let absoluteRect = view.superview?.convertRect(view.frame, toView: mainWindow)
+        let mainWindow = UIApplication.shared.delegate?.window!
+        let absoluteRect = view.superview?.convert(view.frame, to: mainWindow)
         if let rect = absoluteRect {
             navBarHeight -= rect.origin.y;
-            tabBarHeight -= mainWindow!.frame.height - CGRectGetMaxY(rect);
+            tabBarHeight -= mainWindow!.frame.height - rect.maxY;
         }
         
         viewX = viewFrame.origin.x
         viewY = viewFrame.origin.y
-        if viewFrame == CGRectZero {
+        if viewFrame == CGRect.zero {
             viewWidth  = view.frame.size.width
             viewHeight = view.frame.size.height - menuHeight - navBarHeight - tabBarHeight
             viewY += navBarHeight
@@ -364,10 +364,10 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         }
     }
     
-    private func addScrollView() {
+    fileprivate func addScrollView() {
         let scrollView = ContentView()
         scrollView.scrollsToTop = false
-        scrollView.pagingEnabled = true
+        scrollView.isPagingEnabled = true
         scrollView.delegate = self
         scrollView.showsVerticalScrollIndicator = false
         scrollView.showsHorizontalScrollIndicator = false
@@ -376,10 +376,10 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         contentView = scrollView
     }
     
-    private func addMenuView() {
+    fileprivate func addMenuView() {
         var menuY = viewY
         if showOnNavigationBar && (navigationController?.navigationBar != nil) {
-            let naviHeight = CGRectGetHeight(navigationController!.navigationBar.frame)
+            let naviHeight = navigationController!.navigationBar.frame.height
             let realMenuHeight = menuHeight > naviHeight ? naviHeight : menuHeight
             menuY = (naviHeight - realMenuHeight) / 2
         }
@@ -406,28 +406,28 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         menuView = menu
     }
     
-    private func postMovedToSuperViewNotificationWithIndex(index: Int) {
+    fileprivate func postMovedToSuperViewNotificationWithIndex(_ index: Int) {
         guard postNotification else { return }
-        let info = ["index": index, "title": titleAtIndex(index)]
-        NSNotificationCenter.defaultCenter().postNotificationName(WMPageControllerDidMovedToSuperViewNotification, object: info)
+        let info = ["index": index, "title": titleAtIndex(index)] as [String : Any]
+        NotificationCenter.default.post(name: Notification.Name(rawValue: WMPageControllerDidMovedToSuperViewNotification), object: info)
     }
     
-    private func postFullyDisplayedNotificationWithIndex(index: Int) {
+    fileprivate func postFullyDisplayedNotificationWithIndex(_ index: Int) {
         guard postNotification else { return }
-        let info = ["index": index, "title": titleAtIndex(index)]
-        NSNotificationCenter.defaultCenter().postNotificationName(WMPageControllerDidFullyDisplayedNotification, object: info)
+        let info = ["index": index, "title": titleAtIndex(index)] as [String : Any]
+        NotificationCenter.default.post(name: Notification.Name(rawValue: WMPageControllerDidFullyDisplayedNotification), object: info)
     }
     
-    private func layoutChildViewControllers() {
+    fileprivate func layoutChildViewControllers() {
         let currentPage = Int(contentView!.contentOffset.x / viewWidth)
         let start = currentPage == 0 ? currentPage : (currentPage - 1)
         let end = (currentPage == childControllersCount - 1) ? currentPage : (currentPage + 1)
         for index in start ... end {
             let viewControllerFrame = childViewFrames[index]
-            var vc = displayingControllers.objectForKey(index)
+            var vc = displayingControllers.object(forKey: index)
             if inScreen(viewControllerFrame) {
                 if vc == nil {
-                    vc = memCache.objectForKey(index)
+                    vc = memCache.object(forKey: NSNumber(integerLiteral: index))
                     if let viewController = vc as? UIViewController {
                         addCachedViewController(viewController, atIndex: index)
                     } else {
@@ -443,26 +443,26 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         }
     }
     
-    private func removeSuperfluousViewControllersIfNeeded() {
-        self.displayingControllers.enumerateKeysAndObjectsUsingBlock { [weak self] (index, vc, stop) -> Void in
-            guard let strongSelf = self else { return }
-            let frame = strongSelf.childViewFrames[index.integerValue]
-            if (strongSelf.inScreen(frame) == false) {
-                strongSelf.removeViewController(vc as! UIViewController, atIndex: index.integerValue)
+    fileprivate func removeSuperfluousViewControllersIfNeeded() {
+        for (index, vc) in displayingControllers {
+            
+            let frame = childViewFrames[(index as AnyObject).intValue]
+            if (inScreen(frame) == false) {
+                removeViewController(vc as! UIViewController, atIndex: (index as AnyObject).intValue)
             }
         }
     }
     
-    private func addCachedViewController(viewController: UIViewController, atIndex index: Int) {
+    fileprivate func addCachedViewController(_ viewController: UIViewController, atIndex index: Int) {
         addChildViewController(viewController)
         viewController.view.frame = childViewFrames[index]
-        viewController.didMoveToParentViewController(self)
+        viewController.didMove(toParentViewController: self)
         contentView?.addSubview(viewController.view)
         willEnterController(viewController, atIndex: index)
-        displayingControllers.setObject(viewController, forKey: index)
+        displayingControllers.setObject(viewController, forKey: index as NSCopying)
     }
     
-    private func addViewControllerAtIndex(index: Int) {
+    fileprivate func addViewControllerAtIndex(_ index: Int) {
         initializedIndex = index
         let viewController = initializeViewControllerAtIndex(index)
         if let optionalKeys = keys {
@@ -470,34 +470,34 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         }
         addChildViewController(viewController)
         viewController.view.frame = childViewFrames.count > 0 ? childViewFrames[index] : view.frame
-        viewController.didMoveToParentViewController(self)
+        viewController.didMove(toParentViewController: self)
         contentView?.addSubview(viewController.view)
         willEnterController(viewController, atIndex: index)
-        displayingControllers.setObject(viewController, forKey: index)
+        displayingControllers.setObject(viewController, forKey: index as NSCopying)
     }
     
-    private func removeViewController(viewController: UIViewController, atIndex index: Int) {
+    fileprivate func removeViewController(_ viewController: UIViewController, atIndex index: Int) {
         viewController.view.removeFromSuperview()
-        viewController.willMoveToParentViewController(nil)
+        viewController.willMove(toParentViewController: nil)
         viewController.removeFromParentViewController()
-        displayingControllers.removeObjectForKey(index)
-        if memCache.objectForKey(index) == nil {
+        displayingControllers.removeObject(forKey: index)
+        if memCache.object(forKey: NSNumber(integerLiteral: index)) == nil {
             willCachedController(viewController, atIndex: index)
-            memCache.setObject(viewController, forKey: index)
+            memCache.setObject(viewController, forKey: NSNumber(integerLiteral: index))
         }
     }
     
-    private func inScreen(frame: CGRect) -> Bool {
+    fileprivate func inScreen(_ frame: CGRect) -> Bool {
         let x = frame.origin.x
         let ScreenWidth = contentView!.frame.size.width
         let contentOffsetX = contentView!.contentOffset.x
-        if (CGRectGetMaxX(frame) > contentOffsetX) && (x - contentOffsetX < ScreenWidth) {
+        if (frame.maxX > contentOffsetX) && (x - contentOffsetX < ScreenWidth) {
             return true
         }
         return false
     }
     
-    private func resetMenuView() {
+    fileprivate func resetMenuView() {
         if menuView == nil {
             addMenuView()
             return
@@ -505,20 +505,20 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         menuView?.reload()
         guard selectedIndex != 0 else { return }
         menuView?.selectItemAtIndex(selectedIndex)
-        view.bringSubviewToFront(menuView!)
+        view.bringSubview(toFront: menuView!)
     }
     
-    @objc private func growCachePolicyAfterMemoryWarning() {
-        cachePolicy = CachePolicy.Balanced
-        performSelector(#selector(PageController.growCachePolicyToHigh), withObject: nil, afterDelay: 2.0, inModes: [NSRunLoopCommonModes])
+    @objc fileprivate func growCachePolicyAfterMemoryWarning() {
+        cachePolicy = CachePolicy.balanced
+        perform(#selector(PageController.growCachePolicyToHigh), with: nil, afterDelay: 2.0, inModes: [RunLoopMode.commonModes])
     }
     
-    @objc private func growCachePolicyToHigh() {
-        cachePolicy = CachePolicy.High
+    @objc fileprivate func growCachePolicyToHigh() {
+        cachePolicy = CachePolicy.high
     }
     
     // MARK: - Adjust Frame
-    private func adjustScrollViewFrame() {
+    fileprivate func adjustScrollViewFrame() {
         shouldNotScroll = true
         var scrollFrame = CGRect(x: viewX, y: viewY + menuHeight, width: viewWidth, height: viewHeight)
         scrollFrame.origin.y -= showOnNavigationBar && (navigationController?.navigationBar != nil) ? menuHeight : 0
@@ -528,7 +528,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         shouldNotScroll = false
     }
     
-    private func adjustMenuViewFrame() {
+    fileprivate func adjustMenuViewFrame() {
         var realMenuHeight = menuHeight
         var menuX = viewX
         var menuY = viewY
@@ -536,22 +536,25 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         var rightWidth: CGFloat = 0.0
         if showOnNavigationBar && (navigationController?.navigationBar != nil) {
             for subview in (navigationController?.navigationBar.subviews)! {
+                guard let UINavigationBarBackgroundClass = NSClassFromString("_UINavigationBarBackground") else {
+                    continue
+                }
                 
-                guard !subview.isKindOfClass(NSClassFromString("_UINavigationBarBackground")!) && !subview.isKindOfClass(MenuView.self) && (subview.alpha != 0) && (subview.hidden == false) else { continue }
+                guard !subview.isKind(of: UINavigationBarBackgroundClass) && !subview.isKind(of: MenuView.self) && (subview.alpha != 0) && (subview.isHidden == false) else { continue }
                 
-                let maxX = CGRectGetMaxX(subview.frame)
+                let maxX = subview.frame.maxX
                 if maxX < viewWidth / 2 {
                     let leftWidth = maxX
                     menuX = menuX > leftWidth ? menuX : leftWidth
                 }
-                let minX = CGRectGetMinX(subview.frame)
+                let minX = subview.frame.minX
                 if minX > viewWidth / 2 {
                     let width = viewWidth - minX
                     rightWidth = rightWidth > width ? rightWidth : width
                 }
                 
             }
-            let naviHeight = CGRectGetHeight(navigationController!.navigationBar.frame)
+            let naviHeight = navigationController!.navigationBar.frame.height
             realMenuHeight = menuHeight > naviHeight ? naviHeight : realMenuHeight
             menuY = (naviHeight - realMenuHeight) / 2
         }
@@ -565,7 +568,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     }
     
     // MARK: - UIScrollView Delegate
-    public func scrollViewDidScroll(scrollView: UIScrollView) {
+    open func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if shouldNotScroll || !hasInit { return }
         
         layoutChildViewControllers()
@@ -586,13 +589,13 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         scrollView.contentOffset = contentOffset
     }
     
-    public func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+    open func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         startDragging = true
-        menuView?.userInteractionEnabled = false
+        menuView?.isUserInteractionEnabled = false
     }
     
-    public func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        menuView?.userInteractionEnabled = true
+    open func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        menuView?.isUserInteractionEnabled = true
         _selectedIndex = Int(contentView!.contentOffset.x / viewWidth)
         removeSuperfluousViewControllersIfNeeded()
         currentViewController = displayingControllers[_selectedIndex] as? UIViewController
@@ -600,7 +603,7 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         didEnterController(currentViewController!, atIndex: _selectedIndex)
     }
     
-    public func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
+    open func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         _selectedIndex = Int(contentView!.contentOffset.x / viewWidth)
         removeSuperfluousViewControllersIfNeeded()
         currentViewController = displayingControllers[_selectedIndex] as? UIViewController
@@ -608,19 +611,19 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         didEnterController(currentViewController!, atIndex: _selectedIndex)
     }
     
-    public func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    open func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         guard decelerate == false else { return }
-        menuView?.userInteractionEnabled = true
+        menuView?.isUserInteractionEnabled = true
         let rate = targetX / viewWidth
         menuView?.slideMenuAtProgress(rate)
     }
     
-    public func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        targetX = targetContentOffset.memory.x
+    open func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        targetX = targetContentOffset.pointee.x
     }
     
     // MARK: - MenuViewDelegate
-    public func menuView(menuView: MenuView, didSelectedIndex index: Int, fromIndex currentIndex: Int) {
+    open func menuView(_ menuView: MenuView, didSelectedIndex index: Int, fromIndex currentIndex: Int) {
         guard hasInit else { return }
         startDragging = false
         let targetPoint = CGPoint(x: CGFloat(index) * viewWidth, y: 0)
@@ -638,14 +641,14 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
         }
     }
     
-    public func menuView(menuView: MenuView, widthForItemAtIndex index: Int) -> CGFloat {
+    open func menuView(_ menuView: MenuView, widthForItemAtIndex index: Int) -> CGFloat {
         if let widths = itemsWidths {
             return widths[index]
         }
         return menuItemWidth
     }
     
-    public func menuView(menuView: MenuView, itemMarginAtIndex index: Int) -> CGFloat {
+    open func menuView(_ menuView: MenuView, itemMarginAtIndex index: Int) -> CGFloat {
         if let margins = itemsMargins {
             return margins[index]
         }
@@ -653,11 +656,11 @@ public class PageController: UIViewController, UIScrollViewDelegate, MenuViewDel
     }
     
     // MARK: - MenuViewDataSource
-    public func numbersOfTitlesInMenuView(menuView: MenuView) -> Int {
+    open func numbersOfTitlesInMenuView(_ menuView: MenuView) -> Int {
         return childControllersCount
     }
     
-    public func menuView(menuView: MenuView, titleAtIndex index: Int) -> String {
+    open func menuView(_ menuView: MenuView, titleAtIndex index: Int) -> String {
         return titleAtIndex(index)
     }
     

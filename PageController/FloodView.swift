@@ -12,18 +12,18 @@ class FloodView: ProgressView {
 
     // MARK: - Vars
     var hollow = false
-    private var margin: CGFloat = 0.0
-    private var radius: CGFloat = 0.0
-    private var height: CGFloat = 0.0
+    fileprivate var margin: CGFloat = 0.0
+    fileprivate var radius: CGFloat = 0.0
+    fileprivate var height: CGFloat = 0.0
 
     // MARK: - Private funcs
-    override func willMoveToSuperview(newSuperview: UIView?) {
+    override func willMove(toSuperview newSuperview: UIView?) {
         height = frame.size.height
         margin = height * 0.15
         radius = (height - margin * 2.0) / 2.0
     }
     
-    override func drawRect(rect: CGRect) {
+    override func draw(_ rect: CGRect) {
         // Drawing code
         let currentIndex = Int(progress)
         let rate = progress - CGFloat(currentIndex)
@@ -36,20 +36,22 @@ class FloodView: ProgressView {
         let startX = currentX + (nextX - currentX) * rate
         let endX = startX + currentWidth + (nextWidth - currentWidth) * rate
         let ctx = UIGraphicsGetCurrentContext()
-        CGContextTranslateCTM(ctx, 0.0, height)
-        CGContextScaleCTM(ctx, 1.0, -1.0)
-        CGContextAddArc(ctx, startX + radius, height / 2.0, radius, CGFloat(M_PI_2), CGFloat(M_PI_2) * 3, 0)
-        CGContextAddLineToPoint(ctx, endX - radius, margin)
-        CGContextAddArc(ctx, endX - radius, height / 2.0, radius, CGFloat(-M_PI_2), CGFloat(M_PI_2), 0)
-        CGContextClosePath(ctx)
+        ctx?.translateBy(x: 0.0, y: height)
+        ctx?.scaleBy(x: 1.0, y: -1.0)
+        ctx?.addArc(center: CGPoint(x: startX + radius, y: height / 2.0), radius: radius, startAngle: CGFloat(M_PI_2), endAngle: CGFloat(M_PI_2) * 3, clockwise: false)
+        // CGContextAddArc(ctx, startX + radius, height / 2.0, radius, CGFloat(M_PI_2), CGFloat(M_PI_2) * 3, 0)
+        ctx?.addLine(to: CGPoint(x: endX - radius, y: margin))
+        ctx?.addArc(center: CGPoint(x: endX - radius, y: height / 2.0), radius: radius, startAngle: CGFloat(-M_PI_2), endAngle: CGFloat(M_PI_2), clockwise: false)
+        // CGContextAddArc(ctx, endX - radius, height / 2.0, radius, CGFloat(-M_PI_2), CGFloat(M_PI_2), 0)
+        ctx?.closePath()
         if hollow == true {
-            CGContextSetStrokeColorWithColor(ctx, color)
-            CGContextStrokePath(ctx)
+            ctx?.setStrokeColor(color)
+            ctx?.strokePath()
             return
         }
-        CGContextClosePath(ctx)
-        CGContextSetFillColorWithColor(ctx, color)
-        CGContextFillPath(ctx)
+        ctx?.closePath()
+        ctx?.setFillColor(color)
+        ctx?.fillPath()
     }
     
 }

@@ -629,7 +629,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.wecan.WMPageControllerSwiftFramework;
-				PRODUCT_MODULE_NAME = WMPageControllerSwift;
+				PRODUCT_MODULE_NAME = WMPageControllerSwiftFramework;
 				PRODUCT_NAME = WMPageControllerSwiftFramework;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -651,7 +651,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.wecan.WMPageControllerSwiftFramework;
-				PRODUCT_MODULE_NAME = WMPageControllerSwift;
+				PRODUCT_MODULE_NAME = WMPageControllerSwiftFramework;
 				PRODUCT_NAME = WMPageControllerSwiftFramework;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";

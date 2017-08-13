@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "4D45BF621CC7BC12003F0151"
-               BuildableName = "WMPageControllerSwift.framework"
+               BuildableName = "WMPageControllerSwiftFramework.framework"
                BlueprintName = "WMPageControllerSwiftFramework"
                ReferencedContainer = "container:WMPageController-Swift.xcodeproj">
             </BuildableReference>
@@ -46,7 +46,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4D45BF621CC7BC12003F0151"
-            BuildableName = "WMPageControllerSwift.framework"
+            BuildableName = "WMPageControllerSwiftFramework.framework"
             BlueprintName = "WMPageControllerSwiftFramework"
             ReferencedContainer = "container:WMPageController-Swift.xcodeproj">
          </BuildableReference>
@@ -64,7 +64,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4D45BF621CC7BC12003F0151"
-            BuildableName = "WMPageControllerSwift.framework"
+            BuildableName = "WMPageControllerSwiftFramework.framework"
             BlueprintName = "WMPageControllerSwiftFramework"
             ReferencedContainer = "container:WMPageController-Swift.xcodeproj">
          </BuildableReference>

@@ -16,8 +16,8 @@
 		4D45BF391CC7A10B003F0151 /* WMPageController_SwiftUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D45BF381CC7A10B003F0151 /* WMPageController_SwiftUITests.swift */; };
 		4D45BF521CC7A1EB003F0151 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D45BF511CC7A1EB003F0151 /* TableViewController.swift */; };
 		4D45BF661CC7BC12003F0151 /* WMPageControllerSwiftFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D45BF651CC7BC12003F0151 /* WMPageControllerSwiftFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4D45BF6A1CC7BC12003F0151 /* WMPageControllerSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D45BF631CC7BC12003F0151 /* WMPageControllerSwift.framework */; };
-		4D45BF6B1CC7BC12003F0151 /* WMPageControllerSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4D45BF631CC7BC12003F0151 /* WMPageControllerSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4D45BF6A1CC7BC12003F0151 /* WMPageControllerSwiftFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D45BF631CC7BC12003F0151 /* WMPageControllerSwiftFramework.framework */; };
+		4D45BF6B1CC7BC12003F0151 /* WMPageControllerSwiftFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4D45BF631CC7BC12003F0151 /* WMPageControllerSwiftFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4DCCF8481CE855F200C31A07 /* FloodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCCF8431CE855F200C31A07 /* FloodView.swift */; };
 		4DCCF8491CE855F200C31A07 /* MenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCCF8441CE855F200C31A07 /* MenuItem.swift */; };
 		4DCCF84A1CE855F200C31A07 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCCF8451CE855F200C31A07 /* MenuView.swift */; };
@@ -61,7 +61,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				4D45BF6B1CC7BC12003F0151 /* WMPageControllerSwift.framework in Embed Frameworks */,
+				4D45BF6B1CC7BC12003F0151 /* WMPageControllerSwiftFramework.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -83,7 +83,7 @@
 		4D45BF381CC7A10B003F0151 /* WMPageController_SwiftUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WMPageController_SwiftUITests.swift; sourceTree = "<group>"; };
 		4D45BF3A1CC7A10B003F0151 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4D45BF511CC7A1EB003F0151 /* TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
-		4D45BF631CC7BC12003F0151 /* WMPageControllerSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WMPageControllerSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4D45BF631CC7BC12003F0151 /* WMPageControllerSwiftFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WMPageControllerSwiftFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D45BF651CC7BC12003F0151 /* WMPageControllerSwiftFramework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WMPageControllerSwiftFramework.h; sourceTree = "<group>"; };
 		4D45BF671CC7BC12003F0151 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4DCCF8431CE855F200C31A07 /* FloodView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloodView.swift; sourceTree = "<group>"; };
@@ -98,7 +98,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4D45BF6A1CC7BC12003F0151 /* WMPageControllerSwift.framework in Frameworks */,
+				4D45BF6A1CC7BC12003F0151 /* WMPageControllerSwiftFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -143,7 +143,7 @@
 				4D45BF151CC7A10B003F0151 /* WMPageController-Swift.app */,
 				4D45BF291CC7A10B003F0151 /* WMPageController-SwiftTests.xctest */,
 				4D45BF341CC7A10B003F0151 /* WMPageController-SwiftUITests.xctest */,
-				4D45BF631CC7BC12003F0151 /* WMPageControllerSwift.framework */,
+				4D45BF631CC7BC12003F0151 /* WMPageControllerSwiftFramework.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -286,7 +286,7 @@
 			);
 			name = WMPageControllerSwiftFramework;
 			productName = WMPageControllerSwiftFramework;
-			productReference = 4D45BF631CC7BC12003F0151 /* WMPageControllerSwift.framework */;
+			productReference = 4D45BF631CC7BC12003F0151 /* WMPageControllerSwiftFramework.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -630,7 +630,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.wecan.WMPageControllerSwiftFramework;
 				PRODUCT_MODULE_NAME = WMPageControllerSwift;
-				PRODUCT_NAME = WMPageControllerSwift;
+				PRODUCT_NAME = WMPageControllerSwiftFramework;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -652,7 +652,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.wecan.WMPageControllerSwiftFramework;
 				PRODUCT_MODULE_NAME = WMPageControllerSwift;
-				PRODUCT_NAME = WMPageControllerSwift;
+				PRODUCT_NAME = WMPageControllerSwiftFramework;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";

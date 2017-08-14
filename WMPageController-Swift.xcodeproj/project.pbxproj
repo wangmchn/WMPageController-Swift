@@ -315,6 +315,7 @@
 					};
 					4D45BF621CC7BC12003F0151 = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0830;
 					};
 				};
 			};
@@ -638,6 +639,7 @@
 				PRODUCT_MODULE_NAME = WMPageControllerSwiftFramework;
 				PRODUCT_NAME = WMPageControllerSwiftFramework;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -661,6 +663,7 @@
 				PRODUCT_MODULE_NAME = WMPageControllerSwiftFramework;
 				PRODUCT_NAME = WMPageControllerSwiftFramework;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";

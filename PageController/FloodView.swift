@@ -38,10 +38,10 @@ class FloodView: ProgressView {
         let ctx = UIGraphicsGetCurrentContext()
         ctx?.translateBy(x: 0.0, y: height)
         ctx?.scaleBy(x: 1.0, y: -1.0)
-        ctx?.addArc(center: CGPoint(x: startX + radius, y: height / 2.0), radius: radius, startAngle: CGFloat(M_PI_2), endAngle: CGFloat(M_PI_2) * 3, clockwise: false)
+        ctx?.addArc(center: CGPoint(x: startX + radius, y: height / 2.0), radius: radius, startAngle: CGFloat(Double.pi / 2), endAngle: CGFloat(Double.pi / 2) * 3, clockwise: false)
         // CGContextAddArc(ctx, startX + radius, height / 2.0, radius, CGFloat(M_PI_2), CGFloat(M_PI_2) * 3, 0)
         ctx?.addLine(to: CGPoint(x: endX - radius, y: margin))
-        ctx?.addArc(center: CGPoint(x: endX - radius, y: height / 2.0), radius: radius, startAngle: CGFloat(-M_PI_2), endAngle: CGFloat(M_PI_2), clockwise: false)
+        ctx?.addArc(center: CGPoint(x: endX - radius, y: height / 2.0), radius: radius, startAngle: CGFloat(-Double.pi / 2), endAngle: CGFloat(Double.pi / 2), clockwise: false)
         // CGContextAddArc(ctx, endX - radius, height / 2.0, radius, CGFloat(-M_PI_2), CGFloat(M_PI_2), 0)
         ctx?.closePath()
         if hollow == true {

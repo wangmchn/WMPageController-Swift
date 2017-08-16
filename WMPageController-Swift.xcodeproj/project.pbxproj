@@ -16,13 +16,18 @@
 		4D45BF391CC7A10B003F0151 /* WMPageController_SwiftUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D45BF381CC7A10B003F0151 /* WMPageController_SwiftUITests.swift */; };
 		4D45BF521CC7A1EB003F0151 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D45BF511CC7A1EB003F0151 /* TableViewController.swift */; };
 		4D45BF661CC7BC12003F0151 /* WMPageControllerSwiftFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D45BF651CC7BC12003F0151 /* WMPageControllerSwiftFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4D45BF6A1CC7BC12003F0151 /* WMPageControllerSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D45BF631CC7BC12003F0151 /* WMPageControllerSwift.framework */; };
-		4D45BF6B1CC7BC12003F0151 /* WMPageControllerSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4D45BF631CC7BC12003F0151 /* WMPageControllerSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4D45BF6A1CC7BC12003F0151 /* WMPageControllerSwiftFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D45BF631CC7BC12003F0151 /* WMPageControllerSwiftFramework.framework */; };
+		4D45BF6B1CC7BC12003F0151 /* WMPageControllerSwiftFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4D45BF631CC7BC12003F0151 /* WMPageControllerSwiftFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4DCCF8481CE855F200C31A07 /* FloodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCCF8431CE855F200C31A07 /* FloodView.swift */; };
 		4DCCF8491CE855F200C31A07 /* MenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCCF8441CE855F200C31A07 /* MenuItem.swift */; };
 		4DCCF84A1CE855F200C31A07 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCCF8451CE855F200C31A07 /* MenuView.swift */; };
 		4DCCF84B1CE855F200C31A07 /* PageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCCF8461CE855F200C31A07 /* PageController.swift */; };
 		4DCCF84C1CE855F200C31A07 /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCCF8471CE855F200C31A07 /* ProgressView.swift */; };
+		F73DD37B1F403F3500FAC00A /* FloodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCCF8431CE855F200C31A07 /* FloodView.swift */; };
+		F73DD37C1F403F3500FAC00A /* MenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCCF8441CE855F200C31A07 /* MenuItem.swift */; };
+		F73DD37D1F403F3500FAC00A /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCCF8451CE855F200C31A07 /* MenuView.swift */; };
+		F73DD37E1F403F3500FAC00A /* PageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCCF8461CE855F200C31A07 /* PageController.swift */; };
+		F73DD37F1F403F3500FAC00A /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCCF8471CE855F200C31A07 /* ProgressView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,7 +61,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				4D45BF6B1CC7BC12003F0151 /* WMPageControllerSwift.framework in Embed Frameworks */,
+				4D45BF6B1CC7BC12003F0151 /* WMPageControllerSwiftFramework.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -78,7 +83,7 @@
 		4D45BF381CC7A10B003F0151 /* WMPageController_SwiftUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WMPageController_SwiftUITests.swift; sourceTree = "<group>"; };
 		4D45BF3A1CC7A10B003F0151 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4D45BF511CC7A1EB003F0151 /* TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
-		4D45BF631CC7BC12003F0151 /* WMPageControllerSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WMPageControllerSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4D45BF631CC7BC12003F0151 /* WMPageControllerSwiftFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WMPageControllerSwiftFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D45BF651CC7BC12003F0151 /* WMPageControllerSwiftFramework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WMPageControllerSwiftFramework.h; sourceTree = "<group>"; };
 		4D45BF671CC7BC12003F0151 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4DCCF8431CE855F200C31A07 /* FloodView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloodView.swift; sourceTree = "<group>"; };
@@ -93,7 +98,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4D45BF6A1CC7BC12003F0151 /* WMPageControllerSwift.framework in Frameworks */,
+				4D45BF6A1CC7BC12003F0151 /* WMPageControllerSwiftFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,7 +143,7 @@
 				4D45BF151CC7A10B003F0151 /* WMPageController-Swift.app */,
 				4D45BF291CC7A10B003F0151 /* WMPageController-SwiftTests.xctest */,
 				4D45BF341CC7A10B003F0151 /* WMPageController-SwiftUITests.xctest */,
-				4D45BF631CC7BC12003F0151 /* WMPageControllerSwift.framework */,
+				4D45BF631CC7BC12003F0151 /* WMPageControllerSwiftFramework.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -281,7 +286,7 @@
 			);
 			name = WMPageControllerSwiftFramework;
 			productName = WMPageControllerSwiftFramework;
-			productReference = 4D45BF631CC7BC12003F0151 /* WMPageControllerSwift.framework */;
+			productReference = 4D45BF631CC7BC12003F0151 /* WMPageControllerSwiftFramework.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -291,7 +296,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = "Wecan Studio";
 				TargetAttributes = {
 					4D45BF141CC7A10B003F0151 = {
@@ -310,6 +315,7 @@
 					};
 					4D45BF621CC7BC12003F0151 = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0830;
 					};
 				};
 			};
@@ -404,6 +410,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F73DD37B1F403F3500FAC00A /* FloodView.swift in Sources */,
+				F73DD37C1F403F3500FAC00A /* MenuItem.swift in Sources */,
+				F73DD37D1F403F3500FAC00A /* MenuView.swift in Sources */,
+				F73DD37E1F403F3500FAC00A /* PageController.swift in Sources */,
+				F73DD37F1F403F3500FAC00A /* ProgressView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -461,8 +472,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -506,8 +519,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -526,6 +541,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -533,6 +549,7 @@
 		4D45BF3E1CC7A10B003F0151 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = "WMPageController-Swift/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -545,6 +562,7 @@
 		4D45BF3F1CC7A10B003F0151 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = "WMPageController-Swift/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -607,6 +625,7 @@
 		4D45BF6C1CC7BC12003F0151 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -617,9 +636,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.wecan.WMPageControllerSwiftFramework;
-				PRODUCT_MODULE_NAME = WMPageControllerSwift;
-				PRODUCT_NAME = WMPageControllerSwift;
+				PRODUCT_MODULE_NAME = WMPageControllerSwiftFramework;
+				PRODUCT_NAME = WMPageControllerSwiftFramework;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -629,6 +649,7 @@
 		4D45BF6D1CC7BC12003F0151 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -639,9 +660,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.wecan.WMPageControllerSwiftFramework;
-				PRODUCT_MODULE_NAME = WMPageControllerSwift;
-				PRODUCT_NAME = WMPageControllerSwift;
+				PRODUCT_MODULE_NAME = WMPageControllerSwiftFramework;
+				PRODUCT_NAME = WMPageControllerSwiftFramework;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
